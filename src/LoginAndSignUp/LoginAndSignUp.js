@@ -1,12 +1,20 @@
 import {useNavigate} from "react-router-dom";
 import styles from './LoginInAndSignUp.module.css';
 import './LoginAndSignUp.css';
-import {switchToSignUp, switchToLogin, usernameChange, firstNameChange, lastNameChange,
-    emailChange, passwordChange} from './LoginAndSignUpUtils';
+import {
+    emailChange,
+    firstNameChange,
+    lastNameChange,
+    passwordChange,
+    switchToLogin,
+    switchToSignUp,
+    usernameChange
+} from './LoginAndSignUpUtils';
 
 const LoginAndSignUp = () => {
 
     let navigate = useNavigate();
+    let md5 = require('md5');
 
     function loginSubmit(event) {
         event.preventDefault();
@@ -15,11 +23,13 @@ const LoginAndSignUp = () => {
 
         const object = {};
         data.forEach((value, key) => object[key] = value);
+        object.firstName = "Placeholder"; object.lastName = "Placeholder"; object.email = "Placeholder";
+        object.role = "Placeholder";
+        object.password = md5(object.password);
         const json = JSON.stringify(object);
-        const jsonData = JSON.parse(json);
 
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://localhost:8080/login/" + jsonData.username + "/" + jsonData.password, true);
+        xhr.open("POST", "http://localhost:8080/login", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4)  {
@@ -27,7 +37,7 @@ const LoginAndSignUp = () => {
                 const loginError = document.querySelector("#loginError");
                 if (serverResponse === '"OK"') {
                     loginError.style.display = 'none';
-                    localStorage.setItem('auth', btoa( jsonData.username + ":" + jsonData.password));
+                    localStorage.setItem('auth', btoa( object.username + ":" + object.password));
                     navigate('/MainPage');
                 } else {
                     loginError.style.display = "block";
@@ -35,7 +45,7 @@ const LoginAndSignUp = () => {
                 }
             }
         };
-        xhr.send();
+        xhr.send(json);
     }
 
     function signUpSubmit(event) {
@@ -46,17 +56,22 @@ const LoginAndSignUp = () => {
         const object = {};
         data.forEach((value, key) => object[key] = value);
         object.role = 'USER';
+        object.password = md5(object.password);
         const json = JSON.stringify(object);
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:8080/login", true);
+        xhr.open("POST", "http://localhost:8080/signUp", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4)  {
+            if (xhr.readyState === 4) {
                 const serverResponse = xhr.responseText;
+                const signUpError = document.querySelector("#signUpError");
                 if (serverResponse === '"CREATED"') {
                     localStorage.setItem('auth', btoa( object.username + ":" + object.password))
                     navigate('/MainPage')
+                } else {
+                    signUpError.style.display = "block";
+                    signUpError.innerHTML = "Invalid Details";
                 }
             }
         };
@@ -98,6 +113,7 @@ const LoginAndSignUp = () => {
                             <div className={styles.signup_link}>Not A Member? <a href="#" onClick={switchToSignUp}>Sign Up Now</a></div>
                         </form>
                         <form className={styles.signup} onSubmit={signUpSubmit} method="post" action="localhost:8080/users">
+                            <div id="signUpError" className={styles.error} style={{display: "none"}}></div>
                             <div className={styles.field}>
                                 <input type="text" id="username" name="username" required
                                        pattern="^[A-Za-z][A-Za-z0-9_-]{7,31}$" placeholder="Username"

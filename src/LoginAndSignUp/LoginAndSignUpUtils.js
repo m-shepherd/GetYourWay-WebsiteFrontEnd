@@ -145,6 +145,9 @@ export function passwordChange() {
 }
 
 export function switchToLogin() {
+    const signUpError = document.querySelector("#signUpError");
+    signUpError.style.display = 'none';
+
     const loginText = document.querySelector("#loginText");
     const loginForm = document.querySelector("#loginForm");
     loginForm.style.marginLeft = "0%";
