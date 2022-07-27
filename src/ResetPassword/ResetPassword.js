@@ -2,6 +2,7 @@ import {useNavigate} from "react-router-dom";
 import styles from './ResetPassword.module.css';
 import './ResetPassword.css'
 import {emailChange} from "./ResetPasswordUtils";
+import {firstNameChange, lastNameChange, passwordChange, usernameChange} from "../LoginAndSignUp/LoginAndSignUpUtils";
 
 
 const ResetPassword = () =>  {
@@ -36,7 +37,8 @@ const ResetPassword = () =>  {
                     success.innerHTML = "Email Successfully Sent<br></br>Redirecting...";
 
                     await delay(3);
-                    navigate('/');
+                    switchToValidation();
+
                 } else {
                     const error = document.querySelector("#emailError");
                     error.style.display = "block";
@@ -74,15 +76,23 @@ const ResetPassword = () =>  {
         checkEmailIsValid(email);
     }
 
+    function switchToValidation() {
+        const loginText = document.querySelector("#resetText");
+        const loginForm = document.querySelector("#resetForm");
+        loginForm.style.marginLeft = "-50%";
+        loginText.style.marginLeft = "-50%";
+    }
+
     return (
         <>
             <div className={styles.wrapper}>
                 <div className={styles.title_text}>
-                    <div className={styles.title}>Reset Your Password</div>
+                    <div id="resetText" className={styles.title}>Reset Password</div>
+                    <div className={styles.title}>Validation</div>
                 </div>
                 <div className={styles.form_container}>
                     <div className={styles.form_inner}>
-                        <form method="post" onSubmit={submitEmail}>
+                        <form id="resetForm" method="post" onSubmit={submitEmail}>
                             <div className={styles.field}>
                                 <input type="text" id="email" name="email" required
                                        pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -94,6 +104,9 @@ const ResetPassword = () =>  {
                                 <input type="submit" value="Send Recovery Email"/>
                             </div>
                             <div className={styles.pass_link} onClick={() => navigate('/')}><a href="#">Back To Login</a></div>
+                        </form>
+                        <form method="post" action="localhost:8080/users">
+
                         </form>
                     </div>
                 </div>
