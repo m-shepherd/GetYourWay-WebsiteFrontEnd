@@ -3,11 +3,15 @@ import styles from './ResetPassword.module.css';
 import './ResetPassword.css'
 import {emailChange} from "./ResetPasswordUtils";
 import {firstNameChange, lastNameChange, passwordChange, usernameChange} from "../LoginAndSignUp/LoginAndSignUpUtils";
+import ValidatePasswordModal from "./ValidatePasswordModal";
+import useModal from "./useModal";
 
 
 const ResetPassword = () =>  {
 
     let navigate = useNavigate();
+
+    const {isShowing, toggle} = useModal();
 
     function delay(n){
         return new Promise(function(resolve){
@@ -37,7 +41,8 @@ const ResetPassword = () =>  {
                     success.innerHTML = "Email Successfully Sent<br></br>Redirecting...";
 
                     await delay(3);
-                    switchToValidation();
+                    //switchToValidation();
+                    toggle();
 
                 } else {
                     const error = document.querySelector("#emailError");
@@ -88,7 +93,8 @@ const ResetPassword = () =>  {
             <div className={styles.wrapper}>
                 <div className={styles.title_text}>
                     <div id="resetText" className={styles.title}>Reset Password</div>
-                    <div className={styles.title}>Validation</div>
+                   {/* <div className={styles.title}>Validation</div> */}
+                   <ValidatePasswordModal className = {styles.modal} isShowing={isShowing} hide={toggle}/>
                 </div>
                 <div className={styles.form_container}>
                     <div className={styles.form_inner}>
@@ -106,7 +112,6 @@ const ResetPassword = () =>  {
                             <div className={styles.pass_link} onClick={() => navigate('/')}><a href="#">Back To Login</a></div>
                         </form>
                         <form method="post" action="localhost:8080/users">
-
                         </form>
                     </div>
                 </div>
