@@ -1,0 +1,4 @@
+#username.incorrect, #firstName.incorrect, #lastName.incorrect, #email.incorrect, #password.incorrect {
+    border-color: red;
+    color: red;
+}

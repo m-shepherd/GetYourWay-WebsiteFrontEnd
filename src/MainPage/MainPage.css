@@ -1,0 +1,12 @@
+#destination{
+    height: 60px;
+    width: 25%;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    margin: auto;
+}
+
+#dataTitle{
+    padding-bottom: 1em;
+}

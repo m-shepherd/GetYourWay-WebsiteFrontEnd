@@ -1,0 +1,47 @@
+:root {
+    --weather-height: 25%;
+}
+
+.weatherContainer {
+    width: 100%;
+    height: var(--weather-height);
+    /*background-color: lightgray;*/
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.informationBlock {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.temperature {
+    font-size: 3em;
+    margin-top: -15px;
+    margin-bottom: -15px;
+}
+
+.smallInformationText {
+    font-size: 1em; 
+}
+
+.largeInformationText {
+    font-size: 1.5em;
+}
+.wrapper{
+    overflow: hidden;
+    width: 25em;
+    max-width: 65em;
+    background: #fff;
+    padding: 30px;
+    margin: auto;
+    border-radius: 15px;
+    box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+}
+.padding{
+    padding-bottom: 1.5em;
+}
