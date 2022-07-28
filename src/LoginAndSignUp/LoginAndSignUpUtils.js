@@ -1,3 +1,5 @@
+import {decodeToken} from "react-jwt";
+
 export function usernameChange() {
     const username = document.querySelector("#username")
 
@@ -192,4 +194,12 @@ export function switchToSignUp() {
     const loginLabel = document.querySelector("#loginLabel");
     loginLabel.style.color = "#000";
     loginLabel.style.cursor = "pointer";
+}
+
+export function createJSONWebToken(payload) {
+    const sign = require('jwt-encode');
+
+    const jwtKey = "secret";
+
+    return sign(payload, jwtKey);
 }
