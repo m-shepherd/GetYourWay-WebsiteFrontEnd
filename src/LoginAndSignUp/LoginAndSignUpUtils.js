@@ -1,5 +1,3 @@
-import {decodeToken} from "react-jwt";
-
 export function usernameChange() {
     const username = document.querySelector("#username")
 
