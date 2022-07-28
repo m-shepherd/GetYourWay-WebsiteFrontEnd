@@ -3,15 +3,17 @@ import styles from './ResetPassword.module.css';
 import './ResetPassword.css'
 import {emailChange} from "./ResetPasswordUtils";
 import {firstNameChange, lastNameChange, passwordChange, usernameChange} from "../LoginAndSignUp/LoginAndSignUpUtils";
-import ValidatePasswordModal from "./ValidatePasswordModal";
-import useModal from "./useModal";
+import ValidatePassword from "./ValidatePassword";
+import { useState } from "react";
+
 
 
 const ResetPassword = () =>  {
 
     let navigate = useNavigate();
 
-    const {isShowing, toggle} = useModal();
+    const [recoveryCode, setRecoveryCode] = useState("");
+
 
     function delay(n){
         return new Promise(function(resolve){
@@ -39,10 +41,11 @@ const ResetPassword = () =>  {
                     success.classList.remove("error");
                     success.classList.add("success");
                     success.innerHTML = "Email Successfully Sent<br></br>Redirecting...";
-
+                    
+                    const recoveryCodeTemp = generateRecoveryCode(10);
+                    setRecoveryCode(recoveryCodeTemp);
                     await delay(3);
-                    //switchToValidation();
-                    toggle();
+                    switchToValidation();
 
                 } else {
                     const error = document.querySelector("#emailError");
@@ -87,14 +90,25 @@ const ResetPassword = () =>  {
         loginForm.style.marginLeft = "-50%";
         loginText.style.marginLeft = "-50%";
     }
+    
+    function generateRecoveryCode(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * 
+     charactersLength));
+       }
+       return result;
+    }
 
     return (
         <>
             <div className={styles.wrapper}>
                 <div className={styles.title_text}>
                     <div id="resetText" className={styles.title}>Reset Password</div>
-                   {/* <div className={styles.title}>Validation</div> */}
-                   <ValidatePasswordModal className = {styles.modal} isShowing={isShowing} hide={toggle}/>
+                   <div className={styles.title}>Validation</div>
+                   {/* <ValidatePasswordModal className = {styles.modal} isShowing={isShowing} hide={toggle}/> */}
                 </div>
                 <div className={styles.form_container}>
                     <div className={styles.form_inner}>
@@ -111,8 +125,7 @@ const ResetPassword = () =>  {
                             </div>
                             <div className={styles.pass_link} onClick={() => navigate('/')}><a href="#">Back To Login</a></div>
                         </form>
-                        <form method="post" action="localhost:8080/users">
-                        </form>
+                        <ValidatePassword code={recoveryCode}/>
                     </div>
                 </div>
             </div>
