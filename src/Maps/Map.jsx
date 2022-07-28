@@ -2,6 +2,11 @@ import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 
 const libraries=["places","directions","geocoder"]
 
+const containerStyle = {
+    width: '400px',
+    height: '400px'
+  };
+
 export default function Map() {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyCodtVa1E5fxA5mM3Pd-wiZoPH3uwyreMI',
@@ -11,10 +16,13 @@ export default function Map() {
     if (!isLoaded) return <div>Loading...</div>
 
     return (
-        <GoogleMap
+        <div>
+            <GoogleMap
             zoom={16}
             center={{lat: 53.78986162692554, lng: -1.5330532190720971}}
-            mapContainerClassName='map-container'>
-        </GoogleMap>
+            mapContainerStyle={containerStyle}>
+            </GoogleMap>
+        </div>
     )
+
 }
