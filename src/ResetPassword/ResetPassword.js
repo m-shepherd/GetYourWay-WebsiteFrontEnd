@@ -2,6 +2,7 @@ import {useNavigate} from "react-router-dom";
 import styles from './ResetPassword.module.css';
 import './ResetPassword.css'
 import {emailChange} from "./ResetPasswordUtils";
+import BACKEND_ADDRESS from "../configuration";
 
 const ResetPassword = () =>  {
 
@@ -16,12 +17,12 @@ const ResetPassword = () =>  {
     function sendEmail(email){
         const emailSettings = {
             "recipient": email,
-            "msgBody": "http://localhost:8080/users",
+            "msgBody": BACKEND_ADDRESS + "/users",
             "subject": "Test email"
         }
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:8080/email/sendMail", true);
+        xhr.open("POST", BACKEND_ADDRESS + "/email/sendMail", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify(emailSettings));
         xhr.onreadystatechange = async function() {
@@ -49,7 +50,7 @@ const ResetPassword = () =>  {
 
     function checkEmailIsValid(email){
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://localhost:8080/email/getUserByEmail?email=" + email, true);
+        xhr.open("GET", BACKEND_ADDRESS + "/email/getUserByEmail?email=" + email, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send();
         xhr.onreadystatechange = function() {
