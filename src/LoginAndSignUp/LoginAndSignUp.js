@@ -10,6 +10,7 @@ import {
     switchToSignUp,
     usernameChange
 } from './LoginAndSignUpUtils';
+import BACKEND_ADDRESS from "../configuration";
 
 const LoginAndSignUp = () => {
 
@@ -29,7 +30,7 @@ const LoginAndSignUp = () => {
         const json = JSON.stringify(object);
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:8080/login", true);
+        xhr.open("POST", BACKEND_ADDRESS + "/login", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4)  {
@@ -60,7 +61,7 @@ const LoginAndSignUp = () => {
         const json = JSON.stringify(object);
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:8080/signUp", true);
+        xhr.open("POST", BACKEND_ADDRESS + "signUp", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
@@ -97,7 +98,7 @@ const LoginAndSignUp = () => {
                     </div>
                     <div id="loginError" className={styles.error} style={{display: "none"}}></div>
                     <div className={styles.form_inner}>
-                        <form id="loginForm" onSubmit={loginSubmit} method="post" action="localhost:8080/users">
+                        <form id="loginForm" onSubmit={loginSubmit} method="post" action={BACKEND_ADDRESS + "/users"}>
                             <div className={styles.field}>
                                 <input type="text" name="username" placeholder="Username" required/>
                             </div>
@@ -112,7 +113,7 @@ const LoginAndSignUp = () => {
 
                             <div className={styles.signup_link}>Not A Member? <a href="#" onClick={switchToSignUp}>Sign Up Now</a></div>
                         </form>
-                        <form className={styles.signup} onSubmit={signUpSubmit} method="post" action="localhost:8080/users">
+                        <form className={styles.signup} onSubmit={signUpSubmit} method="post" action={BACKEND_ADDRESS + "/users"}>
                             <div id="signUpError" className={styles.error} style={{display: "none"}}></div>
                             <div className={styles.field}>
                                 <input type="text" id="username" name="username" required
