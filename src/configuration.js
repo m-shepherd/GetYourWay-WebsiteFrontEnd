@@ -2,7 +2,7 @@
 const runningOnServer = false;
 let BACKEND_ADDRESS;
 if (runningOnServer) {
-    BACKEND_ADDRESS = 'http://3.10.61.220:8090';
+    BACKEND_ADDRESS = 'http://3.10.61.220:8090/getYourWay';
 } else {
     BACKEND_ADDRESS = 'http://localhost:8080';
 }
