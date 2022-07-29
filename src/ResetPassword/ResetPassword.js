@@ -1,12 +1,18 @@
+import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import styles from './ResetPassword.module.css';
 import './ResetPassword.css'
 import {emailChange} from "./ResetPasswordUtils";
+import ValidatePassword from "./ValidatePassword";
 import {BACKEND_ADDRESS} from "../configuration";
 
 const ResetPassword = () =>  {
 
     let navigate = useNavigate();
+
+    const [recoveryCode, setRecoveryCode] = useState("");
+    const [email, setEmail] = useState("");
+
 
     function delay(n){
         return new Promise(function(resolve){
@@ -15,10 +21,12 @@ const ResetPassword = () =>  {
     }
 
     function sendEmail(email){
+        const recoveryCodeTemp = generateRecoveryCode(10);
+
         const emailSettings = {
             "recipient": email,
-            "msgBody": BACKEND_ADDRESS + "/users",
-            "subject": "Test email"
+            "msgBody": "This is your recovery code: " + recoveryCodeTemp,
+            "subject": "Password Reset"
         }
 
         const xhr = new XMLHttpRequest();
@@ -34,7 +42,9 @@ const ResetPassword = () =>  {
                     success.classList.remove("error");
                     success.classList.add("success");
                     success.innerHTML = "Email Successfully Sent<br></br>Redirecting...";
-
+                    
+                    setEmail(email);
+                    setRecoveryCode(recoveryCodeTemp);
                     await delay(3);
                     switchToValidation();
 
@@ -81,13 +91,24 @@ const ResetPassword = () =>  {
         loginForm.style.marginLeft = "-50%";
         loginText.style.marginLeft = "-50%";
     }
+    
+    function generateRecoveryCode(length) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        for (let i = 0; i < length; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+       }
+       return result;
+    }
 
     return (
         <>
             <div className={styles.wrapper}>
                 <div className={styles.title_text}>
                     <div id="resetText" className={styles.title}>Reset Password</div>
-                    <div className={styles.title}>Validation</div>
+                   <div className={styles.title}>Validation</div>
+                   {/* <ValidatePasswordModal className = {styles.modal} isShowing={isShowing} hide={toggle}/> */}
                 </div>
                 <div className={styles.form_container}>
                     <div className={styles.form_inner}>
@@ -104,9 +125,7 @@ const ResetPassword = () =>  {
                             </div>
                             <div className={styles.pass_link} onClick={() => navigate('/')}><a href="#">Back To Login</a></div>
                         </form>
-                        <form method="post" action="localhost:8080/users">
-
-                        </form>
+                        <ValidatePassword code={recoveryCode} emailAddress={email}/>
                     </div>
                 </div>
             </div>
