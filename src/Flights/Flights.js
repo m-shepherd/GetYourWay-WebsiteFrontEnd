@@ -10,16 +10,16 @@ const Flights = () => {
                     <div className={flightStyles.form_container}>
                         <div className={flightStyles.form_inner}>
                             <form id="findFlights" onSubmit={getFlights}>
-                                <div className={flightStyles.field}>
+                                <div className={`${flightStyles.field} ${flightStyles.col}`}>
                                     <input type="date" name="date" min={new Date().toISOString().split('T')[0]} placeholder="YYYY-MM-DD"/>
                                 </div>
-                                <div className={flightStyles.field}>
+                                <div className={`${flightStyles.field} ${flightStyles.col}`}>
                                     <input type="text" name="departureAirport" placeholder="Departure Airport"/>
                                 </div>
-                                <div className={flightStyles.field}>
+                                <div className={`${flightStyles.field} ${flightStyles.col}`}>
                                     <input type="text" name="arrivalAirport" placeholder="Arrival Airport"/>
                                 </div>
-                                <div className={`${flightStyles.field} ${flightStyles.btn}`}>
+                                <div className={`${flightStyles.field} ${flightStyles.btn} ${flightStyles.col}`}>
                                     <div className={flightStyles.btn_layer}></div>
                                     <input type="submit" value="Find Flights"/>
                                 </div>
