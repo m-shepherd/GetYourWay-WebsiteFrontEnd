@@ -3,10 +3,14 @@ import styles from './ResetPassword.module.css';
 import ReactDOM from 'react-dom';
 import { useNavigate } from "react-router-dom";
 import { passwordChange } from "../LoginAndSignUp/LoginAndSignUpUtils";
+import md5 from "md5";
 
 const ValidatePassword = ({ code, emailAddress }) => {
 
     let navigate = useNavigate();
+
+    let md5 = require("md5");
+
 
     function updatePassword() {
 
@@ -14,9 +18,12 @@ const ValidatePassword = ({ code, emailAddress }) => {
         const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirm-password").value;
 
+        const hashedPassword = md5(password);
+    
+
         if((recoveryCode == code) && (password == confirmPassword)){
             const xhr = new XMLHttpRequest();
-            xhr.open("PUT", "http://localhost:8080/users/updatePassword/" + emailAddress + "/" + password, true)
+            xhr.open("PUT", "http://localhost:8080/users/updatePassword/" + emailAddress + "/" + hashedPassword, true)
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send();
             xhr.onreadystatechange = function() {
