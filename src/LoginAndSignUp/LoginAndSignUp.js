@@ -2,13 +2,14 @@ import {useNavigate} from "react-router-dom";
 import styles from './LoginInAndSignUp.module.css';
 import './LoginAndSignUp.css';
 import {
-    emailChange,
+    usernameChange,
     firstNameChange,
     lastNameChange,
+    emailChange,
     passwordChange,
     switchToLogin,
     switchToSignUp,
-    usernameChange
+    createJSONWebToken
 } from './LoginAndSignUpUtils';
 
 const LoginAndSignUp = () => {
@@ -18,15 +19,15 @@ const LoginAndSignUp = () => {
 
     function loginSubmit(event) {
         event.preventDefault();
-
         const data = new FormData(event.target);
 
         const object = {};
         data.forEach((value, key) => object[key] = value);
-        object.firstName = "Placeholder"; object.lastName = "Placeholder"; object.email = "Placeholder";
-        object.role = "Placeholder";
         object.password = md5(object.password);
-        const json = JSON.stringify(object);
+        const jsonData = JSON.stringify(object);
+        const token = createJSONWebToken(jsonData);
+        const json = JSON.stringify(token);
+
 
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "http://localhost:8080/login", true);

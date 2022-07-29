@@ -193,3 +193,11 @@ export function switchToSignUp() {
     loginLabel.style.color = "#000";
     loginLabel.style.cursor = "pointer";
 }
+
+export function createJSONWebToken(payload) {
+    const sign = require('jwt-encode');
+
+    const jwtKey = "secret";
+
+    return sign(payload, jwtKey);
+}
