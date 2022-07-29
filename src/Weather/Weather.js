@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 import weatherStyle from'./Weather.module.css';
-import BACKEND_ADDRESS from '../configuration';
+import {BACKEND_ADDRESS} from '../configuration';
 
 const testLatitude = 53.8008;
 const testLongitude = 1.5491;

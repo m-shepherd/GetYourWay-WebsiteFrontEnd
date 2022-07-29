@@ -11,7 +11,7 @@ import {
     switchToSignUp,
     createJSONWebToken
 } from './LoginAndSignUpUtils';
-import BACKEND_ADDRESS from "../configuration";
+import {BACKEND_ADDRESS} from "../configuration";
 
 const LoginAndSignUp = () => {
 

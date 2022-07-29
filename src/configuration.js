@@ -1,9 +1,13 @@
 //This variable is only changed within the server configuration
 const runningOnServer = false;
-let BACKEND_ADDRESS;
+let backend_address;
 if (runningOnServer) {
-    BACKEND_ADDRESS = 'http://3.10.61.220:8090/getYourWay';
+    backend_address = 'http://3.10.61.220:8090/getYourWay';
 } else {
-    BACKEND_ADDRESS = 'http://localhost:8080';
+    backend_address = 'http://localhost:8080';
 }
-export default BACKEND_ADDRESS;
+
+const SECRET_KEY = 'secret';
+const BACKEND_ADDRESS = backend_address;
+
+export {BACKEND_ADDRESS, SECRET_KEY};

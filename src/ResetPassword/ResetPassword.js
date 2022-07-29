@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import styles from './ResetPassword.module.css';
 import './ResetPassword.css'
 import {emailChange} from "./ResetPasswordUtils";
-import BACKEND_ADDRESS from "../configuration";
+import {BACKEND_ADDRESS} from "../configuration";
 
 const ResetPassword = () =>  {
 

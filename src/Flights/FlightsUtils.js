@@ -1,4 +1,4 @@
-import BACKEND_ADDRESS from '../configuration';
+import {BACKEND_ADDRESS} from '../configuration';
 
 export function getFlights(event) {
     event.preventDefault();
