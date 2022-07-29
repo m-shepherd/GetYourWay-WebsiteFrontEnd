@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import LoginAndSignUp from '../LoginAndSignUp/LoginAndSignUp';
 import ResetPassword from "../ResetPassword/ResetPassword";
 import MainPage from "../MainPage/MainPage";
+import Map from '../Map/Map';
 
 const App = () => {
     return (
