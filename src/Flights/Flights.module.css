@@ -17,15 +17,92 @@ html,body{
     background: #1a75ff;
     color: #fff;
 }
-.wrapper{
-    overflow: hidden;
-    width: 65em;
-    max-width: 65em;
-    background: #fff;
-    padding: 30px;
-    margin: auto;
-    border-radius: 15px;
-    box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+@media only screen and (max-width: 360px){
+    .wrapper{
+        overflow: hidden;
+        max-width: 95%;
+        background: #fff;
+        padding: 30px;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
+    .form_inner form .field input {
+        padding-left: 5px;
+    }
+    .form_container .form_inner form {
+        grid-gap: 8px;
+    }
+    .col {
+        grid-column: span 4;
+    }
+    .col:first-child{
+        grid-column: span 12;
+    }
+}
+@media only screen and (min-width: 360px){
+    .wrapper{
+        overflow: hidden;
+        max-width: 95%;
+        background: #fff;
+        padding: 30px;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
+    .form_inner form .field input {
+        padding-left: 5px;
+    }
+    .form_container .form_inner form {
+        grid-gap: 8px;
+    }
+    .col {
+        grid-column: span 4;
+    }
+    .col:first-child{
+        grid-column: span 12;
+    }
+}
+@media only screen and (min-width: 600px){
+    .wrapper{
+        overflow: hidden;
+        max-width: 95%;
+        background: #fff;
+        padding: 30px;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
+}
+@media only screen and (min-width: 768px){
+    .wrapper{
+        overflow: hidden;
+        width: 95%;
+        max-width: 95%;
+        background: #fff;
+        padding: 30px;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
+    .form_inner form .field input {
+        padding-left: 15px;
+    }
+    .form_container .form_inner form {
+        grid-gap: 16px;
+    }
+}
+@media only screen and (min-width: 1200px){
+    .wrapper{
+        overflow: hidden;
+        width: 50em;
+        max-width: 50em;
+        background: #fff;
+        padding: 30px;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
 }
 .filled {
     max-width: 75%;
@@ -136,8 +213,7 @@ tr:hover {
 }
 .form_container .form_inner form{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 16px;
+    grid-template-columns: repeat(12, 1fr);
     width: 50%;
     transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
 }
@@ -150,7 +226,6 @@ tr:hover {
     height: 100%;
     width: 100%;
     outline: none;
-    padding-left: 15px;
     border-radius: 15px;
     border: 1px solid lightgrey;
     border-bottom-width: 2px;

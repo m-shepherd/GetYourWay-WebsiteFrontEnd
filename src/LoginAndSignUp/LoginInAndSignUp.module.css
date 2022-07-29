@@ -17,7 +17,7 @@ html,body{
     background: #1a75ff;
     color: #fff;
 }
-@media only screen and (max-width: 300px){
+@media only screen and (max-width: 360px){
     .wrapper .title{
         width: 50%;
         font-size: 20px;
