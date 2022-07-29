@@ -61,7 +61,7 @@ const LoginAndSignUp = () => {
         const json = JSON.stringify(object);
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", BACKEND_ADDRESS + "signUp", true);
+        xhr.open("POST", BACKEND_ADDRESS + "/signUp", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
