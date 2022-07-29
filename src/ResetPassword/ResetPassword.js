@@ -2,7 +2,6 @@ import {useNavigate} from "react-router-dom";
 import styles from './ResetPassword.module.css';
 import './ResetPassword.css'
 import {emailChange} from "./ResetPasswordUtils";
-import {firstNameChange, lastNameChange, passwordChange, usernameChange} from "../LoginAndSignUp/LoginAndSignUpUtils";
 import ValidatePassword from "./ValidatePassword";
 import { useState } from "react";
 
