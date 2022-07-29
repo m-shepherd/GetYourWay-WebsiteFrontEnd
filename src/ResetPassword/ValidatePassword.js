@@ -19,12 +19,22 @@ const ValidatePassword = ({ code, emailAddress }) => {
             xhr.open("PUT", "http://localhost:8080/users/updatePassword?email=" + emailAddress + "?password=" + password, true)
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4)  {
+                    const serverResponse = xhr.responseText;
+                    if (serverResponse === '"OK"') {
+                        console.log("Password Successfully changed");
+                    } else {
+                        console.log("Error")
+                    }
+                }
+            };
         }
     }
 
 
     return (
-        <form onSubmit={updatePassword} method="post">
+        <form onSubmit={updatePassword} method="put">
             <div className={styles.field}>
                 <input type="text" id="recovery-code" name="recovery-code" placeholder="Recovery Code" />
             </div>

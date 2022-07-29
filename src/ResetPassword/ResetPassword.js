@@ -13,6 +13,7 @@ const ResetPassword = () =>  {
     let navigate = useNavigate();
 
     const [recoveryCode, setRecoveryCode] = useState("");
+    const [email, setEmail] = useState("");
 
 
     function delay(n){
@@ -22,9 +23,11 @@ const ResetPassword = () =>  {
     }
 
     function sendEmail(email){
+        const recoveryCodeTemp = generateRecoveryCode(10);
+
         const emailSettings = {
             "recipient": email,
-            "msgBody": "http://localhost:8080/users",
+            "msgBody": "This is your recovery code: " + recoveryCodeTemp,
             "subject": "Test email"
         }
 
@@ -42,7 +45,7 @@ const ResetPassword = () =>  {
                     success.classList.add("success");
                     success.innerHTML = "Email Successfully Sent<br></br>Redirecting...";
                     
-                    const recoveryCodeTemp = generateRecoveryCode(10);
+                    setEmail(email);
                     setRecoveryCode(recoveryCodeTemp);
                     await delay(3);
                     switchToValidation();
@@ -125,7 +128,7 @@ const ResetPassword = () =>  {
                             </div>
                             <div className={styles.pass_link} onClick={() => navigate('/')}><a href="#">Back To Login</a></div>
                         </form>
-                        <ValidatePassword code={recoveryCode}/>
+                        <ValidatePassword code={recoveryCode} emailAddress={email}/>
                     </div>
                 </div>
             </div>
