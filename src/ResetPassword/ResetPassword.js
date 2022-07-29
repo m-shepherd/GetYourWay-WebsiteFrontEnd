@@ -1,11 +1,10 @@
+import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import styles from './ResetPassword.module.css';
 import './ResetPassword.css'
 import {emailChange} from "./ResetPasswordUtils";
 import ValidatePassword from "./ValidatePassword";
-import { useState } from "react";
-
-
+import {BACKEND_ADDRESS} from "../configuration";
 
 const ResetPassword = () =>  {
 
@@ -27,11 +26,11 @@ const ResetPassword = () =>  {
         const emailSettings = {
             "recipient": email,
             "msgBody": "This is your recovery code: " + recoveryCodeTemp,
-            "subject": "Test email"
+            "subject": "Password Reset"
         }
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:8080/email/sendMail", true);
+        xhr.open("POST", BACKEND_ADDRESS + "/email/sendMail", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify(emailSettings));
         xhr.onreadystatechange = async function() {
@@ -61,7 +60,7 @@ const ResetPassword = () =>  {
 
     function checkEmailIsValid(email){
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://localhost:8080/email/getUserByEmail?email=" + email, true);
+        xhr.open("GET", BACKEND_ADDRESS + "/email/getUserByEmail?email=" + email, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send();
         xhr.onreadystatechange = function() {
@@ -94,12 +93,11 @@ const ResetPassword = () =>  {
     }
     
     function generateRecoveryCode(length) {
-        var result           = '';
-        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for ( var i = 0; i < length; i++ ) {
-          result += characters.charAt(Math.floor(Math.random() * 
-     charactersLength));
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        for (let i = 0; i < length; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
        }
        return result;
     }

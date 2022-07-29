@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './ResetPassword.module.css';
 import { useNavigate } from "react-router-dom";
-import { passwordChange } from "../LoginAndSignUp/LoginAndSignUpUtils";
+import {createJSONWebToken, passwordChange} from "../LoginAndSignUp/LoginAndSignUpUtils";
 import './ResetPassword.css';
 
 const ValidatePassword = ({ code, emailAddress }) => {
@@ -23,13 +23,20 @@ const ValidatePassword = ({ code, emailAddress }) => {
         const confirmPassword = document.getElementById("confirm-password").value;
 
         const hashedPassword = md5(password);
+
+        const jsonData = {
+            "email": emailAddress,
+            "password": hashedPassword
+        }
+
+        const token = createJSONWebToken(jsonData);
+        const json = JSON.stringify(token);
     
 
         if((recoveryCode === code) && (password === confirmPassword)){
             const xhr = new XMLHttpRequest();
-            xhr.open("PUT", "http://localhost:8080/users/updatePassword/" + emailAddress + "/" + hashedPassword, true)
+            xhr.open("PUT", "http://localhost:8080/reset", true)
             xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send();
             xhr.onreadystatechange = async function() {
                 if (xhr.readyState === 4)  {
                     const serverResponse = xhr.responseText;
@@ -48,7 +55,8 @@ const ValidatePassword = ({ code, emailAddress }) => {
                         error.innerHTML = "Unable To Reset Password";
                     }
                 }
-            };
+            }
+            xhr.send(json);
         } else {
             const error = document.querySelector("#resetError");
             error.style.display = "block";

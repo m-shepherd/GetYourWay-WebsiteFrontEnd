@@ -1,11 +1,10 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 import weatherStyle from'./Weather.module.css';
+import {BACKEND_ADDRESS} from '../configuration';
 
 const testLatitude = 53.8008;
 const testLongitude = 1.5491;
-
-const serverAddress = 'http://localhost:8080';
 
 const Weather = () => {
     const [currentWeather, setCurrentWeather] = useState({});
@@ -20,7 +19,7 @@ const Weather = () => {
             };
         };
 
-        axios.get(serverAddress + '/currentWeather?lat=' + testLatitude + '&lon=' + testLongitude, {
+        axios.get(BACKEND_ADDRESS + '/currentWeather?lat=' + testLatitude + '&lon=' + testLongitude, {
             headers: {
                 'Authorization': `Basic ${localStorage.getItem('auth')}`
             }
@@ -34,7 +33,7 @@ const Weather = () => {
 
     useEffect(() => {
         const requestWeatherSymbol = () => {
-            axios.get(serverAddress + '/getWeatherSymbolURL?description=' + currentWeather.description, {
+            axios.get(BACKEND_ADDRESS + '/getWeatherSymbolURL?description=' + currentWeather.description, {
                 headers: {
                     'Authorization': `Basic ${localStorage.getItem('auth')}`
                 }

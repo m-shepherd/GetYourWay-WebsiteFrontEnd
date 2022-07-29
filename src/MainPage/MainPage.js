@@ -3,6 +3,7 @@ import mainStyles from'./MainPage.module.css';
 import './MainPage.css';
 import Weather from '../Weather/Weather'
 import Flights from '../Flights/Flights'
+import Map from "../Map/Map";
 
 const MainPage = () => {
 
@@ -39,6 +40,8 @@ const MainPage = () => {
 
                 <Weather/>
                 <Flights/>
+                <Map/>
+
 
             </>;
     }

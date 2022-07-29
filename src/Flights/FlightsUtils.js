@@ -1,7 +1,9 @@
+import {BACKEND_ADDRESS} from '../configuration';
+
 export function getFlights(event) {
     event.preventDefault();
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://localhost:8080/flights?date=2022-07-13&dep=LHR&arr=FRA", true);
+    xhr.open("GET", BACKEND_ADDRESS + "/flights?date=2022-07-13&dep=LHR&arr=FRA", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Basic " + localStorage.getItem('auth'));
     xhr.onreadystatechange = function() {

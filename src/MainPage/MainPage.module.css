@@ -17,15 +17,23 @@ html,body{
     background: #1a75ff;
     color: #fff;
 }
-
-.wrapper{
-    overflow: hidden;
-    max-width: 35%;
-    background: #fff;
-    padding: 30px;
-    margin: auto;
-    border-radius: 15px;
-    box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+@media only screen{
+    .wrapper{
+        overflow: hidden;
+        width: 95vw;
+        max-width: 95vw;
+        background: #fff;
+        padding: 30px;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
+}
+@media only screen and (min-width: 850px){
+    .wrapper{
+        width: 50em;
+        max-width: 50em;
+    }
 }
 .wrapper .title_text{
     display: flex;

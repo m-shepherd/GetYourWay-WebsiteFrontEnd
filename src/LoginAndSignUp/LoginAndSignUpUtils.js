@@ -1,3 +1,5 @@
+import {SECRET_KEY} from '../configuration';
+
 export function usernameChange() {
     const username = document.querySelector("#username")
 
@@ -192,4 +194,9 @@ export function switchToSignUp() {
     const loginLabel = document.querySelector("#loginLabel");
     loginLabel.style.color = "#000";
     loginLabel.style.cursor = "pointer";
+}
+
+export function createJSONWebToken(payload) {
+    const sign = require('jwt-encode');
+    return sign(payload, SECRET_KEY);
 }
