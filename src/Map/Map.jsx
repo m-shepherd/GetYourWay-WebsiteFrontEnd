@@ -46,7 +46,6 @@ export default function Map() {
         } else if (endMarkerVis === false){
             setEndMarkerPos(e.latLng);
             setEndMarkerVis(true);
-            console.log(endMarkerVis);
             getGeocode(e.latLng,setEndMarkerAddress);
             const destination = document.querySelector('#finish');
             destination.style.display = 'block';
@@ -83,8 +82,6 @@ export default function Map() {
     }
 
     const directionsCallback = (response) => {
-        console.log(response)
-
         if (response !== null){
             if (response.status === 'OK') {
                 if (startMarkerPos != null && endMarkerPos != null && directions === null)
@@ -122,7 +119,6 @@ export default function Map() {
     const getGeocode = (latLng, setFunc) => {
         Geocode.fromLatLng(latLng.lat(),latLng.lng()).then(
             (response) => {
-                console.log(response.results[0].formatted_address)
                 setFunc(response.results[0].formatted_address)
             }, (error) => {
                 console.error(error)
