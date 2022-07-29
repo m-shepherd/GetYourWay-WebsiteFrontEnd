@@ -16,3 +16,47 @@
         max-width: 50em;
     }
 }
+.field{
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+
+}
+.btn{
+    height: 50px;
+    width: 100%;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+}
+.btn .btn_layer{
+    height: 100%;
+    width: 300%;
+    position: absolute;
+    left: -100%;
+    background: -webkit-linear-gradient(right,#003366,#004080,#0059b3
+    , #0073e6);
+    border-radius: 15px;
+    transition: all 0.4s ease;
+}
+.btn:hover .btn-layer{
+    left: 0;
+}
+.btn input[type="submit"]{
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    position: relative;
+    background: none;
+    border: none;
+    color: #fff;
+    padding-left: 0;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+}
+.padding{
+    padding-bottom: 1.5em;
+}
