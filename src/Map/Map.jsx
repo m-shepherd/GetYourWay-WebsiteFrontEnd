@@ -1,4 +1,5 @@
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+import mapStyles from './Map.module.css';
 
 const libraries=["places","directions","geocoder"]
 
@@ -16,13 +17,16 @@ export default function Map() {
     if (!isLoaded) return <div>Loading...</div>
 
     return (
-        <div>
-            <GoogleMap
-            zoom={16}
-            center={{lat: 53.78986162692554, lng: -1.5330532190720971}}
-            mapContainerStyle={containerStyle}>
-            </GoogleMap>
-        </div>
+        <>
+            <div className={mapStyles.wrapper}>
+                <GoogleMap
+                    zoom={16}
+                    center={{lat: 53.78986162692554, lng: -1.5330532190720971}}
+                    mapContainerStyle={containerStyle}>
+                </GoogleMap>
+            </div>
+        </>
+
     )
 
 }
