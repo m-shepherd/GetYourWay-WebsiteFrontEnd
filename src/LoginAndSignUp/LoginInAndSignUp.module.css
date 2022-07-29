@@ -17,27 +17,99 @@ html,body{
     background: #1a75ff;
     color: #fff;
 }
-.wrapper{
-    overflow: hidden;
-    width: 25em;
-    max-width: 35em;
-    background: #fff;
-    padding: 30px;
-    margin: auto;
-    border-radius: 15px;
-    box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+@media only screen and (max-width: 300px){
+    .wrapper .title{
+        width: 50%;
+        font-size: 20px;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+    }
+    .slide_controls .slide{
+        height: 100%;
+        width: 100%;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 500;
+        text-align: center;
+        line-height: 48px;
+        cursor: pointer;
+        z-index: 1;
+        transition: all 0.6s ease;
+    }
+    .wrapper{
+        overflow: hidden;
+        width: 98%;
+        max-width: 98%;
+        max-height: 90%;
+        background: #fff;
+        padding: 30px;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
+}
+@media only screen and (min-width: 360px){
+    .wrapper .title{
+        width: 50%;
+        font-size: 35px;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+    }
+    .slide_controls .slide{
+        height: 100%;
+        width: 100%;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 500;
+        text-align: center;
+        line-height: 48px;
+        cursor: pointer;
+        z-index: 1;
+        transition: all 0.6s ease;
+    }
+    .wrapper{
+        overflow: hidden;
+        width: 98%;
+        max-width: 98%;
+        max-height: 90%;
+        background: #fff;
+        padding: 30px;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
+}
+@media only screen and (min-width: 600px){
+    .wrapper{
+        overflow: hidden;
+        width: 95%;
+        max-width: 95%;
+        background: #fff;
+        padding: 30px;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
+}
+@media only screen and (min-width: 768px){
+    .wrapper{
+        overflow: hidden;
+        width: 25em;
+        max-width: 25em;
+        background: #fff;
+        padding: 30px;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
 }
 .wrapper .title_text{
     display: flex;
     width: 200%;
 }
-.wrapper .title{
-    width: 50%;
-    font-size: 35px;
-    font-weight: 600;
-    text-align: center;
-    transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
-}
+
 .wrapper .slide_controls{
     position: relative;
     display: flex;
@@ -48,18 +120,6 @@ html,body{
     justify-content: space-between;
     border: 1px solid lightgrey;
     border-radius: 15px;
-}
-.slide_controls .slide{
-    height: 100%;
-    width: 100%;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 500;
-    text-align: center;
-    line-height: 48px;
-    cursor: pointer;
-    z-index: 1;
-    transition: all 0.6s ease;
 }
 .slide_controls label.signup{
     color: #000;
