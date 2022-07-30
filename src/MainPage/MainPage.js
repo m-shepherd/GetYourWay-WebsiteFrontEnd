@@ -18,7 +18,6 @@ const MainPage = () => {
 
     const [latitude, setLatitude] = useState(LATITUDE);
     const [longitude, setLongitude] = useState(LONGITUDE);
-    console.log(latitude + ' ' + longitude);
     let data;
     if (localStorage.getItem('auth') == null) {
         data =
