@@ -4,16 +4,17 @@ import { useState } from 'react';
 import Geocode from 'react-geocode';
 import mapStyles from './Map.module.css';
 import './Map.css';
+import Weather from "../Weather/Weather";
+import {LATITUDE, LONGITUDE} from "../configuration";
 
 const libraries=["places","directions","geocoder"]
-
 
 const containerStyle = {
     width: '400px',
     height: '400px'
-  };
+};
 
-export default function Map() {
+export default function Map({setLatitude, setLongitude}) {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyCodtVa1E5fxA5mM3Pd-wiZoPH3uwyreMI',
         libraries
@@ -21,7 +22,7 @@ export default function Map() {
 
     Geocode.setApiKey('AIzaSyCodtVa1E5fxA5mM3Pd-wiZoPH3uwyreMI')
 
-    const [centre, setcentre] = useState({lat: 53.78986162692554, lng: -1.5330532190720971});
+    const [centre, setCentre] = useState({lat: LATITUDE, lng: LONGITUDE});
     const [startMarkerPos,setStartMarkerPos] = useState(null);
     const [endMarkerPos,setEndMarkerPos] = useState(null);
     const [startMarkerVis,setStartMarkerVis] = useState(false);
@@ -40,7 +41,7 @@ export default function Map() {
         if (startMarkerVis === false){
             setStartMarkerPos(e.latLng);
             setStartMarkerVis(true);
-            getGeocode(e.latLng,setStartMarkerAddress);
+            getGeocode(e.latLng, setStartMarkerAddress);
             start.style.display = 'block';
             if (endMarkerVis) {
                 find.style.display = 'block';
@@ -56,6 +57,8 @@ export default function Map() {
             }
         } else if (endMarkerVis === false){
             setEndMarkerPos(e.latLng);
+            setLatitude(e.latLng.lat());
+            setLongitude(e.latLng.lng());
             setEndMarkerVis(true);
             getGeocode(e.latLng,setEndMarkerAddress);
             destination.style.display = 'block';
@@ -117,11 +120,12 @@ export default function Map() {
     const getDirections = () => {
         if (startMarkerPos != null && endMarkerPos != null){
             setShowDirections(true)
+
         }
     }
 
-    const onAutocompleteLoad = (autocomp) => {
-        setAutocomplete(autocomp)
+    const onAutocompleteLoad = (autoComp) => {
+        setAutocomplete(autoComp)
     }
 
     const onAutocompleteChange = () => {
@@ -129,12 +133,12 @@ export default function Map() {
         if (startMarkerPos === null){
             setStartMarkerPos(loc)
             setStartMarkerVis(true)
-            setcentre(loc)
+            setCentre(loc)
             getGeocode(loc,setStartMarkerAddress)
         } else if (endMarkerPos === null){
             setEndMarkerPos(loc)
             setEndMarkerVis(true)
-            setcentre(loc)
+            setCentre(loc)
             getGeocode(loc,setEndMarkerAddress)
         }
 

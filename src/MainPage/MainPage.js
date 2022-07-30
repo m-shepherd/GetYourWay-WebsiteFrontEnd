@@ -1,9 +1,11 @@
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
 import mainStyles from'./MainPage.module.css';
 import './MainPage.css';
 import Weather from '../Weather/Weather'
 import Flights from '../Flights/Flights'
 import Map from "../Map/Map";
+import {LATITUDE, LONGITUDE} from "../configuration";
 
 const MainPage = () => {
 
@@ -14,6 +16,9 @@ const MainPage = () => {
         navigate('/')
     }
 
+    const [latitude, setLatitude] = useState(LATITUDE);
+    const [longitude, setLongitude] = useState(LONGITUDE);
+    console.log(latitude + ' ' + longitude);
     let data;
     if (localStorage.getItem('auth') == null) {
         data =
@@ -38,8 +43,8 @@ const MainPage = () => {
                     </div>
                 </div>
 
-                <Map/>
-                <Weather/>
+                <Map setLatitude={setLatitude} setLongitude={setLongitude}/>
+                <Weather latitude={latitude} longitude={longitude}/>
                 <Flights/>
             </>;
     }
