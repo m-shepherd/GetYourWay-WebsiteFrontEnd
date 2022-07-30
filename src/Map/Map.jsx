@@ -4,8 +4,9 @@ import { useState } from 'react';
 import Geocode from 'react-geocode';
 import mapStyles from './Map.module.css';
 import './Map.css';
-import Weather from "../Weather/Weather";
 import {LATITUDE, LONGITUDE} from "../configuration";
+import PropTypes from "prop-types";
+import Weather from "../Weather/Weather";
 
 const libraries=["places","directions","geocoder"]
 
@@ -14,7 +15,7 @@ const containerStyle = {
     height: '400px'
 };
 
-export default function Map({setLatitude, setLongitude}) {
+const Map = ({setLatitude, setLongitude}) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyCodtVa1E5fxA5mM3Pd-wiZoPH3uwyreMI',
         libraries
@@ -221,3 +222,10 @@ export default function Map({setLatitude, setLongitude}) {
     )
 
 }
+
+Map.propTypes = {
+    setLatitude: PropTypes.func.isRequired,
+    setLongitude: PropTypes.func.isRequired
+}
+
+export default Map
