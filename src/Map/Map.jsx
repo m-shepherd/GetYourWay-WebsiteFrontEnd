@@ -1,9 +1,9 @@
 import { GoogleMap, useLoadScript, Marker, DirectionsRenderer, DirectionsService, Autocomplete } from '@react-google-maps/api';
 import React from 'react';
 import { useState } from 'react';
-import mapStyles from './Map.module.css';
 import Geocode from 'react-geocode';
-
+import mapStyles from './Map.module.css';
+import './Map.css';
 
 const libraries=["places","directions","geocoder"]
 
@@ -33,25 +33,43 @@ export default function Map() {
     const [autocomplete,setAutocomplete] = useState(null);
 
     const onMapClick = (e) => {
+        const start = document.querySelector('#start');
+        const find = document.querySelector('#find');
+        const destination = document.querySelector('#finish');
+
         if (startMarkerVis === false){
             setStartMarkerPos(e.latLng);
             setStartMarkerVis(true);
             getGeocode(e.latLng,setStartMarkerAddress);
-            const start = document.querySelector('#start');
             start.style.display = 'block';
             if (endMarkerVis) {
-                const find = document.querySelector('#find');
                 find.style.display = 'block';
+                start.classList.remove('single');
+                start.classList.add('both');
+                destination.classList.remove('single');
+                destination.classList.add('both');
+            } else {
+                start.classList.remove('both');
+                start.classList.add('single');
+                destination.classList.remove('both');
+                destination.classList.add('single');
             }
         } else if (endMarkerVis === false){
             setEndMarkerPos(e.latLng);
             setEndMarkerVis(true);
             getGeocode(e.latLng,setEndMarkerAddress);
-            const destination = document.querySelector('#finish');
             destination.style.display = 'block';
             if (startMarkerVis) {
-                const find = document.querySelector('#find');
                 find.style.display = 'block';
+                destination.classList.remove('single');
+                destination.classList.add('both');
+                start.classList.remove('single');
+                start.classList.add('both');
+            } else {
+                destination.classList.remove('both');
+                destination.classList.add('single');
+                start.classList.remove('both');
+                start.classList.add('single');
             }
         }
     }
@@ -64,6 +82,9 @@ export default function Map() {
         setStartMarkerAddress('');
         const start = document.querySelector('#start');
         start.style.display = 'none';
+        const destination = document.querySelector('#finish');
+        destination.classList.remove('both');
+        destination.classList.add('single');
         const find = document.querySelector('#find');
         find.style.display = 'none';
 
@@ -77,6 +98,9 @@ export default function Map() {
         setEndMarkerAddress('')
         const destination = document.querySelector('#finish');
         destination.style.display = 'none';
+        const start = document.querySelector('#start');
+        start.classList.remove('both');
+        start.classList.add('single');
         const find = document.querySelector('#find');
         find.style.display = 'none';
     }
@@ -171,12 +195,12 @@ export default function Map() {
                             <DirectionsRenderer directions={directions} options={{suppressMarkers: true}}/>}
                     </GoogleMap>
                     <div className={mapStyles.directions}>
-                        <div className={`${mapStyles.field} ${mapStyles.location}`} id="start" style={{display: 'none'}}>
+                        <div className={mapStyles.field} id="start" style={{display: 'none'}}>
                             <div className={mapStyles.input}>
                                 {startMarkerAddress == null ? '' : "Start: " + startMarkerAddress}
                             </div>
                         </div>
-                        <div className={`${mapStyles.field} ${mapStyles.location}`} id="finish" style={{display: 'none'}}>
+                        <div className={mapStyles.field} id="finish" style={{display: 'none'}}>
                             <div className={mapStyles.input}>
                                 {endMarkerAddress == null ? '' : "Destination: " + endMarkerAddress}
                             </div>

@@ -38,13 +38,12 @@ const MainPage = () => {
                     </div>
                 </div>
 
+                <Map/>
                 <Weather/>
                 <Flights/>
-                <Map/>
-
-
             </>;
     }
+
     return data;
 
 }
