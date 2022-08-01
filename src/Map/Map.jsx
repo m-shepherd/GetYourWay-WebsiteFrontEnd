@@ -12,12 +12,15 @@ const MAPS_API_KEY = 'AIzaSyCodtVa1E5fxA5mM3Pd-wiZoPH3uwyreMI';
 
 const libraries=["places","directions","geocoder"]
 
+const transport = "DRIVING"
+
 const containerStyle = {
     width: '650px',
     height: '450px'
 };
 
-const Map = ({setLatitude, setLongitude}) => {
+const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setTransport,
+              setStartTime, setEndTime}) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
         libraries
@@ -96,6 +99,12 @@ const Map = ({setLatitude, setLongitude}) => {
     const getDirections = () => {
         if (startMarkerPos != null && endMarkerPos != null){
             setShowDirections(true)
+            setStartLocation(startMarkerAddress)
+            setEndLocation(endMarkerAddress)
+            setTransport(transport)
+            setStartTime("15:00")
+            setEndTime("18:00")
+
 
         }
     }
@@ -197,7 +206,7 @@ const Map = ({setLatitude, setLongitude}) => {
                                     options={{
                                         origin : startMarkerPos,
                                         destination : endMarkerPos,
-                                        travelMode : "DRIVING"
+                                        travelMode : transport
                                     }}
                                     callback = {directionsCallback}/>}
 

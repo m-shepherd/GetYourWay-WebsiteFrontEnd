@@ -1,10 +1,21 @@
 import React from 'react'
+import car from "./Icons/DRIVING.png"
+import plane from "./Icons/FLYING.png"
 
 const Leg = ({id,transport,startLocation,startTime,endLocation,endTime,duration}) => {
+
+  let transportIcon;
+
+  if (transport == "DRIVING"){
+    transportIcon = car;
+  } else {
+    transportIcon = plane;
+  }
+
   return (
     <tr>
         <td>{id}</td>
-        <td><img src={transport+".jpg"} alt={transport}/></td>
+        <td><img src={transportIcon} alt={transport} height="70" width="70"/></td>
         <td>{startLocation}</td>
         <td>{startTime}</td>
         <td>{endLocation}</td>

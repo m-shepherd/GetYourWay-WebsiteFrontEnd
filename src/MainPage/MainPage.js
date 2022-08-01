@@ -7,9 +7,33 @@ import Flights from '../Flights/Flights'
 import Map from "../Map/Map";
 import {LATITUDE, LONGITUDE} from "../configuration";
 
-const MainPage = () => {
+const MainPage = ({setSubmittedJourney}) => {
 
     let navigate = useNavigate();
+
+    const [startLocation, setStartLocation] = useState("")
+    const [endLocation, setEndLocation] = useState("")
+    const [transport, setTransport] = useState("")
+    const [startTime, setStartTime] = useState("")
+    const [endTime, setEndTime] = useState("")
+
+
+
+
+
+    const handleSubmitJourney = (e) => {
+        e.preventDefault()
+        setSubmittedJourney({
+            "id": "7",
+            "transport": transport,
+            "startLocation": startLocation,
+            "startTime": startTime,
+            "endLocation": endLocation,
+            "endTime": endTime,
+            "duration": "3"
+    })
+    }
+
 
     function logOut() {
         localStorage.removeItem('auth');
@@ -43,9 +67,14 @@ const MainPage = () => {
                     </div>
                 </div>
 
-                <Map setLatitude={setLatitude} setLongitude={setLongitude}/>
+                <Map setLatitude={setLatitude} setLongitude={setLongitude} setStartLocation={setStartLocation}
+                 setEndLocation={setEndLocation} setTransport={setTransport} setStartTime={setStartTime} setEndTime={setEndTime}/>
                 <Weather latitude={latitude} longitude={longitude}/>
                 <Flights/>
+                <div>
+                <button onClick={handleSubmitJourney}>Add Leg To Your Journey</button>
+                <button onClick={() => navigate("/ViewJourney")}>View Journey Steps</button>
+                </div>
             </>;
     }
 

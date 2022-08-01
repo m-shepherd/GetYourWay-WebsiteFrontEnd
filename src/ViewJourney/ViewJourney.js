@@ -2,23 +2,17 @@
 import React from 'react'
 import Flights from '../Flights/Flights'
 import AllLegs from './AllLegs'
+import { useNavigate } from 'react-router-dom'
 
-const ViewJourney = () => {
-    const data = [{
-        "id": "1",
-        "transport": "flight",
-        "startLocation": "Leeds",
-        "startTime": "12.00",
-        "endLocation": "Paris",
-        "endTime": "15.00",
-        "duration": "3.00"
-    }
-]
+const ViewJourney = ({allJourneyLegs}) => {
 
-
+  let navigate = useNavigate();
 
   return (
-    <AllLegs data={data}/>
+    <>
+    <AllLegs data={allJourneyLegs}/>
+    <button onClick={() => {navigate("/MainPage")}}>Back to main page</button>
+    </>
   )
 }
 
