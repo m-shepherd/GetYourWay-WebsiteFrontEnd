@@ -2,16 +2,16 @@ import {BACKEND_ADDRESS} from '../configuration';
 
 export function getFlights(event) {
     event.preventDefault();
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", BACKEND_ADDRESS + "/flights?date=2022-07-13&dep=LHR&arr=FRA", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("Authorization", "Basic " + localStorage.getItem('auth'));
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4)  {
-            const serverResponse = xhr.responseText;
-            if (serverResponse === '"BAD_REQUEST"') {
-                alert('Bad Request');
-            } else {
+    // const xhr = new XMLHttpRequest();
+    // xhr.open("GET", BACKEND_ADDRESS + "/flights?date=2022-08-01&dep=LHR&arr=" + arr, true);
+    // xhr.setRequestHeader("Content-Type", "application/json");
+    // xhr.setRequestHeader("Authorization", "Basic " + localStorage.getItem('auth'));
+    // xhr.onreadystatechange = function() {
+    //     if (xhr.readyState === 4)  {
+    //         const serverResponse = xhr.responseText;
+    //         if (serverResponse === '"BAD_REQUEST"') {
+    //             alert('Bad Request');
+    //         } else {
                 const flights = JSON.parse(xhr.responseText);
                 const flightTable = document.querySelector("#flightTable");
                 const flightData = document.querySelector("#flightData");
@@ -31,10 +31,10 @@ export function getFlights(event) {
                     }
                 }
                 makeRowsClickable();
-            }
-        }
-    };
-    xhr.send();
+            // }
+        // }
+    // };
+    // xhr.send();
 }
 
 export function confirmFlights() {
@@ -63,7 +63,7 @@ export function confirmFlights() {
     }
 }
 
-function makeRowsClickable() {
+export function makeRowsClickable() {
     const table = document.getElementById("table");
     const rows = table.getElementsByTagName("tr");
     for (let i = 0; i < rows.length; i++) {

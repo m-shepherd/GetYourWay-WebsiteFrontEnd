@@ -17,7 +17,7 @@ const containerStyle = {
     height: '450px'
 };
 
-const Map = ({setLatitude, setLongitude}) => {
+const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude}) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
         libraries
@@ -40,13 +40,15 @@ const Map = ({setLatitude, setLongitude}) => {
     const onMapClick = (e) => {
         if (startMarkerVis === false){
             setStartMarkerPos(e.latLng);
+            setDepartureLatitude(e.latLng.lat());
+            setDepartureLongitude(e.latLng.lng());
             setStartMarkerVis(true);
             getGeocode(e.latLng, setStartMarkerAddress);
             setStart(endMarkerVis);
         } else if (endMarkerVis === false){
             setEndMarkerPos(e.latLng);
-            setLatitude(e.latLng.lat());
-            setLongitude(e.latLng.lng());
+            setArrivalLatitude(e.latLng.lat());
+            setArrivalLongitude(e.latLng.lng());
             setEndMarkerVis(true);
             getGeocode(e.latLng,setEndMarkerAddress);
             setDestination(startMarkerVis);
@@ -229,9 +231,9 @@ const Map = ({setLatitude, setLongitude}) => {
 
 }
 
-Map.propTypes = {
-    setLatitude: PropTypes.func.isRequired,
-    setLongitude: PropTypes.func.isRequired
-}
+// Map.propTypes = {
+//     setLatitude: PropTypes.func.isRequired,
+//     setLongitude: PropTypes.func.isRequired
+// }
 
 export default Map
