@@ -14,7 +14,7 @@ const libraries=["places","directions","geocoder"]
 
 const containerStyle = {
     width: '650px',
-    height: '500px'
+    height: '450px'
 };
 
 const Map = ({setLatitude, setLongitude}) => {
@@ -111,9 +111,10 @@ const Map = ({setLatitude, setLongitude}) => {
         setCentre(loc)
         getGeocode(loc,setStartMarkerAddress)
 
-        setStart(startMarkerVis);
+        setStart(endMarkerVis);
         setDirections(null);
         setShowDirections(null);
+
     }
 
     const onEndAutocompleteLoad = (autoComp) => {
@@ -127,9 +128,10 @@ const Map = ({setLatitude, setLongitude}) => {
         setCentre(loc)
         getGeocode(loc,setEndMarkerAddress)
 
-        setDestination(endMarkerVis);
+        setDestination(startMarkerVis);
         setDirections(null);
         setShowDirections(null);
+
     }
 
     const getGeocode = (latLng, setFunc) => {
@@ -147,7 +149,7 @@ const Map = ({setLatitude, setLongitude}) => {
     return (
         <>
             <div className={mapStyles.padding}>
-                <div className={mapStyles.wrapper}>
+                <div id="map" className={mapStyles.wrapper}>
                     <div className={mapStyles.map_container}>
                         <GoogleMap
                             zoom={12}
@@ -168,8 +170,7 @@ const Map = ({setLatitude, setLongitude}) => {
                                     outline: `none`,
                                     textOverflow: `ellipses`,
                                     position: "absolute",
-                                    left: "0%",
-                                    // marginLeft: "-120px"
+                                    left: "0%"
                                 }}/>
                             </Autocomplete>
                             <Autocomplete onPlaceChanged={onEndAutocompleteChange} onLoad={onEndAutocompleteLoad}>
@@ -185,8 +186,7 @@ const Map = ({setLatitude, setLongitude}) => {
                                     outline: `none`,
                                     textOverflow: `ellipses`,
                                     position: "absolute",
-                                    left: "38%",
-                                    // marginLeft: "-120px"
+                                    left: "38%"
                                 }}/>
                             </Autocomplete>
                             <Marker key='start' visible={startMarkerVis} onClick={onStartMarkerClick} position={startMarkerPos}/>
