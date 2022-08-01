@@ -1,12 +1,10 @@
 import {useEffect, useState} from 'react';
+import PropTypes from "prop-types";
 import axios from 'axios';
 import weatherStyle from'./Weather.module.css';
-import {BACKEND_ADDRESS} from '../configuration';
+import {BACKEND_ADDRESS, LATITUDE, LONGITUDE} from '../configuration';
 
-const testLatitude = 53.8008;
-const testLongitude = 1.5491;
-
-const Weather = () => {
+const Weather = ({latitude, longitude}) => {
     const [currentWeather, setCurrentWeather] = useState({});
     const [weatherSymbolURL, setWeatherSymbolURL] = useState('');
 
@@ -19,17 +17,21 @@ const Weather = () => {
             };
         };
 
-        axios.get(BACKEND_ADDRESS + '/currentWeather?lat=' + testLatitude + '&lon=' + testLongitude, {
-            headers: {
-                'Authorization': `Basic ${localStorage.getItem('auth')}`
-            }
-        }).then(response => {
-            setCurrentWeather(parseResponseData(response.data.current));
-        }).catch(error => {
-            console.log('Could not fetch weather data');
-            console.error(error);
-        });
-    }, []);
+        const getWeather = (() => {
+            axios.get(BACKEND_ADDRESS + '/currentWeather?lat=' + latitude + '&lon=' + longitude, {
+                headers: {
+                    'Authorization': `Basic ${localStorage.getItem('auth')}`
+                }
+            }).then(response => {
+                setCurrentWeather(parseResponseData(response.data.current));
+            }).catch(error => {
+                console.log('Could not fetch weather data');
+                console.error(error);
+            });
+        })
+
+        getWeather();
+    }, [latitude, longitude]);
 
     useEffect(() => {
         const requestWeatherSymbol = () => {
@@ -51,7 +53,6 @@ const Weather = () => {
         return description[0].toUpperCase() + description.substring(1);
     }
 
-
     return (
         <>
             <div className={weatherStyle.padding}>
@@ -69,7 +70,17 @@ const Weather = () => {
                 </div>
             </div>
         </>
-    )
-};
+    );
+}
+
+Weather.propTypes = {
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired
+}
+
+Weather.defaultProps = {
+    latitude: LATITUDE,
+    longitude: LONGITUDE
+}
 
 export default Weather;
