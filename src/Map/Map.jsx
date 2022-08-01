@@ -116,6 +116,8 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         setStart(endMarkerVis);
         setDirections(null);
         setShowDirections(null);
+        setDepartureLatitude(loc.lat());
+        setDepartureLongitude(loc.lng());
 
     }
 
@@ -133,6 +135,8 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         setDestination(startMarkerVis);
         setDirections(null);
         setShowDirections(null);
+        setArrivalLatitude(loc.lat());
+        setArrivalLongitude(loc.lng());
 
     }
 

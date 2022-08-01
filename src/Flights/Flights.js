@@ -20,25 +20,34 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
     }
 
     function getFlights(event) {
-        // event.preventDefault();
+        event.preventDefault();
         const flightTable = document.querySelector("#flightTable");
         const flightData = document.querySelector("#flightData");
         const dataTitle = document.querySelector("#dataTitle");
-        flightData.style.display = "block";
-        dataTitle.style.display = "block";
-        for(let i = 0; i < flights.length; i++) {
-            const row = flightTable.insertRow(-1)
-            row.setAttribute('data-href', '#');
-            let i = 0;
-            for (const key in flights[i]) {
-                if (i !== 0) {
-                    const cell = row.insertCell(i - 1);
+        try {
+            flightTable.innerHTML = "";
+            flightData.style.display = "block";
+            const title = document.querySelector("#title");
+            title.innerHTML = "Flight Data";
+            dataTitle.style.display = "block";
+            for (let i = 0; i < flights.length; i++) {
+                const row = flightTable.insertRow(-1)
+                row.setAttribute('data-href', '#');
+                let j = 0;
+                for (const key in flights[i]) {
+                    // if (i !== 0) {
+                    const cell = row.insertCell(j);
                     cell.innerHTML = flights[i][key];
+                    // }
+                    j++;
                 }
-                i ++;
             }
+            makeRowsClickable();
+        } catch (e) {
+            flightData.style.display = "none";
+            dataTitle.style.display = "none";
+            noFlights();
         }
-        makeRowsClickable();
     }
 
     const noFlights = () => {
@@ -49,14 +58,20 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
     }
 
     useEffect(() => {
+        fillInForm();
+        document.getElementById("formSubmit").click();
+    }, [flights])
+
+    useEffect(() => {
         setCounter(0);
     }, [nearestDepartureAirports, nearestArrivalAirports])
 
     useEffect(() => {
 
         const getNearestAirports = () => {
-                console.log(BACKEND_ADDRESS + "/flights?date=2022-08-02&dep=" + nearestDepartureAirports[counter] +"&arr=" + nearestArrivalAirports[0])
-                axios.get(BACKEND_ADDRESS + "/flights?date=2022-08-02&dep=" + nearestDepartureAirports[counter] +"&arr=" + nearestArrivalAirports[0], {
+            if (nearestDepartureAirports[counter] !== nearestArrivalAirports[0]) {
+                console.log(BACKEND_ADDRESS + "/flights?dep=" + nearestDepartureAirports[counter] + "&arr=" + nearestArrivalAirports[0])
+                axios.get(BACKEND_ADDRESS + "/flights?dep=" + nearestDepartureAirports[counter] + "&arr=" + nearestArrivalAirports[0], {
                     headers: {
                         'Authorization': `Basic ${localStorage.getItem('auth')}`
                     }
@@ -64,8 +79,9 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
                     console.log(response);
                     if (response['data'] !== '') {
                         setFlights(response['data']);
-                        fillInForm();
                     } else {
+                        const flightTable = document.querySelector("#flightTable");
+                        flightTable.innerHTML = "";
                         if (counter >= nearestDepartureAirports.length - 1) {
                             noFlights();
                         } else {
@@ -79,7 +95,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
                     console.error(error);
                     noFlights();
                 });
-
+            }
         }
 
         getNearestAirports();
@@ -104,7 +120,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
                                 </div>
                                 <div className={`${flightStyles.field} ${flightStyles.btn} ${flightStyles.col}`}>
                                     <div className={flightStyles.btn_layer}></div>
-                                    <input type="submit" value="Find Flights"/>
+                                    <input id="formSubmit" type="submit" value="Find Flights"/>
                                 </div>
                             </form>
                         </div>
