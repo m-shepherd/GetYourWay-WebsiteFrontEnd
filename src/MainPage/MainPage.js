@@ -5,8 +5,12 @@ import './MainPage.css';
 import Weather from '../Weather/Weather'
 import Flights from '../Flights/Flights'
 import Map from "../Map/Map";
+<<<<<<< HEAD
 import {LATITUDE, LONGITUDE} from "../configuration";
 import NearestAirport from "../NearestAirport/NearestAirport";
+=======
+import {LATITUDE, LONGITUDE, DESTINATION_NAME} from "../configuration";
+>>>>>>> main
 
 const MainPage = () => {
     const [departureLatitude, setDepartureLatitude] = useState(LATITUDE);
@@ -23,6 +27,14 @@ const MainPage = () => {
         navigate('/')
     }
 
+<<<<<<< HEAD
+=======
+    const [latitude, setLatitude] = useState(LATITUDE);
+    const [longitude, setLongitude] = useState(LONGITUDE);
+    const [startName, setStartName] = useState(DESTINATION_NAME);
+    const [destinationName, setDestinationName] = useState('');
+
+>>>>>>> main
     let data;
     if (localStorage.getItem('auth') == null) {
         data =
@@ -48,7 +60,7 @@ const MainPage = () => {
                     </div>
                 </div>
 
-                <Map setDepartureLatitude={setDepartureLatitude} setDepartureLongitude={setDepartureLongitude} setArrivalLatitude={setArrivalLatitude} setArrivalLongitude={setArrivalLongitude}/>
+                <Map setDepartureLatitude={setDepartureLatitude} setDepartureLongitude={setDepartureLongitude} setArrivalLatitude={setArrivalLatitude} setArrivalLongitude={setArrivalLongitude} setStartName={setStartName} setDestinationName={setDestinationName}/>
                 <Weather latitude={arrivalLatitude} longitude={arrivalLongitude}/>
                 <NearestAirport latitude={departureLatitude} longitude={departureLongitude} setNearestAirports={setNearestDepartureAirports}/>
                 <NearestAirport latitude={arrivalLatitude} longitude={arrivalLongitude} setNearestAirports={setNearestArrivalAirports}/>
