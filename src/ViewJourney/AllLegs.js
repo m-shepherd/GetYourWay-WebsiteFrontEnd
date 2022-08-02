@@ -1,5 +1,6 @@
 import React from 'react'
 import Leg from './Leg'
+import './ViewJourney.css'
 
 const AllLegs = ({ data, setAllJourneyLegs }) => {
 
@@ -13,9 +14,9 @@ const AllLegs = ({ data, setAllJourneyLegs }) => {
     }) 
 
     return (
-            <div className="row">
-                <h3>Legs</h3>
-                <table>
+            <div>
+                <h3 class="jheading">Your Journey</h3>
+                <table class="journey-table">
                     <thead>
                         <tr>
                             <th>Leg</th>
@@ -25,6 +26,7 @@ const AllLegs = ({ data, setAllJourneyLegs }) => {
                             <th>End</th>
                             <th>EndTime</th>
                             <th>duration</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>{legs}</tbody>

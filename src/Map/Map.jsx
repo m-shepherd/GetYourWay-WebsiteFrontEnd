@@ -306,17 +306,17 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setTr
                     </div>
                     
                     <div className={mapStyles.times}>
-                        <div className={mapStyles.field}id="departTime" >
+                        <div className={`${mapStyles.field} ${mapStyles.timediv}`}id="departTime" >
                             <div className={mapStyles.input}>
-                                <input type='time' id='departinput' className="form-control" onChange={departChanged} value={departTime}/>
+                                <input type='time' className={mapStyles.time} onChange={departChanged} value={departTime}/>
                             </div>
                         </div>
-                        <div className={mapStyles.field} id="arrivalTime" >
+                        <div className={`${mapStyles.field} ${mapStyles.timediv}`} id="arrivalTime" >
                             <div className={mapStyles.input}>
-                                <input type='time' id='arrivalinput'className="form-control" onChange={arrivalChanged} value={arrivalTime}/>
+                                <input type='time' className={mapStyles.time} onChange={arrivalChanged} value={arrivalTime}/>
                             </div>
                         </div>
-                        <div className={mapStyles.field} id="duration" >
+                        <div className={`${mapStyles.field} ${mapStyles.timediv}`} id="duration" >
                             <div>
                                 {timeTaken === '' ? '' : "Duration: " + timeTaken}
                             </div>

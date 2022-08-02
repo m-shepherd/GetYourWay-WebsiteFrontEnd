@@ -67,6 +67,7 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
                         <div className={mainStyles.pass_link} onClick={logOut}><a href="">Log Out</a></div>
                         <div className={mainStyles.pass_link}><a href="#map">Map</a></div>
                         <div className={mainStyles.pass_link}><a href="#findFlights">Find Flights</a></div>
+                        <div className={mainStyles.pass_link}><a onClick={() => navigate("/ViewJourney")}>View Journey</a></div>
                     </div>
                 </div>
 
@@ -76,9 +77,6 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
                 <Weather latitude={latitude} longitude={longitude}/>
                 <Flights/>
-                <div>
-                <button onClick={() => navigate("/ViewJourney")}>View Journey Steps</button>
-                </div>
             </>;
     }
 
