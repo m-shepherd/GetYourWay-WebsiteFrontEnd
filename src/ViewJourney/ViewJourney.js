@@ -1,19 +1,46 @@
 
 import React from 'react'
-import Flights from '../Flights/Flights'
 import AllLegs from './AllLegs'
 import { useNavigate } from 'react-router-dom'
+// import { useRef, useEffect } from 'react'
+// import html2canvas from 'html2canvas';
+//import { jsPDF } from 'jspdf';
 
-const ViewJourney = ({allJourneyLegs, setAllJourneyLegs}) => {
+const ViewJourney = ({ allJourneyLegs, setAllJourneyLegs }) => {
 
   let navigate = useNavigate();
 
+  // const print = useRef();
+
+  // useEffect(() => {}, [print])
+
+  // const handleDownloadPdf = async () => {
+  //     const canvas = await html2canvas(print);
+  //     const image = canvas.toDataURL("image/png", 1.0);
+  //     downloadImage(image, "Journey");
+  //     };const downloadImage = (blob, fileName) => {
+  //     const fakeLink = window.document.createElement("a");
+  //     fakeLink.style = "display:none;";
+  //     fakeLink.download = fileName;
+      
+  //     fakeLink.href = blob;
+      
+  //     document.body.appendChild(fakeLink);
+  //     fakeLink.click();
+  //     document.body.removeChild(fakeLink);
+      
+  //     fakeLink.remove();
+  // };
+
   return (
     <>
-    <AllLegs data={allJourneyLegs} setAllJourneyLegs={setAllJourneyLegs}/>
-    <div>
-    <button onClick={() => {navigate("/MainPage")}}>Back to main page</button>
-    </div>
+      <AllLegs data={allJourneyLegs} setAllJourneyLegs={setAllJourneyLegs}/>
+      <div>
+        <button onClick={() => { navigate("/MainPage") }}>Back to main page</button>
+        {/* <button type="button" onClick={handleDownloadPdf}>
+        Download as PDF
+      </button> */}
+      </div>
     </>
   )
 }

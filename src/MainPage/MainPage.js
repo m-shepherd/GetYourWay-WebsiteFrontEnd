@@ -14,7 +14,6 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
     const [startLocation, setStartLocation] = useState("")
     const [endLocation, setEndLocation] = useState("")
-    const [transport, setTransport] = useState("")
     const [startTime, setStartTime] = useState("")
     const [endTime, setEndTime] = useState("")
 
@@ -24,9 +23,10 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
     const handleSubmitJourney = (e) => {
         e.preventDefault()
+ 
         setSubmittedJourney({
             "id": legId,
-            "transport": transport,
+            "transport": e.target.getAttribute("id"),
             "startLocation": startLocation,
             "startTime": startTime,
             "endLocation": endLocation,
@@ -70,11 +70,11 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
                 </div>
 
                 <Map setLatitude={setLatitude} setLongitude={setLongitude} setStartLocation={setStartLocation}
-                 setEndLocation={setEndLocation} setTransport={setTransport} setStartTime={setStartTime}
+                 setEndLocation={setEndLocation} setStartTime={setStartTime}
                  handleSubmitJourney={handleSubmitJourney} setEndTime={setEndTime}/>
                 <Weather latitude={latitude} longitude={longitude}/>
-                <Flights/>
-                <div>
+                <Flights handleSubmitJourney={handleSubmitJourney}/>
+                <div >
                 <button onClick={() => navigate("/ViewJourney")}>View Journey Steps</button>
                 </div>
             </>;

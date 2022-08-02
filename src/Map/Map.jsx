@@ -19,7 +19,7 @@ const containerStyle = {
     height: '450px'
 };
 
-const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setTransport,
+const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation,
               setStartTime, setEndTime, handleSubmitJourney}) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
@@ -101,7 +101,6 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setTr
             setShowDirections(true)
             setStartLocation(startMarkerAddress)
             setEndLocation(endMarkerAddress)
-            setTransport(transport)
             setStartTime("15:00")
             setEndTime("18:00")
 
@@ -230,7 +229,7 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setTr
                                 <input type="submit" onClick={getDirections} value="Get Directions"/>
                             </div>
                             <div className={mapStyles.btn_layer}>
-                            <input type="submit" onClick={handleSubmitJourney} value="Add Leg To Your Journey"/>
+                            <input type="submit" onClick={handleSubmitJourney} id="DRIVING" value="Add Leg To Journey"/>
                             </div>
                         </div>
                     </div>
