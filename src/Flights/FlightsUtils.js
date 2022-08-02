@@ -33,12 +33,9 @@ export function makeRowsClickable() {
                 const currentRow = table.rows[i];
                 const createClickHandler = function () {
                     return function (event) {
-                        console.log(event.target)
                         let isClicked;
                         if (event.target.tagName === "I") {
                             isClicked = event.target.parentElement.parentElement.classList.contains('clicked');
-                        } else if (event.target.tagName === "P") {
-                            isClicked = event.target.parentElement.parentElement.parentElement.classList.contains('clicked');
                         } else {
                             isClicked = event.target.parentElement.classList.contains('clicked');
                         }
@@ -60,7 +57,6 @@ export function makeRowsClickable() {
 
                         if (isClicked) {
                             if (event.target.tagName === "I") {
-                                table.rows[event.target.parentElement.parentElement.rowIndex + 1].style.display = "none";
                                 event.target.classList.remove('down');
                                 event.target.parentElement.parentElement.classList.remove('clicked');
                                 const name = event.target.parentElement.parentElement.rowIndex + 'child';
@@ -72,6 +68,9 @@ export function makeRowsClickable() {
                                     }
                                 }
                             } else {
+                                if (event.target.parentElement.children[0].children[0] !== undefined) {
+                                    event.target.parentElement.children[0].children[0].classList.remove('down');
+                                }
                                 event.target.parentElement.classList.remove('clicked');
                                 const name = event.target.parentElement.rowIndex + 'child';
                                 const children = document.getElementsByName(name);
@@ -81,7 +80,6 @@ export function makeRowsClickable() {
                                         children[child].style.display = 'none';
                                     }
                                 }
-                                event.target.parentElement.children[0].children[0].classList.remove('down');
                             }
                         } else {
                             if (event.target.tagName === "I") {
@@ -96,7 +94,9 @@ export function makeRowsClickable() {
                                     }
                                 }
                             } else {
-                                event.target.parentElement.children[0].children[0].classList.add('down');
+                                if (event.target.parentElement.children[0].children[0] !== undefined) {
+                                    event.target.parentElement.children[0].children[0].classList.add('down');
+                                }
                                 event.target.parentElement.classList.add('clicked');
                                 const name = event.target.parentElement.rowIndex + 'child';
                                 const children = document.getElementsByName(name);

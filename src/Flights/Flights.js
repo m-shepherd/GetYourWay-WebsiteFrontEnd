@@ -36,7 +36,9 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
                         numberOfRows ++;
                         row.setAttribute('data-href', '#');
                         const expand = row.insertCell(0);
-                        expand.innerHTML = "<i class='arrow'></i>"
+                if (flights[i]['airports'].length > 2) {
+                    expand.innerHTML = "<i class='arrow' style='display:none'></i>"
+                }
                         for (let j = 1; j < 6; j++) {
                             switch (j) {
                                 case 1:
@@ -122,8 +124,8 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
                 flightData.style.display = "none";
                 dataTitle.style.display = "block";
                 title.innerHTML = "Searching For Flights...";
-                console.log(BACKEND_ADDRESS + "/flights?date=2022-11-01&dep=" + nearestDepartureAirports[counter] + "&arr=" + nearestArrivalAirports[0])
-                axios.get(BACKEND_ADDRESS + "/flights?date=2022-11-01&dep=" + nearestDepartureAirports[counter] + "&arr=" + nearestArrivalAirports[0], {
+                console.log(BACKEND_ADDRESS + "/flights?date=2022-11-01&dep=" + nearestDepartureAirports[0] + "&arr=" + nearestArrivalAirports[0])
+                axios.get(BACKEND_ADDRESS + "/flights?date=2022-11-01&dep=" + nearestDepartureAirports[0] + "&arr=" + nearestArrivalAirports[0], {
                     headers: {
                         'Authorization': `Basic ${localStorage.getItem('auth')}`
                     }
