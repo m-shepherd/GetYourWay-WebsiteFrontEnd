@@ -34,7 +34,8 @@ const App = () => {
                 <Route path = "/" element={<LoginAndSignUp/>}/>
                 <Route path="/ResetPassword" element={<ResetPassword/>}/>
                 <Route path="/MainPage" element={<MainPage setSubmittedJourney={setSubmittedJourney}/>}/>
-                <Route path="/ViewJourney" element={<ViewJourney allJourneyLegs={allJourneyLegs}/>}/>
+                <Route path="/ViewJourney" element={<ViewJourney 
+                allJourneyLegs={allJourneyLegs}/>}/>
             </Routes>
           </>
         </Router>

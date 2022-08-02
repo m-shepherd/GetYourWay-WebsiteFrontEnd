@@ -6,7 +6,7 @@ const Leg = ({id,transport,startLocation,startTime,endLocation,endTime,duration}
 
   let transportIcon;
 
-  if (transport == "DRIVING"){
+  if (transport === "DRIVING"){
     transportIcon = car;
   } else {
     transportIcon = plane;
@@ -21,6 +21,7 @@ const Leg = ({id,transport,startLocation,startTime,endLocation,endTime,duration}
         <td>{endLocation}</td>
         <td>{endTime}</td>
         <td>{duration}</td>
+        <td><button>Delete</button></td>
     </tr>
   )
 }

@@ -11,6 +11,7 @@ const MainPage = ({setSubmittedJourney}) => {
 
     let navigate = useNavigate();
 
+    const [legId, setLegId] = useState(1)
     const [startLocation, setStartLocation] = useState("")
     const [endLocation, setEndLocation] = useState("")
     const [transport, setTransport] = useState("")
@@ -24,14 +25,15 @@ const MainPage = ({setSubmittedJourney}) => {
     const handleSubmitJourney = (e) => {
         e.preventDefault()
         setSubmittedJourney({
-            "id": "7",
+            "id": legId,
             "transport": transport,
             "startLocation": startLocation,
             "startTime": startTime,
             "endLocation": endLocation,
             "endTime": endTime,
             "duration": "3"
-    })
+    })  
+        setLegId(legId + 1);
     }
 
 
