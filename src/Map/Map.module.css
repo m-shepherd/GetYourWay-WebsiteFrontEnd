@@ -83,6 +83,13 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.timediv {
+    grid-column: span 2;
+}
+.time {
+    outline: 0;
+    border: 0;
+}
 .directions{
     display: grid;
     grid-template-columns: repeat(6, 1fr);
