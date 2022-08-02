@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 import { GoogleMap, useLoadScript, Marker, DirectionsRenderer, DirectionsService, Autocomplete } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
@@ -17,7 +17,7 @@ const containerStyle = {
     height: '450px'
 };
 
-const Map = ({setLatitude, setLongitude, setStartName, setDestinationName}) => {
+const Map = ({setLatitude, setLongitude, setStartName, setDestinationName, startMarkerPos, setStartMarkerPos, endMarkerPos, setEndMarkerPos, showDirections, setShowDirections, directions, setDirections}) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
         libraries
@@ -26,35 +26,28 @@ const Map = ({setLatitude, setLongitude, setStartName, setDestinationName}) => {
     Geocode.setApiKey(MAPS_API_KEY)
 
     const [centre, setCentre] = useState({lat: LATITUDE, lng: LONGITUDE});
-    const [startMarkerPos,setStartMarkerPos] = useState(null);
-    const [endMarkerPos,setEndMarkerPos] = useState(null);
     const [startMarkerVis,setStartMarkerVis] = useState(false);
     const [endMarkerVis,setEndMarkerVis] = useState(false);
     const [startMarkerAddress,setStartMarkerAddress] = useState('');
     const [endMarkerAddress,setEndMarkerAddress] = useState('');
-    const [directions,setDirections] = useState(null);
-    const [showDirections,setShowDirections] = useState(false);
     const [startAutocomplete,setStartAutocomplete] = useState(null);
     const [endAutocomplete,setEndAutocomplete] = useState(null);
 
     const onMapClick = (e) => {
         if (startMarkerVis === false){
             setStartMarkerPos(e.latLng);
-            setStartMarkerVis(true);
             getGeocode(e.latLng, setStartMarkerAddress, setStartName);
             setStart(endMarkerVis);
         } else if (endMarkerVis === false){
             setEndMarkerPos(e.latLng);
             setLatitude(e.latLng.lat());
             setLongitude(e.latLng.lng());
-            setEndMarkerVis(true);
             getGeocode(e.latLng,setEndMarkerAddress, setDestinationName);
             setDestination(startMarkerVis);
         }
     }
 
     const onStartMarkerClick = (e) => {
-        setStartMarkerVis(false);
         setDirections(null);
         setShowDirections(null);
         setStartMarkerPos(null);
@@ -66,7 +59,6 @@ const Map = ({setLatitude, setLongitude, setStartName, setDestinationName}) => {
         destination.classList.add('single');
         const find = document.querySelector('#find');
         find.style.display = 'none';
-
     }
 
     const onEndMarkerClick = (e) => {
@@ -83,6 +75,22 @@ const Map = ({setLatitude, setLongitude, setStartName, setDestinationName}) => {
         const find = document.querySelector('#find');
         find.style.display = 'none';
     }
+
+    useEffect(() => {
+        if (startMarkerPos == null) {
+            setStartMarkerVis(false);
+        } else {
+            setStartMarkerVis(true);
+        }
+    }, [startMarkerPos]);
+
+    useEffect(() => {
+        if (endMarkerPos == null) {
+            setEndMarkerVis(false);
+        } else {
+            setEndMarkerVis(true);
+        }
+    }, [endMarkerPos]);
 
     const directionsCallback = (response) => {
         if (response !== null){
