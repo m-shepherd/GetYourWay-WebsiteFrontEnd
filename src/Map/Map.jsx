@@ -17,7 +17,7 @@ const containerStyle = {
     height: '450px'
 };
 
-const Map = ({setLatitude, setLongitude}) => {
+const Map = ({setLatitude, setLongitude, setStartName, setDestinationName}) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
         libraries
@@ -41,14 +41,14 @@ const Map = ({setLatitude, setLongitude}) => {
         if (startMarkerVis === false){
             setStartMarkerPos(e.latLng);
             setStartMarkerVis(true);
-            getGeocode(e.latLng, setStartMarkerAddress);
+            getGeocode(e.latLng, setStartMarkerAddress, setStartName);
             setStart(endMarkerVis);
         } else if (endMarkerVis === false){
             setEndMarkerPos(e.latLng);
             setLatitude(e.latLng.lat());
             setLongitude(e.latLng.lng());
             setEndMarkerVis(true);
-            getGeocode(e.latLng,setEndMarkerAddress);
+            getGeocode(e.latLng,setEndMarkerAddress, setDestinationName);
             setDestination(startMarkerVis);
         }
     }
@@ -109,7 +109,7 @@ const Map = ({setLatitude, setLongitude}) => {
         setStartMarkerPos(loc)
         setStartMarkerVis(true)
         setCentre(loc)
-        getGeocode(loc,setStartMarkerAddress)
+        getGeocode(loc,setStartMarkerAddress, setStartName)
 
         setStart(endMarkerVis);
         setDirections(null);
@@ -126,7 +126,7 @@ const Map = ({setLatitude, setLongitude}) => {
         setEndMarkerPos(loc)
         setEndMarkerVis(true)
         setCentre(loc)
-        getGeocode(loc,setEndMarkerAddress)
+        getGeocode(loc,setEndMarkerAddress, setDestinationName)
 
         setDestination(startMarkerVis);
         setDirections(null);
@@ -134,14 +134,34 @@ const Map = ({setLatitude, setLongitude}) => {
 
     }
 
-    const getGeocode = (latLng, setFunc) => {
+    const getGeocode = (latLng, setFunc, setNameFunc) => {
         Geocode.fromLatLng(latLng.lat(),latLng.lng()).then(
             (response) => {
-                setFunc(response.results[0].formatted_address)
+                setFunc(response.results[0].formatted_address);
+                if (response.results[0].address_components != null) {
+                    setNameFunc(getLocationNameFromGeocode(response.results[0]));
+                }
             }, (error) => {
                 console.error(error)
             }
         )
+    }
+
+    const getLocationNameFromGeocode = (resultObject) => {
+        let locationName = '';
+        const addressComponents = resultObject.address_components;
+        const areaName = addressComponents.filter(component => component['types'].includes('postal_town'));
+        const localityName = addressComponents.filter(component => component['types'].includes('locality'));
+        if (areaName.length >= 1 && areaName[0] !== null) {
+            locationName += areaName[0]['long_name'] + ', ';
+        } else if (localityName.length >= 1 && localityName[0] !== null) {
+            locationName += localityName[0]['long_name'] + ', ';
+        }
+        const countryName = addressComponents.filter(component => component['types'].includes('country'));
+        if(countryName.length >= 1 && countryName[0] !==null) {
+            locationName += countryName[0]['long_name'];
+        }
+        return locationName;
     }
 
     if (!isLoaded) return <div className={mapStyles.wrapper}>Loading...</div>

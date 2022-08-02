@@ -5,7 +5,7 @@ import './MainPage.css';
 import Weather from '../Weather/Weather'
 import Flights from '../Flights/Flights'
 import Map from "../Map/Map";
-import {LATITUDE, LONGITUDE} from "../configuration";
+import {LATITUDE, LONGITUDE, DESTINATION_NAME} from "../configuration";
 
 const MainPage = () => {
 
@@ -18,6 +18,9 @@ const MainPage = () => {
 
     const [latitude, setLatitude] = useState(LATITUDE);
     const [longitude, setLongitude] = useState(LONGITUDE);
+    const [startName, setStartName] = useState(DESTINATION_NAME);
+    const [destinationName, setDestinationName] = useState('');
+
     let data;
     if (localStorage.getItem('auth') == null) {
         data =
@@ -43,8 +46,8 @@ const MainPage = () => {
                     </div>
                 </div>
 
-                <Map setLatitude={setLatitude} setLongitude={setLongitude}/>
-                <Weather latitude={latitude} longitude={longitude}/>
+                <Map setLatitude={setLatitude} setLongitude={setLongitude} setStartName={setStartName} setDestinationName={setDestinationName} />
+                <Weather latitude={latitude} longitude={longitude} startName={startName} destinationName={destinationName}/>
                 <Flights/>
             </>;
     }
