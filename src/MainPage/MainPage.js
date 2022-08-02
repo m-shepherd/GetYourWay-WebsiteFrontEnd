@@ -5,12 +5,8 @@ import './MainPage.css';
 import Weather from '../Weather/Weather'
 import Flights from '../Flights/Flights'
 import Map from "../Map/Map";
-<<<<<<< HEAD
-import {LATITUDE, LONGITUDE} from "../configuration";
 import NearestAirport from "../NearestAirport/NearestAirport";
-=======
 import {LATITUDE, LONGITUDE, DESTINATION_NAME} from "../configuration";
->>>>>>> main
 
 const MainPage = () => {
     const [departureLatitude, setDepartureLatitude] = useState(LATITUDE);
