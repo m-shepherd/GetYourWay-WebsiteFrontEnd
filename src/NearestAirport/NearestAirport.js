@@ -11,10 +11,11 @@ function NearestAirport({latitude, longitude, setNearestAirports}) {
             for (let airport of response['data']['data']) {
                 nearestAirports.push(airport['iataCode']);
             }
-            return nearestAirports;
+            return nearestAirports[0];
         }
 
         const findNearestAirports = () => {
+            console.log(latitude, longitude)
             axios.get(BACKEND_ADDRESS + '/flights/nearest?latitude=' + latitude + '&longitude=' + longitude, {
                 headers: {
                     'Authorization': `Basic ${localStorage.getItem('auth')}`
