@@ -17,6 +17,7 @@ const MainPage = ({setSubmittedJourney}) => {
     const [transport, setTransport] = useState("")
     const [startTime, setStartTime] = useState("")
     const [endTime, setEndTime] = useState("")
+    const [duration, setDuration] = useState("")
 
 
 
@@ -31,7 +32,7 @@ const MainPage = ({setSubmittedJourney}) => {
             "startTime": startTime,
             "endLocation": endLocation,
             "endTime": endTime,
-            "duration": "3"
+            "duration": duration
     })  
         setLegId(legId + 1);
     }
@@ -70,7 +71,8 @@ const MainPage = ({setSubmittedJourney}) => {
                 </div>
 
                 <Map setLatitude={setLatitude} setLongitude={setLongitude} setStartLocation={setStartLocation}
-                 setEndLocation={setEndLocation} setTransport={setTransport} setStartTime={setStartTime} setEndTime={setEndTime}/>
+                 setEndLocation={setEndLocation} setTransport={setTransport} setStartTime={setStartTime} 
+                 setEndTime={setEndTime} setDuration={setDuration}/>
                 <Weather latitude={latitude} longitude={longitude}/>
                 <Flights/>
                 <div>
