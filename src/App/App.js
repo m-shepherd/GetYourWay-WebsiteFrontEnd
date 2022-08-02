@@ -17,6 +17,8 @@ const App = () => {
 
     const [firstRender, setFirstRender] = useState(true)
 
+    const [legId, setLegId] = useState(1)
+
 
     useEffect(() => {
         if (firstRender){
@@ -33,9 +35,9 @@ const App = () => {
             <Routes>
                 <Route path = "/" element={<LoginAndSignUp/>}/>
                 <Route path="/ResetPassword" element={<ResetPassword/>}/>
-                <Route path="/MainPage" element={<MainPage setSubmittedJourney={setSubmittedJourney}/>}/>
+                <Route path="/MainPage" element={<MainPage setSubmittedJourney={setSubmittedJourney} legId={legId} setLegId={setLegId}/>}/>
                 <Route path="/ViewJourney" element={<ViewJourney 
-                allJourneyLegs={allJourneyLegs}/>}/>
+                allJourneyLegs={allJourneyLegs} setAllJourneyLegs={setAllJourneyLegs}/>}/>
             </Routes>
           </>
         </Router>
