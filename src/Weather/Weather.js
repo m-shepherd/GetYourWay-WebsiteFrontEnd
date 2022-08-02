@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import PropTypes, { object } from "prop-types";
+import PropTypes from "prop-types";
 import axios from 'axios';
 import weatherStyle from'./Weather.module.css';
 import {BACKEND_ADDRESS, LATITUDE, LONGITUDE} from '../configuration';
@@ -167,7 +167,7 @@ const Weather = ({latitude, longitude, startName, destinationName}) => {
                         </div>
                     </div>
                     <div className={weatherStyle.weatherContainer + ' ' + weatherStyle.expandedWeatherRow}>
-                        <h3>Hourly Forecast:</h3>
+                        <h3 className={weatherStyle.subheading}>Hourly Forecast:</h3>
                         <div className={weatherStyle.weatherListRow}>
                             { hourlyWeather.length >= 1 && hourlyWeather.map((weatherData, index) => {
                                 return <div className={weatherStyle.informationBlock + ' ' + weatherStyle.hourlyWeatherBlock} key={index}>
@@ -180,7 +180,7 @@ const Weather = ({latitude, longitude, startName, destinationName}) => {
                         </div>
                     </div>
                     <div className={weatherStyle.weatherContainer + ' ' + weatherStyle.expandedWeatherRow}>
-                        <h3>Daily Forecast:</h3>
+                        <h3 className={weatherStyle.subheading}>Daily Forecast:</h3>
                         <div className={weatherStyle.weatherRowFill}>
                             { dailyWeather.length >= 1 && dailyWeather.map((weatherData, index) => {
                                 return <div className={weatherStyle.informationBlock + ' ' + weatherStyle.hourlyWeatherBlock} key={index}>
