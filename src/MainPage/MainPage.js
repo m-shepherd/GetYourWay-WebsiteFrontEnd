@@ -27,14 +27,11 @@ const MainPage = () => {
         navigate('/')
     }
 
-<<<<<<< HEAD
-=======
     const [latitude, setLatitude] = useState(LATITUDE);
     const [longitude, setLongitude] = useState(LONGITUDE);
     const [startName, setStartName] = useState(DESTINATION_NAME);
     const [destinationName, setDestinationName] = useState('');
 
->>>>>>> main
     let data;
     if (localStorage.getItem('auth') == null) {
         data =
