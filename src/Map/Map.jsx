@@ -20,7 +20,7 @@ const containerStyle = {
 };
 
 
-const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setTransport, setStartTime, setEndTime, setDuration, handleSubmitJourney}) => {
+const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney}) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
         libraries
@@ -98,7 +98,6 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setTr
                     setDirections(response)
                     setStartLocation(startMarkerAddress)
                     setEndLocation(endMarkerAddress)
-                    setTransport(transport)
                     setDuration(response.routes[0].legs[0].duration.text)
                     setTimeTaken(response.routes[0].legs[0].duration.text)
 
