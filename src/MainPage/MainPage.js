@@ -14,7 +14,6 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
     const [startLocation, setStartLocation] = useState("")
     const [endLocation, setEndLocation] = useState("")
-    const [transport, setTransport] = useState("")
     const [startTime, setStartTime] = useState("")
     const [endTime, setEndTime] = useState("")
     const [duration, setDuration] = useState("")
@@ -25,9 +24,10 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
     const handleSubmitJourney = (e) => {
         e.preventDefault()
+ 
         setSubmittedJourney({
             "id": legId,
-            "transport": transport,
+            "transport": e.target.getAttribute("id"),
             "startLocation": startLocation,
             "startTime": startTime,
             "endLocation": endLocation,
@@ -76,7 +76,8 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
                  setEndTime={setEndTime} setDuration={setDuration} handleSubmitJourney={handleSubmitJourney}/>
 
                 <Weather latitude={latitude} longitude={longitude}/>
-                <Flights/>
+                <Flights handleSubmitJourney={handleSubmitJourney}/>
+
             </>;
     }
 

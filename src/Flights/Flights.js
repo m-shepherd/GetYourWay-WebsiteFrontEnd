@@ -2,7 +2,7 @@ import flightStyles from'./Flights.module.css';
 import './Flights.css'
 import {getFlights, confirmFlights} from "./FlightsUtils";
 
-const Flights = () => {
+const Flights = ({handleSubmitJourney}) => {
     return (
         <>
             <div className={flightStyles.padding}>
@@ -25,6 +25,10 @@ const Flights = () => {
                                 </div>
                             </form>
                         </div>
+                        <div className={`${flightStyles.field} ${flightStyles.btn} ${flightStyles.col}`}>
+                                    <div className={flightStyles.btn_layer}></div>
+                                    <input type="submit" value="Add Flight To Journey" id="FLYING" onClick={handleSubmitJourney}/>
+                                </div>
                     </div>
                     <div id="dataTitle" className={flightStyles.title_text} style={{display: "none"}}>
                         <div className={flightStyles.title}>Flight Data</div>
