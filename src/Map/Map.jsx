@@ -19,8 +19,8 @@ const containerStyle = {
     height: '450px'
 };
 
-const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation,
-              setStartTime, setEndTime, handleSubmitJourney}) => {
+
+const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setTransport, setStartTime, setEndTime, setDuration, handleSubmitJourney}) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
         libraries
@@ -28,13 +28,17 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation,
 
     Geocode.setApiKey(MAPS_API_KEY)
 
-    const [centre, setCentre] = useState({lat: LATITUDE, lng: LONGITUDE});
     const [startMarkerPos,setStartMarkerPos] = useState(null);
     const [endMarkerPos,setEndMarkerPos] = useState(null);
     const [startMarkerVis,setStartMarkerVis] = useState(false);
     const [endMarkerVis,setEndMarkerVis] = useState(false);
     const [startMarkerAddress,setStartMarkerAddress] = useState('');
     const [endMarkerAddress,setEndMarkerAddress] = useState('');
+    const [timeTaken,setTimeTaken] = useState('')
+    const [departTime,setDepartTime] = useState('00:00');
+    const [arrivalTime,setArrivalTime] = useState('00:00');
+
+    const [centre, setCentre] = useState({lat: LATITUDE, lng: LONGITUDE});
     const [directions,setDirections] = useState(null);
     const [showDirections,setShowDirections] = useState(false);
     const [startAutocomplete,setStartAutocomplete] = useState(null);
@@ -90,8 +94,21 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation,
     const directionsCallback = (response) => {
         if (response !== null){
             if (response.status === 'OK') {
-                if (startMarkerPos != null && endMarkerPos != null && directions === null)
+                if (startMarkerPos != null && endMarkerPos != null && directions == null)
                     setDirections(response)
+                    setStartLocation(startMarkerAddress)
+                    setEndLocation(endMarkerAddress)
+                    setTransport(transport)
+                    setDuration(response.routes[0].legs[0].duration.text)
+                    setTimeTaken(response.routes[0].legs[0].duration.text)
+
+                    const startmins = getMinsFromInput(departTime)
+                    const durationmins = getMinsFromDuration(timeTaken)
+                    const totalmins = startmins + durationmins
+                    const time = getTimeFromMins(totalmins)
+                    setArrivalTime(time)
+                    setStartTime(departTime)
+                    setEndTime(arrivalTime)
             }
         }
     }
@@ -99,12 +116,6 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation,
     const getDirections = () => {
         if (startMarkerPos != null && endMarkerPos != null){
             setShowDirections(true)
-            setStartLocation(startMarkerAddress)
-            setEndLocation(endMarkerAddress)
-            setStartTime("15:00")
-            setEndTime("18:00")
-
-
         }
     }
 
@@ -150,6 +161,66 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation,
                 console.error(error)
             }
         )
+    }
+
+    const departChanged = (e) => {
+        const t = e.target.value
+        setDepartTime(t)
+        const startmins = getMinsFromInput(t)
+        const durationmins = getMinsFromDuration(timeTaken)
+        const totalmins = startmins + durationmins
+        const time = getTimeFromMins(totalmins)
+        setArrivalTime(time)
+        setStartTime(departTime)
+        setEndTime(arrivalTime)
+    }
+
+    const arrivalChanged = (e) => {
+        const t = e.target.value
+        setArrivalTime(t)
+        const startmins = getMinsFromInput(t)
+        const durationmins = getMinsFromDuration(timeTaken)
+        var totalmins = startmins - durationmins
+        if (totalmins < 0){
+            totalmins += 1440
+        }
+        const time = getTimeFromMins(totalmins)
+        setDepartTime(time)
+        setStartTime(departTime)
+        setEndTime(arrivalTime)
+    }
+
+    const getMinsFromInput = (time) => {
+        const hours = parseInt(time.slice(0,2))
+        const mins = parseInt(time.slice(3))
+        return mins + (hours*60)
+    }
+
+    const getMinsFromDuration = (time) => {
+        var totalMins = 0
+        const timeArray = time.split(/\s+/)
+        for (let i = 0; i < timeArray.length; i += 2) {
+            if (timeArray[i+1] === "min" || timeArray[i+1] === "mins"){
+                totalMins += parseInt(timeArray[i])
+            } else if (timeArray[i+1] === "hour" || timeArray[i+1] === "hours"){
+                totalMins += parseInt(timeArray[i])*60
+            } else if (timeArray[i+1] === "day" || timeArray[i+1] === "days"){
+                totalMins += parseInt(timeArray[i])*1440
+            }
+        }
+        return totalMins
+    }
+
+    const getTimeFromMins = (mins) => {
+        var hour = (Math.floor(mins/60) % 24).toString()
+        var minute = (mins % 60).toString()
+        if (hour.length === 1){
+            hour = '0'+hour
+        }
+        if (minute.length === 1){
+            minute = '0'+minute
+        }
+        return hour+":"+minute
     }
 
     if (!isLoaded) return <div className={mapStyles.wrapper}>Loading...</div>
@@ -230,6 +301,24 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation,
                             </div>
                             <div className={mapStyles.btn_layer}>
                             <input type="submit" onClick={handleSubmitJourney} id="DRIVING" value="Add Leg To Journey"/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className={mapStyles.times}>
+                        <div className={mapStyles.field}id="departTime" >
+                            <div className={mapStyles.input}>
+                                <input type='time' id='departinput' className="form-control" onChange={departChanged} value={departTime}/>
+                            </div>
+                        </div>
+                        <div className={mapStyles.field} id="arrivalTime" >
+                            <div className={mapStyles.input}>
+                                <input type='time' id='arrivalinput'className="form-control" onChange={arrivalChanged} value={arrivalTime}/>
+                            </div>
+                        </div>
+                        <div className={mapStyles.field} id="duration" >
+                            <div>
+                                {timeTaken === '' ? '' : "Duration: " + timeTaken}
                             </div>
                         </div>
                     </div>
