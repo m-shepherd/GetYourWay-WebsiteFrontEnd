@@ -35,9 +35,9 @@
     overflow: hidden;
 }
 .btn .btn_layer{
-    height: 100%;
+    height: 50%;
     width: 300%;
-    position: absolute;
+    position: relative;
     left: -100%;
     background: -webkit-linear-gradient(right,#003366,#004080,#0059b3
     , #0073e6);
@@ -48,7 +48,7 @@
     left: 0;
 }
 .btn input[type="submit"]{
-    height: 100%;
+    height: 50%;
     width: 100%;
     z-index: 1;
     position: relative;

@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import mainStyles from'./MainPage.module.css';
 import './MainPage.css';
 import Weather from '../Weather/Weather'
@@ -7,11 +7,11 @@ import Flights from '../Flights/Flights'
 import Map from "../Map/Map";
 import {LATITUDE, LONGITUDE} from "../configuration";
 
-const MainPage = ({setSubmittedJourney}) => {
+const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
     let navigate = useNavigate();
 
-    const [legId, setLegId] = useState(1)
+
     const [startLocation, setStartLocation] = useState("")
     const [endLocation, setEndLocation] = useState("")
     const [transport, setTransport] = useState("")
@@ -72,11 +72,11 @@ const MainPage = ({setSubmittedJourney}) => {
 
                 <Map setLatitude={setLatitude} setLongitude={setLongitude} setStartLocation={setStartLocation}
                  setEndLocation={setEndLocation} setTransport={setTransport} setStartTime={setStartTime} 
-                 setEndTime={setEndTime} setDuration={setDuration}/>
+                 setEndTime={setEndTime} setDuration={setDuration} handleSubmitJourney={handleSubmitJourney}/>
+
                 <Weather latitude={latitude} longitude={longitude}/>
                 <Flights/>
                 <div>
-                <button onClick={handleSubmitJourney}>Add Leg To Your Journey</button>
                 <button onClick={() => navigate("/ViewJourney")}>View Journey Steps</button>
                 </div>
             </>;
