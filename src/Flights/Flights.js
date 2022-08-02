@@ -70,8 +70,8 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
 
         const getNearestAirports = () => {
             if (nearestDepartureAirports[counter] !== nearestArrivalAirports[0]) {
-                console.log(BACKEND_ADDRESS + "/flights?dep=" + nearestDepartureAirports[counter] + "&arr=" + nearestArrivalAirports[0])
-                axios.get(BACKEND_ADDRESS + "/flights?dep=" + nearestDepartureAirports[counter] + "&arr=" + nearestArrivalAirports[0], {
+                console.log(BACKEND_ADDRESS + "/flights?date=2022-11-01&dep=" + nearestDepartureAirports[counter] + "&arr=" + nearestArrivalAirports[0])
+                axios.get(BACKEND_ADDRESS + "/flights?date=2022-11-01&dep=" + nearestDepartureAirports[counter] + "&arr=" + nearestArrivalAirports[0], {
                     headers: {
                         'Authorization': `Basic ${localStorage.getItem('auth')}`
                     }
