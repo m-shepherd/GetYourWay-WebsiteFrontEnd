@@ -2,9 +2,10 @@ import React from 'react'
 import car from "./Icons/DRIVING.png"
 import plane from "./Icons/FLYING.png"
 import { useRef } from 'react'
+import styles from './ViewJourney.css'
 
 const Leg = ({id,transport,startLocation,startTime,endLocation,
-              endTime,duration, allJourneyLegs, setAllJourneyLegs}) => {
+              endTime, duration, allJourneyLegs, setAllJourneyLegs}) => {
 
   const deleteLeg = (e) => {
     const deleteId = idRef.current.getAttribute("legid")
@@ -36,7 +37,11 @@ const Leg = ({id,transport,startLocation,startTime,endLocation,
         <td>{endLocation}</td>
         <td>{endTime}</td>
         <td>{duration}</td>
-        <td><button onClick={deleteLeg}>Delete</button></td>
+        <td><div className={`${styles.field} ${styles.btn} ${styles.col}`}>
+                                    <div className={styles.btn_layer}></div>
+                                    <input type="submit" value="Delete" onClick={deleteLeg}/>
+                                </div></td>
+        {/* <td><button className={styles.btn} onClick={deleteLeg}>Delete</button></td> */}
     </tr>
   )
 }

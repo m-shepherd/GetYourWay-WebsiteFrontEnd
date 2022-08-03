@@ -2,6 +2,7 @@
 import React from 'react'
 import AllLegs from './AllLegs'
 import { useNavigate } from 'react-router-dom'
+import styles from './ViewJourney.css'
 // import { useRef, useEffect } from 'react'
 // import html2canvas from 'html2canvas';
 //import { jsPDF } from 'jspdf';
@@ -36,7 +37,7 @@ const ViewJourney = ({ allJourneyLegs, setAllJourneyLegs }) => {
     <>
       <AllLegs data={allJourneyLegs} setAllJourneyLegs={setAllJourneyLegs}/>
       <div>
-        <button onClick={() => { navigate("/MainPage") }}>Back to main page</button>
+        <button className={styles.button} onClick={() => { navigate("/MainPage") }}>Back to main page</button>
         {/* <button type="button" onClick={handleDownloadPdf}>
         Download as PDF
       </button> */}
