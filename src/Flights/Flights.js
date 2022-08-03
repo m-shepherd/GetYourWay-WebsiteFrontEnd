@@ -196,6 +196,17 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
         title.innerHTML = "No Flights Available";
     }
 
+    function getDuration() {
+        const duration = legs[0]['duration']
+        const hours = duration.substring(0, duration.indexOf('H'));
+        let output = hours + ' hours'
+        if (duration.indexOf('H') !== duration.length - 1) {
+            const minutes = duration.substring(duration.indexOf('M') - 2, duration.length -1)
+            output += ' ' + minutes + ' minutes'
+        }
+        return output
+    }
+
     useEffect(() => {
         getFlights()
     }, [flights]);
@@ -209,19 +220,21 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
     }, [endLocation])
 
     useEffect(() => {
+        console.log(legs);
         if (legs.length > 0) {
-            if (legs.length > 1) {
+            if (legs[0].hasOwnProperty('arrival')) {
                 setEndLocation(legs[0]['arrival']['arrival_airport'])
                 setEndTime(legs[0]['arrival']['arrival_time'])
                 setStartLocation(legs[0]['departure']['departure_airport'])
                 setStartTime(legs[0]['departure']['departure_time'])
-                setDuration(legs[0]['duration'])
+                console.log(legs[0]['duration'])
+                setDuration(getDuration())
             } else {
                 setEndLocation(legs[0]['arrival_airport'])
                 setEndTime(legs[0]['arrival_time'])
                 setStartLocation(legs[0]['departure_airport'])
                 setStartTime(legs[0]['departure_time'])
-                setDuration(legs[0]['duration'])
+                setDuration(getDuration())
             }
 
         }
