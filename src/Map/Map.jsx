@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import PropTypes from "prop-types";
 import { GoogleMap, useLoadScript, Marker, DirectionsRenderer, DirectionsService, Autocomplete } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 import mapStyles from './Map.module.css';
@@ -17,7 +16,7 @@ const containerStyle = {
     height: '450px'
 };
 
-const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney, setStartName, setDestinationName, startMarkerPos, setStartMarkerPos, endMarkerPos, setEndMarkerPos, showDirections, setShowDirections, directions, setDirections}) => {
+const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude, setLatitude, setLongitude, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney, setStartName, setDestinationName, startMarkerPos, setStartMarkerPos, endMarkerPos, setEndMarkerPos, showDirections, setShowDirections, directions, setDirections}) => {
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
@@ -42,10 +41,16 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
     const onMapClick = (e) => {
         if (startMarkerVis === false){
             setStartMarkerPos(e.latLng);
+            setDepartureLatitude(e.latLng.lat());
+            setDepartureLongitude(e.latLng.lng());
+            setStartMarkerVis(true);
             getGeocode(e.latLng, setStartMarkerAddress, setStartName);
             setStart(endMarkerVis);
         } else if (endMarkerVis === false){
             setEndMarkerPos(e.latLng);
+            setArrivalLatitude(e.latLng.lat());
+            setArrivalLongitude(e.latLng.lng());
+            setEndMarkerVis(true);
             setLatitude(e.latLng.lat());
             setLongitude(e.latLng.lng());
             getGeocode(e.latLng,setEndMarkerAddress, setDestinationName);
@@ -139,6 +144,8 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
         setStart(endMarkerVis);
         setDirections(null);
         setShowDirections(null);
+        setDepartureLatitude(loc.lat());
+        setDepartureLongitude(loc.lng());
 
     }
 
@@ -156,6 +163,8 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
         setDestination(startMarkerVis);
         setDirections(null);
         setShowDirections(null);
+        setArrivalLatitude(loc.lat());
+        setArrivalLongitude(loc.lng());
 
     }
 
@@ -189,7 +198,7 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
         setArrivalTime(t)
         const startmins = getMinsFromInput(t)
         const durationmins = getMinsFromDuration(timeTaken)
-        var totalmins = startmins - durationmins
+        let totalmins = startmins - durationmins
         if (totalmins < 0){
             totalmins += 1440
         }
@@ -206,7 +215,7 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
     }
 
     const getMinsFromDuration = (time) => {
-        var totalMins = 0
+        let totalMins = 0
         const timeArray = time.split(/\s+/)
         for (let i = 0; i < timeArray.length; i += 2) {
             if (timeArray[i+1] === "min" || timeArray[i+1] === "mins"){
@@ -221,8 +230,8 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
     }
 
     const getTimeFromMins = (mins) => {
-        var hour = (Math.floor(mins/60) % 24).toString()
-        var minute = (mins % 60).toString()
+        let hour = (Math.floor(mins/60) % 24).toString()
+        let minute = (mins % 60).toString()
         if (hour.length === 1){
             hour = '0'+hour
         }
@@ -354,11 +363,6 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
         </>
     )
 
-}
-
-Map.propTypes = {
-    setLatitude: PropTypes.func.isRequired,
-    setLongitude: PropTypes.func.isRequired
 }
 
 export default Map

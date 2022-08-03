@@ -1,89 +1,93 @@
-import {BACKEND_ADDRESS} from '../configuration';
-
-export function getFlights(event) {
-    event.preventDefault();
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", BACKEND_ADDRESS + "/flights?date=2022-07-13&dep=LHR&arr=FRA", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("Authorization", "Basic " + localStorage.getItem('auth'));
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4)  {
-            const serverResponse = xhr.responseText;
-            if (serverResponse === '"BAD_REQUEST"') {
-                alert('Bad Request');
-            } else {
-                const flights = JSON.parse(xhr.responseText);
-                const flightTable = document.querySelector("#flightTable");
-                const flightData = document.querySelector("#flightData");
-                const dataTitle = document.querySelector("#dataTitle");
-                flightData.style.display = "block";
-                dataTitle.style.display = "block";
-                for(const flight in flights) {
-                    const row = flightTable.insertRow(-1)
-                    row.setAttribute('data-href', '#');
-                    let i = 0;
-                    for (const key in flights[flight]) {
-                        if (i !== 0) {
-                            const cell = row.insertCell(i - 1);
-                            cell.innerHTML = flights[flight][key];
-                        }
-                        i ++;
-                    }
-                }
-                makeRowsClickable();
-            }
-        }
-    };
-    xhr.send();
-}
-
-export function confirmFlights() {
-    const clickedItems = document.getElementsByClassName('clicked');
-    if (clickedItems.length === 1) {
-        const flightData = [];
-        const selectedFlights = clickedItems[0];
-        selectedFlights.childNodes.forEach(
-            function(detail) {
-                flightData.push(detail.textContent);
-            });
-        const jsonFields = ['departure_airport', 'departure_time', 'arrival_airport',
-            'arrival_time', 'airline_name', 'flight_number']
-
-        let jsonData = "{";
-        for (let i = 0; i <flightData.length; i++) {
-            if (i === flightData.length - 1) {
-                jsonData += '"' + jsonFields[i] + '": "' + flightData[i] + '"';
-            } else {
-                jsonData += '"' + jsonFields[i] + '": "' + flightData[i] + '",';
-            }
-        }
-        jsonData += '}';
-
-        console.log(JSON.stringify(jsonData));
-    }
-}
-
-function makeRowsClickable() {
+export function makeRowsClickable() {
     const table = document.getElementById("table");
     const rows = table.getElementsByTagName("tr");
     for (let i = 0; i < rows.length; i++) {
-        const currentRow = table.rows[i];
-        const createClickHandler = function() {
-            return function(event) {
-                const isClicked = event.target.parentElement.classList.contains('clicked');
-                const clickedItems = document.getElementsByClassName('clicked');
-                for (let i = 0; i < clickedItems.length; i++) {
-                    clickedItems[i].classList.remove('clicked');
+        if (table.rows[i] != null) {
+            if (!table.rows[i].classList.contains('childTableRow')) {
+                const currentRow = table.rows[i];
+                const createClickHandler = function () {
+                    return function (event) {
+                        let isClicked;
+                        if (event.target.tagName === "I") {
+                            isClicked = event.target.parentElement.parentElement.classList.contains('clicked');
+                        } else {
+                            isClicked = event.target.parentElement.classList.contains('clicked');
+                        }
+
+                        const clickedItems = document.getElementsByClassName('clicked');
+                        for (let i = 0; i < clickedItems.length; i++) {
+                            clickedItems[i].classList.remove('clicked');
+                        }
+
+                        const expandedItems = document.getElementsByClassName('expanded');
+                        for (let i = 0; i < expandedItems.length; i++) {
+                            expandedItems[i].classList.add('standard');
+                            expandedItems[i].classList.remove('expanded');
+                        }
+                        const downItems = document.getElementsByClassName('down');
+                        for (let i = 0; i < downItems.length; i++) {
+                            downItems[i].classList.remove('down');
+                        }
+
+                        if (isClicked) {
+                            if (event.target.tagName === "I") {
+                                event.target.classList.remove('down');
+                                event.target.parentElement.parentElement.classList.remove('clicked');
+                                const name = event.target.parentElement.parentElement.rowIndex + 'child';
+                                const children = document.getElementsByName(name);
+                                for (let child in children) {
+                                    if (children[child].tagName !== undefined) {
+                                        children[child].classList.toggle('show');
+                                        children[child].style.display = 'none';
+                                    }
+                                }
+                            } else {
+                                if (event.target.parentElement.children[0].children[0] !== undefined) {
+                                    event.target.parentElement.children[0].children[0].classList.remove('down');
+                                }
+                                event.target.parentElement.classList.remove('clicked');
+                                const name = event.target.parentElement.rowIndex + 'child';
+                                const children = document.getElementsByName(name);
+                                for (let child in children) {
+                                    if (children[child].tagName !== undefined) {
+                                        children[child].classList.toggle('show');
+                                        children[child].style.display = 'none';
+                                    }
+                                }
+                            }
+                        } else {
+                            if (event.target.tagName === "I") {
+                                event.target.classList.add('down');
+                                event.target.parentElement.parentElement.classList.add('clicked');
+                                const name = event.target.parentElement.parentElement.rowIndex + 'child';
+                                const children = document.getElementsByName(name);
+                                for (let child in children) {
+                                    if (children[child].tagName !== undefined) {
+                                        children[child].classList.toggle('show');
+                                        children[child].style.display = 'table-row';
+                                    }
+                                }
+                            } else {
+                                if (event.target.parentElement.children[0].children[0] !== undefined) {
+                                    event.target.parentElement.children[0].children[0].classList.add('down');
+                                }
+                                event.target.parentElement.classList.add('clicked');
+                                const name = event.target.parentElement.rowIndex + 'child';
+                                const children = document.getElementsByName(name);
+                                for (let child in children) {
+                                    if (children[child].tagName !== undefined) {
+                                        children[child].classList.toggle('show');
+                                        children[child].style.display = 'table-row';
+                                    }
+                                }
+                            }
+                        }
+                        showConfirmButton();
+                    }
                 }
-                if (isClicked) {
-                    event.target.parentElement.classList.remove('clicked');
-                } else {
-                    event.target.parentElement.classList.toggle('clicked');
-                }
-                showConfirmButton();
-            };
-        };
-        currentRow.onclick = createClickHandler();
+                currentRow.onclick = createClickHandler();
+            }
+        }
     }
 }
 
