@@ -135,10 +135,20 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                                 case 5:
                                     const totalDuration = row.insertCell(j);
                                     const duration = moment.duration(flights[i]['durations'][0])
-                                    if (duration.minutes() === 0) {
-                                        totalDuration.innerHTML = duration.hours() + "H"
+                                    let hours = 5;
+                                    if (parseInt(flights[i]['durations'][0].charAt(2)) >= 2 && flights[i]['durations'][0].charAt(3) !== 'H') {
+                                        if (parseInt(flights[i]['durations'][0].charAt(3)) > 3) {
+                                            hours = flights[i]['durations'][0].substring(2, 4);
+                                        } else {
+                                            hours = duration.hours();
+                                        }
                                     } else {
-                                        totalDuration.innerHTML = duration.hours() + "H:" + String(duration.minutes()).padStart(2, "0").padEnd(2, "0") + "M";
+                                        hours = duration.hours();
+                                    }
+                                    if (duration.minutes() === 0) {
+                                        totalDuration.innerHTML = hours + "H"
+                                    } else {
+                                        totalDuration.innerHTML = hours + "H:" + String(duration.minutes()).padStart(2, "0").padEnd(2, "0") + "M";
                                     }
                                     break;
                                 case 6:
