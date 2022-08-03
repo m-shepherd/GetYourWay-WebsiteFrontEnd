@@ -1,11 +1,10 @@
-import React from 'react'
 import car from "./Icons/DRIVING.png"
 import plane from "./Icons/FLYING.png"
-import styles from './ViewJourney.css'
+import './ViewJourney.css'
+import { useState } from "react"
 
 const Leg = ({id,transport,startLocation,startTime,endLocation,
-              endTime, duration, deleteLeg}) => {
-
+              endTime, duration, isFadingOut, fadeOut}) => {
     
   let transportIcon;
 
@@ -15,8 +14,9 @@ const Leg = ({id,transport,startLocation,startTime,endLocation,
     transportIcon = plane;
   }
 
+
   return (
-    <tr>
+    <tr className={isFadingOut ? 'itemfadeout' : 'item'}>
         <td legid={id}>{id}</td>
         <td><img src={transportIcon} alt={transport} height="70" width="70"/></td>
         <td>{startLocation}</td>
@@ -24,10 +24,10 @@ const Leg = ({id,transport,startLocation,startTime,endLocation,
         <td>{endLocation}</td>
         <td>{endTime}</td>
         <td>{duration}</td>
-        <td><div className={`${styles.field} ${styles.btn} ${styles.col}`}>
-                                    <div className={styles.btn_layer}></div>
-                                    <input id={id} type="submit" value="Delete" onClick={deleteLeg}/>
-                                </div></td>
+        <td>
+        <div className='btnlayer'></div>
+        <input id={id} type="submit" value="Delete" onClick={(e) => fadeOut(e, 300)}/>
+        </td>
     </tr>
   )
 }

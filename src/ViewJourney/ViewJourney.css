@@ -57,7 +57,7 @@ td {
   border-radius: 15px;
   transition: all 0.4s ease;
 }
-.btn:hover .btn-layer{
+.btn:hover .btnlayer{
   left: 0;
 }
 .btn input[type="submit"]{
@@ -74,4 +74,36 @@ td {
   font-weight: 500;
   cursor: pointer;
   text-align: center;
+}
+
+.item {
+  -webkit-animation: fadein .3s linear forwards;
+  animation: fadein .3s linear forwards;
+  padding: 10px;
+}
+.itemfadeout{
+  align-items: center;
+  padding: 10px;
+  -webkit-animation: fadeout .3s linear forwards;
+  animation: fadeout .3s linear forwards;
+}
+  
+@-webkit-keyframes fadein {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+  
+@keyframes fadein {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+  
+@-webkit-keyframes fadeout {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+  
+@keyframes fadeout {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
 }

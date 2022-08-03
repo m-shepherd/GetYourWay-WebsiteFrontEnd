@@ -5,14 +5,27 @@ import './ViewJourney.css'
 class AllLegs extends Component {
     constructor(props) {
         super(props);
-        this.state = { data: this.props.data, deleteLeg: this.props.deleteLeg }
+        this.state = { data: this.props.data, deleteLeg: this.props.deleteLeg,
+                       isFadingOut: this.props.isFadingOut, fadeOut: this.props.fadeOut}
     }
+
+    // componentDidUpdate(){
+    //     console.log(this.state.isFadingOut)
+    // }
+
+    // componentWillReceiveProps(nextProps) {
+    //     console.log(nextProps)
+    //     if (this.state.isFadingOut != this.props.isFadingOut){
+    //         this.setState({isFadingOut: nextProps.isFadingOut})
+    //         console.log(this.state)
+    //     }
+    // }
 
 
     render() {
         return (
             <div>
-                <h3 class="jheading">Your Journey</h3>
+                <h3 className="jheading">Your Journey</h3>
                 <table class="journey-table">
                     <thead>
                         <tr>
@@ -30,7 +43,8 @@ class AllLegs extends Component {
                             this.state.data.map(currentLeg => {
                                 return (<Leg id={currentLeg.id} transport={currentLeg.transport} startLocation={currentLeg.startLocation}
                                     startTime={currentLeg.startTime} endLocation={currentLeg.endLocation} endTime={currentLeg.endTime}
-                                    duration={currentLeg.duration} key={currentLeg.id} deleteLeg={this.state.deleteLeg}/>)
+                                    duration={currentLeg.duration} key={currentLeg.id}
+                                    isFadingOut={this.props.isFadingOut} fadeOut={this.state.fadeOut}/>)
                             })}
                     </tbody>
                 </table>
