@@ -70,6 +70,10 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         destination.classList.add('single');
         const find = document.querySelector('#find');
         find.style.display = 'none';
+        const add = document.querySelector('#add');
+        add.style.display = 'none';
+        const times = document.querySelector('#times');
+        times.style.display = 'none';
     }
 
     const onEndMarkerClick = (e) => {
@@ -85,6 +89,10 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         start.classList.add('single');
         const find = document.querySelector('#find');
         find.style.display = 'none';
+        const add = document.querySelector('#add');
+        add.style.display = 'none';
+        const times = document.querySelector('#times');
+        times.style.display = 'none';
     }
 
     useEffect(() => {
@@ -127,6 +135,8 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
     const getDirections = () => {
         if (startMarkerPos != null && endMarkerPos != null){
             setShowDirections(true)
+            const times = document.querySelector('#times');
+            times.style.display = 'grid';
         }
     }
 
@@ -321,27 +331,29 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                         </GoogleMap>
                     </div>
                     <div className={mapStyles.directions}>
-                        <div className={mapStyles.field} id="start" style={{display: 'none'}}>
+                        <div className={`${mapStyles.field} ${mapStyles.location}`} id="start" style={{display: 'none'}}>
                             <div className={mapStyles.input}>
                                 {startMarkerAddress == null ? '' : "Start: " + startMarkerAddress}
-                            </div>
-                        </div>
-                        <div className={mapStyles.field} id="finish" style={{display: 'none'}}>
-                            <div className={mapStyles.input}>
-                                {endMarkerAddress == null ? '' : "Destination: " + endMarkerAddress}
                             </div>
                         </div>
                         <div id="find" className={`${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={{display: 'none'}}>
                             <div className={mapStyles.btn_layer}>
                                 <input type="submit" onClick={getDirections} value="Get Directions"/>
                             </div>
+                        </div>
+                        <div className={`${mapStyles.field} ${mapStyles.location}`} id="finish" style={{display: 'none'}}>
+                            <div className={mapStyles.input}>
+                                {endMarkerAddress == null ? '' : "Destination: " + endMarkerAddress}
+                            </div>
+                        </div>
+                        <div id="add" className={`${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={{display: 'none'}}>
                             <div className={mapStyles.btn_layer}>
-                            <input type="submit" onClick={handleSubmitJourney} id="DRIVING" value="Add Leg To Journey"/>
+                                <input type="submit" onClick={handleSubmitJourney} id="DRIVING" value="Add Leg To Journey"/>
                             </div>
                         </div>
                     </div>
                     
-                    <div className={mapStyles.times}>
+                    <div id="times" className={mapStyles.times} style={{display: 'none'}}>
                         <div className={`${mapStyles.field} ${mapStyles.timediv}`}id="departTime" >
                             <div className={mapStyles.input}>
                                 <input type='time' className={mapStyles.time} onChange={departChanged} value={departTime}/>
@@ -353,7 +365,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                             </div>
                         </div>
                         <div className={`${mapStyles.field} ${mapStyles.timediv}`} id="duration" >
-                            <div>
+                            <div className={mapStyles.input}>
                                 {timeTaken === '' ? '' : "Duration: " + timeTaken}
                             </div>
                         </div>

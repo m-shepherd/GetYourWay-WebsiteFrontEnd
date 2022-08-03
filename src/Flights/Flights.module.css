@@ -34,16 +34,8 @@ html,body{
     .form_container .form_inner form {
         grid-gap: 8px;
     }
-    .col:first-child, .col:last-child{
+    .col:first-child{
         grid-column: span 12;
-    }
-}
-@media only screen and (min-width: 420px){
-    .col:last-child {
-        grid-column: span 4;
-    }
-    .col:first-child {
-        grid-column: span 8;
     }
 }
 @media only screen and (min-width: 850px){
