@@ -8,6 +8,11 @@ import {useState} from "react";
 
 const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmitJourney}) => {
     const [flights, setFlights] = useState();
+    const [date, setDate] = useState("2022-08-05");
+
+    function updateDate(event) {
+        setDate(event.target.value);
+    }
 
     function confirmFlights() {
         const clickedItems = document.getElementsByClassName('clicked');
@@ -79,8 +84,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
         }
     }
 
-    function getFlights(event) {
-        event.preventDefault();
+    function getFlights() {
         const flightTable = document.querySelector("#flightTable");
         const flightData = document.querySelector("#flightData");
         const dataTitle = document.querySelector("#dataTitle");
@@ -165,10 +169,6 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
     }
 
     useEffect(() => {
-        document.getElementById("formSubmit").click();
-    }, [flights])
-
-    useEffect(() => {
 
         const getNearestAirports = () => {
             console.log(nearestDepartureAirports, nearestArrivalAirports)
@@ -179,13 +179,17 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
                 flightData.style.display = "none";
                 dataTitle.style.display = "block";
                 title.innerHTML = "Searching For Flights...";
-                axios.get(BACKEND_ADDRESS + "/flights?date=2022-11-01&dep=" + nearestDepartureAirports + "&arr=" + nearestArrivalAirports + "&direct=true", {
+
+                console.log(date);
+
+                axios.get(BACKEND_ADDRESS + "/flights?date=" + date + "&dep=" + nearestDepartureAirports + "&arr=" + nearestArrivalAirports + "&direct=true", {
                     headers: {
                         'Authorization': `Basic ${localStorage.getItem('auth')}`
                     }
                 }).then(response => {
                     if (response['data'] !== '') {
                         setFlights(response['data']);
+                        getFlights()
                     } else {
                         const flightTable = document.querySelector("#flightTable");
                         flightTable.innerHTML = "";
@@ -196,6 +200,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
                         }).then(response => {
                             if (response['data'] !== '') {
                                 setFlights(response['data']);
+                                getFlights()
                             } else {
                                 noFlights()
                             }
@@ -212,7 +217,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
 
         getNearestAirports();
 
-    }, [nearestArrivalAirports, nearestDepartureAirports]);
+    }, [nearestArrivalAirports, nearestDepartureAirports, date]);
 
     return (
         <>
@@ -222,18 +227,12 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
                         <div className={flightStyles.form_inner}>
                             <form id="findFlights" onSubmit={getFlights}>
                                 <div className={`${flightStyles.field} ${flightStyles.col}`}>
-                                    <input type="date" id="date" min={new Date().toISOString().split('T')[0]}/>
+                                    <input type="date" id="date" min={new Date().toISOString().split('T')[0]} value={date} onInput={updateDate}/>
                                 </div>
-                                {/*<div className={`${flightStyles.field} ${flightStyles.col}`}>*/}
-                                {/*    <input type="text" id="departureAirport" placeholder="Departure Airport"/>*/}
+                                {/*<div className={`${flightStyles.field} ${flightStyles.btn} ${flightStyles.col}`}>*/}
+                                {/*    <div className={flightStyles.btn_layer}></div>*/}
+                                {/*    <input id="formSubmit" type="submit" value="Find Flights"/>*/}
                                 {/*</div>*/}
-                                {/*<div className={`${flightStyles.field} ${flightStyles.col}`}>*/}
-                                {/*    <input type="text" id="arrivalAirport" placeholder="Arrival Airport"/>*/}
-                                {/*</div>*/}
-                                <div className={`${flightStyles.field} ${flightStyles.btn} ${flightStyles.col}`}>
-                                    <div className={flightStyles.btn_layer}></div>
-                                    <input id="formSubmit" type="submit" value="Find Flights"/>
-                                </div>
                             </form>
                         </div>
                     </div>
