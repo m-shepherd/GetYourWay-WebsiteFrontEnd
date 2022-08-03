@@ -5,10 +5,13 @@ import {useEffect} from "react";
 import axios from "axios";
 import {BACKEND_ADDRESS} from "../configuration";
 import {useState} from "react";
+import moment from "moment";
 
-const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmitJourney}) => {
+
+const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney, endLocation, legId}) => {
     const [flights, setFlights] = useState();
     const [date, setDate] = useState("2022-08-05");
+    const [legs, setLegs] = useState([]);
 
     function updateDate(event) {
         setDate(event.target.value);
@@ -38,7 +41,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
             }
 
             const jsonFields = ['departure_airport', 'departure_time', 'arrival_airport',
-                'arrival_time', 'price']
+                'arrival_time', 'duration', 'price']
 
             let jsonData = "{";
             for (let i = 0; i <flightData.length - 1; i++) {
@@ -49,10 +52,10 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
                 }
             }
             let legInfo = '['
-            for (let i = 0; i < childFlightData.length - 1; i+= 4) {
+            for (let i = 0; i < childFlightData.length - 1; i+= 5) {
                 let leg = ''
                 if (i !== childFlightData.length - 2) {
-                    for (let j = 0; j < 4; j++) {
+                    for (let j = 0; j < 5; j++) {
                         if (j === 0) {
                             leg += '{"departure": {'
                         }
@@ -64,23 +67,31 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
                             leg += '},'
                         } else if (j === 3) {
                             leg += '"' + jsonFields[j] + '": "' + childFlightData[j + i] + '"'
-                            leg += '}}';
+                            leg += '}';
+                        } else if (j === 4) {
+                            leg += ',"' + jsonFields[j] + '": "' + childFlightData[j + i] + '"}'
                         } else {
-                            leg += '"' + jsonFields[j] +'": "' + childFlightData[j + i] + '",'
+                            leg += '"' + jsonFields[j] + '": "' + childFlightData[j + i] + '",'
                         }
                     }
                     if (i + 4 < childFlightData.length - 1) {
                         legInfo += leg + ','
-                    } else
+                    } else {
                         legInfo += leg
+                    }
                 }
             }
             jsonData += ',"legs":' + legInfo + ']';
 
             jsonData += '}';
 
-            console.log(JSON.parse(jsonData));
-            const handle = handleSubmitJourney
+            const legData = JSON.parse(jsonData);
+
+            if (legData['legs'].length > 0) {
+                    setLegs(legData['legs']);
+            } else {
+                setLegs([legData]);
+            }
         }
     }
 
@@ -96,14 +107,14 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
             dataTitle.style.display = "block";
             let numberOfRows = -1;
             for (let i = 0; i < flights.length; i++) {
-                        const row = flightTable.insertRow(-1)
-                        numberOfRows ++;
-                        row.setAttribute('data-href', '#');
-                        const expand = row.insertCell(0);
+                const row = flightTable.insertRow(-1)
+                numberOfRows ++;
+                row.setAttribute('data-href', '#');
+                const expand = row.insertCell(0);
                 if (flights[i]['airports'].length > 2) {
                     expand.innerHTML = "<i class='arrow'></i>"
                 }
-                        for (let j = 1; j < 6; j++) {
+                        for (let j = 1; j < 7; j++) {
                             switch (j) {
                                 case 1:
                                     const arr = row.insertCell(j);
@@ -122,6 +133,25 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
                                     depT.innerHTML = flights[i]['times'][flights[i]['times'].length - 1];
                                     break;
                                 case 5:
+                                    const totalDuration = row.insertCell(j);
+                                    const duration = moment.duration(flights[i]['durations'][0])
+                                    let hours = 5;
+                                    if (parseInt(flights[i]['durations'][0].charAt(2)) >= 2 && flights[i]['durations'][0].charAt(3) !== 'H') {
+                                        if (parseInt(flights[i]['durations'][0].charAt(3)) > 3) {
+                                            hours = flights[i]['durations'][0].substring(2, 4);
+                                        } else {
+                                            hours = duration.hours();
+                                        }
+                                    } else {
+                                        hours = duration.hours();
+                                    }
+                                    if (duration.minutes() === 0) {
+                                        totalDuration.innerHTML = hours + "H"
+                                    } else {
+                                        totalDuration.innerHTML = hours + "H:" + String(duration.minutes()).padStart(2, "0").padEnd(2, "0") + "M";
+                                    }
+                                    break;
+                                case 6:
                                     const price = row.insertCell(j);
                                     price.innerHTML = "£" + flights[i]['price'] + "0";
                                     break;
@@ -145,7 +175,15 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
                                 cell3.innerHTML = flights[i]['airports'][j + 1]
                                 const cell4 = childRow.insertCell(4);
                                 cell4.innerHTML = flights[i]['times'][j * 2 + 1]
-                                childRow.insertCell(5)
+                                const cell5 = childRow.insertCell(5);
+                                const childDuration = moment.duration(flights[i]['durations'][j + 1])
+                                if (childDuration.minutes() === 0) {
+                                    cell5.innerHTML = childDuration.hours() + "H"
+                                } else {
+                                    cell5.innerHTML = childDuration.hours() + "H:" + String(childDuration.minutes()).padStart(2, "0").padEnd(2, "0") + "M";
+                                }
+                                childRow.insertCell(6)
+
                             }
                             numberOfRows += numberOfChildRows;
                         }
@@ -168,11 +206,55 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
         title.innerHTML = "No Flights Available";
     }
 
+    function getDuration() {
+        const duration = legs[0]['duration']
+        const hours = duration.substring(0, duration.indexOf('H'));
+        let output = hours + ' hours'
+        if (duration.indexOf('H') !== duration.length - 1) {
+            const minutes = duration.substring(duration.indexOf('M') - 2, duration.length -1)
+            output += ' ' + minutes + ' minutes'
+        }
+        return output
+    }
+
+    useEffect(() => {
+        getFlights()
+    }, [flights]);
+
+    useEffect(() => {
+        if (endLocation && legs.length > 0) {
+            document.getElementById("FLYING").click();
+            legs.shift()
+            setLegs([...legs])
+        }
+    }, [endLocation])
+
+    useEffect(() => {
+        console.log(legs);
+        if (legs.length > 0) {
+            if (legs[0].hasOwnProperty('arrival')) {
+                setEndLocation(legs[0]['arrival']['arrival_airport'])
+                setEndTime(legs[0]['arrival']['arrival_time'])
+                setStartLocation(legs[0]['departure']['departure_airport'])
+                setStartTime(legs[0]['departure']['departure_time'])
+                console.log(legs[0]['duration'])
+                setDuration(getDuration())
+            } else {
+                setEndLocation(legs[0]['arrival_airport'])
+                setEndTime(legs[0]['arrival_time'])
+                setStartLocation(legs[0]['departure_airport'])
+                setStartTime(legs[0]['departure_time'])
+                setDuration(getDuration())
+            }
+
+        }
+    }, [legs])
+
     useEffect(() => {
 
         const getNearestAirports = () => {
             console.log(nearestDepartureAirports, nearestArrivalAirports)
-            if (nearestDepartureAirports !== nearestArrivalAirports) {
+            if (nearestDepartureAirports !== nearestArrivalAirports && nearestArrivalAirports && nearestDepartureAirports) {
                 const flightData = document.querySelector("#flightData");
                 const dataTitle = document.querySelector("#dataTitle");
                 const title = document.querySelector("#title");
@@ -187,20 +269,19 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
                         'Authorization': `Basic ${localStorage.getItem('auth')}`
                     }
                 }).then(response => {
+                    console.log(response)
                     if (response['data'] !== '') {
                         setFlights(response['data']);
-                        getFlights()
                     } else {
                         const flightTable = document.querySelector("#flightTable");
                         flightTable.innerHTML = "";
-                        axios.get(BACKEND_ADDRESS + "/flights?date=2022-11-01&dep=" + nearestDepartureAirports + "&arr=" + nearestArrivalAirports + "&direct=false", {
+                        axios.get(BACKEND_ADDRESS + "/flights?date=" + date + "&dep=" + nearestDepartureAirports + "&arr=" + nearestArrivalAirports + "&direct=false", {
                             headers: {
                                 'Authorization': `Basic ${localStorage.getItem('auth')}`
                             }
                         }).then(response => {
                             if (response['data'] !== '') {
                                 setFlights(response['data']);
-                                getFlights()
                             } else {
                                 noFlights()
                             }
@@ -248,6 +329,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
                                 <th>Departure Time</th>
                                 <th>Arrival Airport</th>
                                 <th>Arrival Time</th>
+                                <th>Duration</th>
                                 <th>Price</th>
                                 </thead>
                                 <tbody id="flightTable"></tbody>
@@ -256,8 +338,9 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmit
                     </div>
                     <div id="destination" className={`${flightStyles.field} ${flightStyles.btn}`} style={{display: "none"}}>
                         <div className={flightStyles.btn_layer}></div>
-                        <input id="FLYING" type="submit" onClick={confirmFlights} value="Add Flight To Journey"/>
+                        <input id="confirm" type="submit" onClick={confirmFlights} value="Confirm Flights"/>
                     </div>
+                    <input id="FLYING" type="submit" onClick={handleSubmitJourney} style={{display: "none"}}/>
                 </div>
             </div>
         </>
