@@ -90,6 +90,11 @@ const Shows = ({ setStartMarkerPos, setEndMarkerPos, setLatitude, setLongitude, 
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
                 setMapInformation({lat: latitude, lng: longitude, selectedIndex: selectedIndex});
+            }, function (error) {
+                if (error.code === error.PERMISSION_DENIED) {
+                    const latitude = 53.789402;
+                    const longitude = ;
+                }
             });
         } else {
             console.log('Geolocation not enabled, cannot provide accurate starting position');
