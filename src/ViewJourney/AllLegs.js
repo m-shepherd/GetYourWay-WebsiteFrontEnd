@@ -9,18 +9,6 @@ class AllLegs extends Component {
                        isFadingOut: this.props.isFadingOut, fadeOut: this.props.fadeOut}
     }
 
-    // componentDidUpdate(){
-    //     console.log(this.state.isFadingOut)
-    // }
-
-    // componentWillReceiveProps(nextProps) {
-    //     console.log(nextProps)
-    //     if (this.state.isFadingOut != this.props.isFadingOut){
-    //         this.setState({isFadingOut: nextProps.isFadingOut})
-    //         console.log(this.state)
-    //     }
-    // }
-
 
     render() {
         return (
