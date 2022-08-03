@@ -76,3 +76,56 @@
     cursor: pointer;
     text-align: center;
 }
+
+@media only screen{
+  .wrapper{
+      overflow: hidden;
+      width: 95vw;
+      max-width: 95vw;
+      background: #fff;
+      padding: 30px;
+      margin: auto;
+      border-radius: 15px;
+      box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+  }
+}
+@media only screen and (min-width: 850px){
+  .wrapper{
+      width: 50em;
+      max-width: 50em;
+  }
+}
+.wrapper .title_text{
+  display: flex;
+  width: 200%;
+}
+.wrapper .title{
+  width: 50%;
+  font-size: 35px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+}
+
+.pass_link{
+  flex-grow: 1;
+  text-align: center;
+  margin-top: 0.5em;
+}
+.pass_link a {
+  color: #1a75ff;
+  text-decoration: none;
+}
+.pass_link a:hover {
+  text-decoration: underline;
+}
+.padding{
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+}
+
+.headerBar {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}

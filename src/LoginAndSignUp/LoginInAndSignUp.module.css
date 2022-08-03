@@ -23,7 +23,6 @@ html,body{
         font-size: 15px;
         font-weight: 600;
         text-align: center;
-        transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
     }
     .slide_controls .slide{
         height: 100%;
@@ -47,6 +46,7 @@ html,body{
         margin: auto;
         border-radius: 15px;
         box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+        transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
     }
 }
 @media only screen and (min-width: 280px){
@@ -55,7 +55,6 @@ html,body{
         font-size: 20px;
         font-weight: 600;
         text-align: center;
-        transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
     }
     .slide_controls .slide{
         height: 100%;
@@ -79,6 +78,7 @@ html,body{
         margin: auto;
         border-radius: 15px;
         box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+        transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
     }
 }
 @media only screen and (min-width: 361px){
@@ -87,7 +87,6 @@ html,body{
         font-size: 35px;
         font-weight: 600;
         text-align: center;
-        transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
     }
     .slide_controls .slide{
         height: 100%;
@@ -111,6 +110,7 @@ html,body{
         margin: auto;
         border-radius: 15px;
         box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+        transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
     }
 }
 @media only screen and (min-width: 600px){
@@ -128,6 +128,10 @@ html,body{
 .wrapper .title_text{
     display: flex;
     width: 200%;
+}
+
+.logoImage {
+    width: 40%;
 }
 
 .wrapper .slide_controls{

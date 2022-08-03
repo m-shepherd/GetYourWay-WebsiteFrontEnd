@@ -71,12 +71,14 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
                 <div className={mainStyles.padding}>
                     <div className={mainStyles.wrapper}>
                         <div className={mainStyles.title_text}>
-                            <div className={mainStyles.title}>Main Page</div>
+                            <div className={mainStyles.title}>DAMM - Get Your Way</div>
                         </div>
-                        <div className={mainStyles.pass_link} onClick={logOut}><a href="">Log Out</a></div>
-                        <div className={mainStyles.pass_link}><a href="#map">Map</a></div>
-                        <div className={mainStyles.pass_link}><a href="#findFlights">Find Flights</a></div>
-                        <div className={mainStyles.pass_link}><a href="#" onClick={() => navigate("/ViewJourney")}>View Journey</a></div>
+                        <div className={mainStyles.headerBar}>
+                            <div className={mainStyles.pass_link} onClick={logOut}><a href="">Log Out</a></div>
+                            <div className={mainStyles.pass_link}><a href="#map">Map</a></div>
+                            <div className={mainStyles.pass_link}><a href="#findFlights">Find Flights</a></div>
+                            <div className={mainStyles.pass_link}><a href="#" onClick={() => navigate("/ViewJourney")}>View Journey</a></div>
+                        </div>
                     </div>
                 </div>
 

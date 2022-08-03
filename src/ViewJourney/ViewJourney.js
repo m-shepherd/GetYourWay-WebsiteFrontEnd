@@ -33,8 +33,26 @@ const ViewJourney = ({ allJourneyLegs, setAllJourneyLegs }) => {
   //     fakeLink.remove();
   // };
 
+  function logOut() {
+    localStorage.removeItem('auth');
+    navigate('/')
+  }
+
   return (
     <>
+    <div className='padding'>
+        <div className='wrapper'>
+            <div className='title_text'>
+                <div className='title'>DAMM - Get Your Way</div>
+            </div>
+            <div className='headerBar'>
+                <div className='pass_link' onClick={logOut}><a href="">Log Out</a></div>
+                <div className='pass_link'><a href="#" onClick={() => navigate("/MainPage")}>Map</a></div>
+                <div className='pass_link'><a href="#" onClick={() => navigate("/MainPage")}>Find Flights</a></div>
+                <div className='pass_link'><a href="#" onClick={() => navigate("/ViewJourney")}>View Journey</a></div>
+            </div>
+        </div>
+    </div>
       <AllLegs data={allJourneyLegs} setAllJourneyLegs={setAllJourneyLegs}/>
       <div>
         <button className={styles.button} href="#" onClick={() => { navigate("/MainPage") }}>Back to main page</button>
