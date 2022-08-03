@@ -5,17 +5,19 @@ import { useRef } from 'react'
 import styles from './ViewJourney.css'
 
 const Leg = ({id,transport,startLocation,startTime,endLocation,
-              endTime, duration, allJourneyLegs, setAllJourneyLegs}) => {
+              endTime, duration, deleteLeg}) => {
 
-  const deleteLeg = (e) => {
-    const deleteId = idRef.current.getAttribute("legid")
-    const allJourneyLegsCopy = allJourneyLegs
+  // const deleteLeg = (e) => {
+  //   const deleteId = e.target.getAttribute("id")
+  //   console.log(deleteId)
+  //   // const deleteId = idRef.current.getAttribute("legid")
+  //   const allJourneyLegsCopy = allJourneyLegs
 
-    let newJourneyLegs = allJourneyLegsCopy.filter(leg => leg.id != deleteId)
+  //   let newJourneyLegs = allJourneyLegsCopy.filter(leg => leg.id != deleteId)
 
-    setAllJourneyLegs(newJourneyLegs)
+  //   setAllJourneyLegs(newJourneyLegs)
 
-  }
+  // }
 
   const idRef = useRef(0);
 
@@ -39,7 +41,7 @@ const Leg = ({id,transport,startLocation,startTime,endLocation,
         <td>{duration}</td>
         <td><div className={`${styles.field} ${styles.btn} ${styles.col}`}>
                                     <div className={styles.btn_layer}></div>
-                                    <input type="submit" value="Delete" onClick={deleteLeg}/>
+                                    <input id={id} type="submit" value="Delete" onClick={deleteLeg}/>
                                 </div></td>
         {/* <td><button className={styles.btn} onClick={deleteLeg}>Delete</button></td> */}
     </tr>

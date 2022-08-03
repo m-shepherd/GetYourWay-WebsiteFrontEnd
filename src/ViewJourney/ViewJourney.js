@@ -2,7 +2,9 @@
 import React from 'react'
 import AllLegs from './AllLegs'
 import { useNavigate } from 'react-router-dom'
-import styles from './ViewJourney.css'
+import { useRef } from 'react'
+import { exportComponentAsJPEG, exportComponentAsPDF, exportComponentAsPNG } from 'react-component-export-image';
+
 // import { useRef, useEffect } from 'react'
 // import html2canvas from 'html2canvas';
 //import { jsPDF } from 'jspdf';
@@ -11,7 +13,7 @@ const ViewJourney = ({ allJourneyLegs, setAllJourneyLegs }) => {
 
   let navigate = useNavigate();
 
-  // const print = useRef();
+  const printRef = useRef();
 
   // useEffect(() => {}, [print])
 
@@ -33,14 +35,27 @@ const ViewJourney = ({ allJourneyLegs, setAllJourneyLegs }) => {
   //     fakeLink.remove();
   // };
 
+  const deleteLeg = (e) => {
+    const deleteId = e.target.getAttribute("id")
+    let i = 1;
+
+    allJourneyLegs.splice(deleteId - 1, 1)
+    allJourneyLegs.map(leg => leg.id = i++)
+    setAllJourneyLegs([...allJourneyLegs])    
+
+  }
+
+
+
+
   return (
     <>
-      <AllLegs data={allJourneyLegs} setAllJourneyLegs={setAllJourneyLegs}/>
+      <AllLegs data={allJourneyLegs} deleteLeg={deleteLeg} ref={printRef}/>
       <div>
-        <button className={styles.button} onClick={() => { navigate("/MainPage") }}>Back to main page</button>
-        {/* <button type="button" onClick={handleDownloadPdf}>
-        Download as PDF
-      </button> */}
+        <button onClick={() => { navigate("/MainPage") }}>Back to main page</button>
+        <button type="button" onClick={() => exportComponentAsJPEG(printRef)}>
+        Download as JPEG
+      </button> 
       </div>
     </>
   )
