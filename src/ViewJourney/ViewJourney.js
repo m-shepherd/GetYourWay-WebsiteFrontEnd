@@ -2,6 +2,7 @@
 import React from 'react'
 import AllLegs from './AllLegs'
 import { useNavigate } from 'react-router-dom'
+import styles from './ViewJourney.css'
 import { useRef } from 'react'
 import { exportComponentAsJPEG, exportComponentAsPDF, exportComponentAsPNG } from 'react-component-export-image';
 
@@ -52,8 +53,8 @@ const ViewJourney = ({ allJourneyLegs, setAllJourneyLegs }) => {
     <>
       <AllLegs data={allJourneyLegs} deleteLeg={deleteLeg} ref={printRef}/>
       <div>
-        <button onClick={() => { navigate("/MainPage") }}>Back to main page</button>
-        <button type="button" onClick={() => exportComponentAsJPEG(printRef)}>
+        <button className={styles.button} onClick={() => { navigate("/MainPage") }}>Back to main page</button>
+        <button className={styles.button} onClick={() => exportComponentAsJPEG(printRef)}>
         Download as JPEG
       </button> 
       </div>
