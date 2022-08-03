@@ -1,6 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
-import PropTypes from "prop-types";
+import { useState, useEffect } from 'react';
 import { GoogleMap, useLoadScript, Marker, DirectionsRenderer, DirectionsService, Autocomplete } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 import mapStyles from './Map.module.css';
@@ -17,7 +16,8 @@ const containerStyle = {
     height: '450px'
 };
 
-const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude, setStartName, setDestinationName}) => {
+const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude, setLatitude, setLongitude, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney, setStartName, setDestinationName, startMarkerPos, setStartMarkerPos, endMarkerPos, setEndMarkerPos, showDirections, setShowDirections, directions, setDirections}) => {
+
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
         libraries
@@ -25,15 +25,16 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
 
     Geocode.setApiKey(MAPS_API_KEY)
 
-    const [centre, setCentre] = useState({lat: LATITUDE, lng: LONGITUDE});
-    const [startMarkerPos,setStartMarkerPos] = useState(null);
-    const [endMarkerPos,setEndMarkerPos] = useState(null);
     const [startMarkerVis,setStartMarkerVis] = useState(false);
     const [endMarkerVis,setEndMarkerVis] = useState(false);
     const [startMarkerAddress,setStartMarkerAddress] = useState('');
     const [endMarkerAddress,setEndMarkerAddress] = useState('');
-    const [directions,setDirections] = useState(null);
-    const [showDirections,setShowDirections] = useState(false);
+    const [timeTaken,setTimeTaken] = useState('')
+    const [departTime,setDepartTime] = useState('00:00');
+    const [arrivalTime,setArrivalTime] = useState('00:00');
+
+    const [centre, setCentre] = useState({lat: LATITUDE, lng: LONGITUDE});
+
     const [startAutocomplete,setStartAutocomplete] = useState(null);
     const [endAutocomplete,setEndAutocomplete] = useState(null);
 
@@ -50,13 +51,14 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
             setArrivalLatitude(e.latLng.lat());
             setArrivalLongitude(e.latLng.lng());
             setEndMarkerVis(true);
+            setLatitude(e.latLng.lat());
+            setLongitude(e.latLng.lng());
             getGeocode(e.latLng,setEndMarkerAddress, setDestinationName);
             setDestination(startMarkerVis);
         }
     }
 
     const onStartMarkerClick = (e) => {
-        setStartMarkerVis(false);
         setDirections(null);
         setShowDirections(null);
         setStartMarkerPos(null);
@@ -68,7 +70,6 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         destination.classList.add('single');
         const find = document.querySelector('#find');
         find.style.display = 'none';
-
     }
 
     const onEndMarkerClick = (e) => {
@@ -86,11 +87,39 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         find.style.display = 'none';
     }
 
+    useEffect(() => {
+        if (startMarkerPos == null) {
+            setStartMarkerVis(false);
+        } else {
+            setStartMarkerVis(true);
+        }
+    }, [startMarkerPos]);
+
+    useEffect(() => {
+        if (endMarkerPos == null) {
+            setEndMarkerVis(false);
+        } else {
+            setEndMarkerVis(true);
+        }
+    }, [endMarkerPos]);
+
     const directionsCallback = (response) => {
         if (response !== null){
             if (response.status === 'OK') {
-                if (startMarkerPos != null && endMarkerPos != null && directions === null)
+                if (startMarkerPos != null && endMarkerPos != null && directions == null)
                     setDirections(response)
+                    setStartLocation(startMarkerAddress)
+                    setEndLocation(endMarkerAddress)
+                    setDuration(response.routes[0].legs[0].duration.text)
+                    setTimeTaken(response.routes[0].legs[0].duration.text)
+
+                    const startmins = getMinsFromInput(departTime)
+                    const durationmins = getMinsFromDuration(timeTaken)
+                    const totalmins = startmins + durationmins
+                    const time = getTimeFromMins(totalmins)
+                    setArrivalTime(time)
+                    setStartTime(departTime)
+                    setEndTime(arrivalTime)
             }
         }
     }
@@ -98,7 +127,6 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
     const getDirections = () => {
         if (startMarkerPos != null && endMarkerPos != null){
             setShowDirections(true)
-
         }
     }
 
@@ -153,6 +181,66 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         )
     }
 
+    const departChanged = (e) => {
+        const t = e.target.value
+        setDepartTime(t)
+        const startmins = getMinsFromInput(t)
+        const durationmins = getMinsFromDuration(timeTaken)
+        const totalmins = startmins + durationmins
+        const time = getTimeFromMins(totalmins)
+        setArrivalTime(time)
+        setStartTime(departTime)
+        setEndTime(arrivalTime)
+    }
+
+    const arrivalChanged = (e) => {
+        const t = e.target.value
+        setArrivalTime(t)
+        const startmins = getMinsFromInput(t)
+        const durationmins = getMinsFromDuration(timeTaken)
+        let totalmins = startmins - durationmins
+        if (totalmins < 0){
+            totalmins += 1440
+        }
+        const time = getTimeFromMins(totalmins)
+        setDepartTime(time)
+        setStartTime(departTime)
+        setEndTime(arrivalTime)
+    }
+
+    const getMinsFromInput = (time) => {
+        const hours = parseInt(time.slice(0,2))
+        const mins = parseInt(time.slice(3))
+        return mins + (hours*60)
+    }
+
+    const getMinsFromDuration = (time) => {
+        let totalMins = 0
+        const timeArray = time.split(/\s+/)
+        for (let i = 0; i < timeArray.length; i += 2) {
+            if (timeArray[i+1] === "min" || timeArray[i+1] === "mins"){
+                totalMins += parseInt(timeArray[i])
+            } else if (timeArray[i+1] === "hour" || timeArray[i+1] === "hours"){
+                totalMins += parseInt(timeArray[i])*60
+            } else if (timeArray[i+1] === "day" || timeArray[i+1] === "days"){
+                totalMins += parseInt(timeArray[i])*1440
+            }
+        }
+        return totalMins
+    }
+
+    const getTimeFromMins = (mins) => {
+        let hour = (Math.floor(mins/60) % 24).toString()
+        let minute = (mins % 60).toString()
+        if (hour.length === 1){
+            hour = '0'+hour
+        }
+        if (minute.length === 1){
+            minute = '0'+minute
+        }
+        return hour+":"+minute
+    }
+
     const getLocationNameFromGeocode = (resultObject) => {
         let locationName = '';
         const addressComponents = resultObject.address_components;
@@ -168,6 +256,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
             locationName += countryName[0]['long_name'];
         }
         return locationName;
+
     }
 
     if (!isLoaded) return <div className={mapStyles.wrapper}>Loading...</div>
@@ -246,6 +335,27 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                             <div className={mapStyles.btn_layer}>
                                 <input type="submit" onClick={getDirections} value="Get Directions"/>
                             </div>
+                            <div className={mapStyles.btn_layer}>
+                            <input type="submit" onClick={handleSubmitJourney} id="DRIVING" value="Add Leg To Journey"/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className={mapStyles.times}>
+                        <div className={`${mapStyles.field} ${mapStyles.timediv}`}id="departTime" >
+                            <div className={mapStyles.input}>
+                                <input type='time' className={mapStyles.time} onChange={departChanged} value={departTime}/>
+                            </div>
+                        </div>
+                        <div className={`${mapStyles.field} ${mapStyles.timediv}`} id="arrivalTime" >
+                            <div className={mapStyles.input}>
+                                <input type='time' className={mapStyles.time} onChange={arrivalChanged} value={arrivalTime}/>
+                            </div>
+                        </div>
+                        <div className={`${mapStyles.field} ${mapStyles.timediv}`} id="duration" >
+                            <div>
+                                {timeTaken === '' ? '' : "Duration: " + timeTaken}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -254,10 +364,5 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
     )
 
 }
-
-// Map.propTypes = {
-//     setLatitude: PropTypes.func.isRequired,
-//     setLongitude: PropTypes.func.isRequired
-// }
 
 export default Map

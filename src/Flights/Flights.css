@@ -27,3 +27,6 @@ td {
 .show{
     background-color: #dddddd;
 }
+#destination {
+    width: 50%;
+}

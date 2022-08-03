@@ -1,21 +1,82 @@
 import flightStyles from'./Flights.module.css';
 import './Flights.css'
-import {makeRowsClickable, confirmFlights} from "./FlightsUtils";
+import {makeRowsClickable} from "./FlightsUtils";
 import {useEffect} from "react";
 import axios from "axios";
 import {BACKEND_ADDRESS} from "../configuration";
 import {useState} from "react";
 
-const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
+const Flights = ({nearestDepartureAirports, nearestArrivalAirports, handleSubmitJourney}) => {
     const [flights, setFlights] = useState();
 
-    const fillInForm = () => {
-        const departureAirport = document.querySelector("#departureAirport");
-        const arrivalAirport = document.querySelector("#arrivalAirport");
+    function confirmFlights() {
+        const clickedItems = document.getElementsByClassName('clicked');
+        if (clickedItems.length === 1) {
+            const flightData = [];
+            const childFlightData = [];
+            const selectedFlights = clickedItems[0];
 
-        // departureAirport.value = nearestDepartureAirports[0]
-        // arrivalAirport.value = nearestArrivalAirports[0]
+            const childRowsName = selectedFlights.rowIndex+ 'child';
+            const childRows = document.getElementsByName(childRowsName);
 
+            selectedFlights.childNodes.forEach(
+                function(detail) {
+                    flightData.push(detail.textContent);
+                });
+
+            for (let i = 0; i < childRows.length; i++) {
+                for (let j = 0; j < childRows[i].childNodes.length; j++) {
+                    if (childRows[i].children[j].textContent !== '') {
+                        childFlightData.push(childRows[i].children[j].textContent)
+                    }
+                }
+            }
+
+            const jsonFields = ['departure_airport', 'departure_time', 'arrival_airport',
+                'arrival_time', 'price']
+
+            let jsonData = "{";
+            for (let i = 0; i <flightData.length - 1; i++) {
+                if (i === flightData.length - 2) {
+                    jsonData += '"' + jsonFields[i] + '": "' + flightData[i + 1] + '"';
+                } else {
+                    jsonData += '"' + jsonFields[i] + '": "' + flightData[i + 1] + '",';
+                }
+            }
+            let legInfo = '['
+            for (let i = 0; i < childFlightData.length - 1; i+= 4) {
+                let leg = ''
+                if (i !== childFlightData.length - 2) {
+                    for (let j = 0; j < 4; j++) {
+                        if (j === 0) {
+                            leg += '{"departure": {'
+                        }
+                        if (j === 2) {
+                            leg += '"arrival": {'
+                        }
+                        if (j === 1) {
+                            leg += '"' + jsonFields[j] + '": "' + childFlightData[j + i] + '"'
+                            leg += '},'
+                        } else if (j === 3) {
+                            leg += '"' + jsonFields[j] + '": "' + childFlightData[j + i] + '"'
+                            leg += '}}';
+                        } else {
+                            leg += '"' + jsonFields[j] +'": "' + childFlightData[j + i] + '",'
+                        }
+                    }
+                    if (i + 4 < childFlightData.length - 1) {
+                        legInfo += leg + ','
+                    } else
+                        legInfo += leg
+                }
+            }
+            jsonData += ',"legs":' + legInfo + ']';
+
+            jsonData += '}';
+
+            console.log(JSON.parse(jsonData));
+            const handle = handleSubmitJourney
+        }
     }
 
     function getFlights(event) {
@@ -104,7 +165,6 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
     }
 
     useEffect(() => {
-        fillInForm();
         document.getElementById("formSubmit").click();
     }, [flights])
 
@@ -126,7 +186,6 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
                 }).then(response => {
                     if (response['data'] !== '') {
                         setFlights(response['data']);
-                        fillInForm();
                     } else {
                         const flightTable = document.querySelector("#flightTable");
                         flightTable.innerHTML = "";
@@ -137,7 +196,6 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
                         }).then(response => {
                             if (response['data'] !== '') {
                                 setFlights(response['data']);
-                                fillInForm();
                             } else {
                                 noFlights()
                             }
@@ -199,7 +257,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
                     </div>
                     <div id="destination" className={`${flightStyles.field} ${flightStyles.btn}`} style={{display: "none"}}>
                         <div className={flightStyles.btn_layer}></div>
-                        <input id="confirm" type="submit" onClick={confirmFlights} value="Confirm Flight"/>
+                        <input id="FLYING" type="submit" onClick={confirmFlights} value="Add Flight To Journey"/>
                     </div>
                 </div>
             </div>
