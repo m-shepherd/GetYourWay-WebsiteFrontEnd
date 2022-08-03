@@ -91,7 +91,7 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
                 <Weather latitude={latitude} longitude={longitude} startName={startName} destinationName={destinationName}/>
 
-                <Flights setStartLocation={setStartLocation} setEndLocation={setEndLocation} setStartTime={setStartTime} setEndTime={setEndTime} setDuration={setDuration} handleSubmitJourney={handleSubmitJourney} nearestDepartureAirports={nearestDepartureAirports} nearestArrivalAirports={nearestArrivalAirports} endLocation={endLocation} legId={legId}/>
+                <Flights setStartLocation={setStartName} setEndLocation={setDestinationName} setStartTime={setStartTime} setEndTime={setEndTime} setDuration={setDuration} handleSubmitJourney={handleSubmitJourney} nearestDepartureAirports={nearestDepartureAirports} nearestArrivalAirports={nearestArrivalAirports} endLocation={destinationName} legId={legId}/>
             </>;
     }
 
