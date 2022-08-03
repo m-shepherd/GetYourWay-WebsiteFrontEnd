@@ -37,7 +37,7 @@ const ViewJourney = ({ allJourneyLegs, setAllJourneyLegs }) => {
     <>
       <AllLegs data={allJourneyLegs} setAllJourneyLegs={setAllJourneyLegs}/>
       <div>
-        <button className={styles.button} onClick={() => { navigate("/MainPage") }}>Back to main page</button>
+        <button className={styles.button} href="#" onClick={() => { navigate("/MainPage") }}>Back to main page</button>
         {/* <button type="button" onClick={handleDownloadPdf}>
         Download as PDF
       </button> */}
