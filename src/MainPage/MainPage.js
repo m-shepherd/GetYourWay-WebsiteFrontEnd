@@ -6,15 +6,13 @@ import Weather from '../Weather/Weather'
 import Flights from '../Flights/Flights'
 import Map from "../Map/Map";
 import Shows from '../Shows/Shows';
-import {LATITUDE, LONGITUDE, DESTINATION_NAME} from "../configuration";
+import {LATITUDE, LONGITUDE} from "../configuration";
 
 const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
     let navigate = useNavigate();
 
 
-    const [startLocation, setStartLocation] = useState("")
-    const [endLocation, setEndLocation] = useState("")
     const [startTime, setStartTime] = useState("")
     const [endTime, setEndTime] = useState("")
     const [duration, setDuration] = useState("")
@@ -29,9 +27,9 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
         setSubmittedJourney({
             "id": legId,
             "transport": e.target.getAttribute("id"),
-            "startLocation": startLocation,
+            "startLocation": startName,
             "startTime": startTime,
-            "endLocation": endLocation,
+            "endLocation": destinationName,
             "endTime": endTime,
             "duration": duration
     })  
@@ -46,7 +44,7 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
     const [latitude, setLatitude] = useState(LATITUDE);
     const [longitude, setLongitude] = useState(LONGITUDE);
-    const [startName, setStartName] = useState(DESTINATION_NAME);
+    const [startName, setStartName] = useState('');
     const [destinationName, setDestinationName] = useState('');
     const [startMarkerPos,setStartMarkerPos] = useState(null);
     const [endMarkerPos,setEndMarkerPos] = useState(null);
@@ -81,9 +79,9 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
                 <Shows setStartMarkerPos={setStartMarkerPos} setEndMarkerPos={setEndMarkerPos} setLatitude={setLatitude} setLongitude={setLongitude} setShowDirections={setShowDirections} 
                         startMarkerPos={startMarkerPos} showDirections={showDirections} endMarkerPos={endMarkerPos} setDirections={setDirections} setDestinationName={setDestinationName} />
-                <Map setLatitude={setLatitude} setLongitude={setLongitude} setStartLocation={setStartLocation}
-                 setEndLocation={setEndLocation} setStartTime={setStartTime} setEndTime={setEndTime} setDuration={setDuration} handleSubmitJourney={handleSubmitJourney} setStartName={setStartName} 
-                 setDestinationName={setDestinationName} startMarkerPos={startMarkerPos} setStartMarkerPos={setStartMarkerPos} endMarkerPos={endMarkerPos} setEndMarkerPos={setEndMarkerPos} 
+                <Map setLatitude={setLatitude} setLongitude={setLongitude} setStartTime={setStartTime} setEndTime={setEndTime} setDuration={setDuration} handleSubmitJourney={handleSubmitJourney} 
+                 setStartName={setStartName} startName={startName} setDestinationName={setDestinationName} destinationName={destinationName}
+                 startMarkerPos={startMarkerPos} setStartMarkerPos={setStartMarkerPos} endMarkerPos={endMarkerPos} setEndMarkerPos={setEndMarkerPos} 
                  showDirections={showDirections} setShowDirections={setShowDirections} setDirections={setDirections} directions={directions} />
                 <Weather latitude={latitude} longitude={longitude} startName={startName} destinationName={destinationName}/>
                 <Flights handleSubmitJourney={handleSubmitJourney}/>
