@@ -10,8 +10,7 @@ const Weather = ({latitude, longitude, startName, destinationName}) => {
     const [dailyWeather, setDailyWeather] = useState([]);
     const [weatherSymbolURL, setWeatherSymbolURL] = useState("https://openweathermap.org/img/wn/02d@2x.png");
     const [expanded, setExpanded] = useState(false);
-
-    const storedWeatherSymbols = {};
+    const [storedWeatherSymbols, setStoredWeatherSymbols] = useState({});
 
     const DAYS_OF_WEEK = ['SUN', 'MON', 'TUE', 'WED', 'THU', "FRI", "SAT"];
 
@@ -74,7 +73,9 @@ const Weather = ({latitude, longitude, startName, destinationName}) => {
                 let data = parsedData;
                 data['symbolUrl'] = response.data;
                 if(!storedWeatherSymbols.hasOwnProperty(currentWeather.description)) {
-                    storedWeatherSymbols[currentWeather.description] = response.data;
+                    let tempSymbols = storedWeatherSymbols;
+                    tempSymbols[currentWeather.description] = response.data;
+                    setStoredWeatherSymbols(tempSymbols);
                 }
                 setCurrentWeather(data);
             }).catch(error => {
@@ -94,7 +95,9 @@ const Weather = ({latitude, longitude, startName, destinationName}) => {
                         }
                     }).then(response => {
                         item['symbolUrl'] = response.data;
-                        storedWeatherSymbols[item.description] = response.data;
+                        let tempSymbols = storedWeatherSymbols;
+                        tempSymbols[item.description] = response.data;
+                        setStoredWeatherSymbols(tempSymbols);
                     }).catch(error => {
                         console.log('Could not fetch weather symbols for hourly weather');
                     })
