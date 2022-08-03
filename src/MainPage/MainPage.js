@@ -72,7 +72,7 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
                 </div>
 
                 <Map setLatitude={setLatitude} setLongitude={setLongitude} setStartLocation={setStartLocation}
-                 setEndLocation={setEndLocation} setTransport={setTransport} setStartTime={setStartTime} 
+                 setEndLocation={setEndLocation} setStartTime={setStartTime} 
                  setEndTime={setEndTime} setDuration={setDuration} handleSubmitJourney={handleSubmitJourney}/>
 
                 <Weather latitude={latitude} longitude={longitude}/>
