@@ -33,7 +33,7 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
 
     const handleSubmitJourney = (e) => {
         e.preventDefault()
- 
+        console.log(e.target)
         setSubmittedJourney({
             "id": legId,
             "transport": e.target.getAttribute("id"),
@@ -85,10 +85,13 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
                   setStartTime={setStartTime} setEndTime={setEndTime} setDuration={setDuration} handleSubmitJourney={handleSubmitJourney} setStartName={setStartName} startName={startName} setDestinationName={setDestinationName} destinationName={destinationName}
                   startMarkerPos={startMarkerPos} setStartMarkerPos={setStartMarkerPos} endMarkerPos={endMarkerPos} setEndMarkerPos={setEndMarkerPos} 
                   showDirections={showDirections} setShowDirections={setShowDirections} setDirections={setDirections} directions={directions} />
+
                 <NearestAirport latitude={departureLatitude} longitude={departureLongitude} setNearestAirports={setNearestDepartureAirports}/>
                 <NearestAirport latitude={arrivalLatitude} longitude={arrivalLongitude} setNearestAirports={setNearestArrivalAirports}/>
+
                 <Weather latitude={latitude} longitude={longitude} startName={startName} destinationName={destinationName}/>
-                <Flights handleSubmitJourney={handleSubmitJourney} nearestDepartureAirports={nearestDepartureAirports} nearestArrivalAirports={nearestArrivalAirports}/>
+
+                <Flights setStartLocation={setStartLocation} setEndLocation={setEndLocation} setStartTime={setStartTime} setEndTime={setEndTime} setDuration={setDuration} handleSubmitJourney={handleSubmitJourney} nearestDepartureAirports={nearestDepartureAirports} nearestArrivalAirports={nearestArrivalAirports} endLocation={endLocation} legId={legId}/>
             </>;
     }
 
