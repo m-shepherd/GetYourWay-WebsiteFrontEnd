@@ -24,6 +24,7 @@ class AllLegs extends Component {
                             <th>End</th>
                             <th>EndTime</th>
                             <th>duration</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
