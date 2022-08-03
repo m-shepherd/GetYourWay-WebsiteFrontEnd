@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 import { GoogleMap, useLoadScript, Marker, DirectionsRenderer, DirectionsService, Autocomplete } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
@@ -17,8 +17,8 @@ const containerStyle = {
     height: '450px'
 };
 
+const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney, setStartName, setDestinationName, startMarkerPos, setStartMarkerPos, endMarkerPos, setEndMarkerPos, showDirections, setShowDirections, directions, setDirections}) => {
 
-const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney}) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
         libraries
@@ -26,8 +26,6 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
 
     Geocode.setApiKey(MAPS_API_KEY)
 
-    const [startMarkerPos,setStartMarkerPos] = useState(null);
-    const [endMarkerPos,setEndMarkerPos] = useState(null);
     const [startMarkerVis,setStartMarkerVis] = useState(false);
     const [endMarkerVis,setEndMarkerVis] = useState(false);
     const [startMarkerAddress,setStartMarkerAddress] = useState('');
@@ -37,29 +35,25 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
     const [arrivalTime,setArrivalTime] = useState('00:00');
 
     const [centre, setCentre] = useState({lat: LATITUDE, lng: LONGITUDE});
-    const [directions,setDirections] = useState(null);
-    const [showDirections,setShowDirections] = useState(false);
+
     const [startAutocomplete,setStartAutocomplete] = useState(null);
     const [endAutocomplete,setEndAutocomplete] = useState(null);
 
     const onMapClick = (e) => {
         if (startMarkerVis === false){
             setStartMarkerPos(e.latLng);
-            setStartMarkerVis(true);
-            getGeocode(e.latLng, setStartMarkerAddress);
+            getGeocode(e.latLng, setStartMarkerAddress, setStartName);
             setStart(endMarkerVis);
         } else if (endMarkerVis === false){
             setEndMarkerPos(e.latLng);
             setLatitude(e.latLng.lat());
             setLongitude(e.latLng.lng());
-            setEndMarkerVis(true);
-            getGeocode(e.latLng,setEndMarkerAddress);
+            getGeocode(e.latLng,setEndMarkerAddress, setDestinationName);
             setDestination(startMarkerVis);
         }
     }
 
     const onStartMarkerClick = (e) => {
-        setStartMarkerVis(false);
         setDirections(null);
         setShowDirections(null);
         setStartMarkerPos(null);
@@ -71,7 +65,6 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
         destination.classList.add('single');
         const find = document.querySelector('#find');
         find.style.display = 'none';
-
     }
 
     const onEndMarkerClick = (e) => {
@@ -88,6 +81,22 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
         const find = document.querySelector('#find');
         find.style.display = 'none';
     }
+
+    useEffect(() => {
+        if (startMarkerPos == null) {
+            setStartMarkerVis(false);
+        } else {
+            setStartMarkerVis(true);
+        }
+    }, [startMarkerPos]);
+
+    useEffect(() => {
+        if (endMarkerPos == null) {
+            setEndMarkerVis(false);
+        } else {
+            setEndMarkerVis(true);
+        }
+    }, [endMarkerPos]);
 
     const directionsCallback = (response) => {
         if (response !== null){
@@ -125,7 +134,7 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
         setStartMarkerPos(loc)
         setStartMarkerVis(true)
         setCentre(loc)
-        getGeocode(loc,setStartMarkerAddress)
+        getGeocode(loc,setStartMarkerAddress, setStartName)
 
         setStart(endMarkerVis);
         setDirections(null);
@@ -142,7 +151,7 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
         setEndMarkerPos(loc)
         setEndMarkerVis(true)
         setCentre(loc)
-        getGeocode(loc,setEndMarkerAddress)
+        getGeocode(loc,setEndMarkerAddress, setDestinationName)
 
         setDestination(startMarkerVis);
         setDirections(null);
@@ -150,10 +159,13 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
 
     }
 
-    const getGeocode = (latLng, setFunc) => {
+    const getGeocode = (latLng, setFunc, setNameFunc) => {
         Geocode.fromLatLng(latLng.lat(),latLng.lng()).then(
             (response) => {
-                setFunc(response.results[0].formatted_address)
+                setFunc(response.results[0].formatted_address);
+                if (response.results[0].address_components != null) {
+                    setNameFunc(getLocationNameFromGeocode(response.results[0]));
+                }
             }, (error) => {
                 console.error(error)
             }
@@ -218,6 +230,24 @@ const Map = ({setLatitude, setLongitude, setStartLocation, setEndLocation, setSt
             minute = '0'+minute
         }
         return hour+":"+minute
+    }
+
+    const getLocationNameFromGeocode = (resultObject) => {
+        let locationName = '';
+        const addressComponents = resultObject.address_components;
+        const areaName = addressComponents.filter(component => component['types'].includes('postal_town'));
+        const localityName = addressComponents.filter(component => component['types'].includes('locality'));
+        if (areaName.length >= 1 && areaName[0] !== null) {
+            locationName += areaName[0]['long_name'] + ', ';
+        } else if (localityName.length >= 1 && localityName[0] !== null) {
+            locationName += localityName[0]['long_name'] + ', ';
+        }
+        const countryName = addressComponents.filter(component => component['types'].includes('country'));
+        if(countryName.length >= 1 && countryName[0] !==null) {
+            locationName += countryName[0]['long_name'];
+        }
+        return locationName;
+
     }
 
     if (!isLoaded) return <div className={mapStyles.wrapper}>Loading...</div>
