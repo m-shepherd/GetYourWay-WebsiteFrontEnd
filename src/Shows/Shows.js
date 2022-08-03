@@ -93,7 +93,8 @@ const Shows = ({ setStartMarkerPos, setEndMarkerPos, setLatitude, setLongitude, 
             }, function (error) {
                 if (error.code === error.PERMISSION_DENIED) {
                     const latitude = 53.789402;
-                    const longitude = ;
+                    const longitude = -1.533356;
+                    setMapInformation({lat: latitude, lng: longitude, selectedIndex: selectedIndex});
                 }
             });
         } else {
