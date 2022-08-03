@@ -1,5 +1,5 @@
 //This variable is only changed within the server configuration
-const runningOnServer = false;
+const runningOnServer = true;
 let backend_address;
 if (runningOnServer) {
     backend_address = 'http://3.10.61.220:8090/getYourWay';
