@@ -164,7 +164,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports}) => {
                         <div className={flightStyles.form_inner}>
                             <form id="findFlights" onSubmit={getFlights}>
                                 <div className={`${flightStyles.field} ${flightStyles.col}`}>
-                                    <input type="date" id="date" min={new Date().toISOString().split('T')[0]} placeholder="YYYY-MM-DD"/>
+                                    <input type="date" id="date" min={new Date().toISOString().split('T')[0]}/>
                                 </div>
                                 {/*<div className={`${flightStyles.field} ${flightStyles.col}`}>*/}
                                 {/*    <input type="text" id="departureAirport" placeholder="Departure Airport"/>*/}
