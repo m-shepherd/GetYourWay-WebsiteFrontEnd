@@ -28,14 +28,14 @@
     text-overflow: ellipsis;
 }
 .btn{
-    height: 85%;
+    height: 75%;
     width: 105%;
     border-radius: 15px;
     position: relative;
     overflow: hidden;
 }
 .btn .btn_layer{
-    height: 50%;
+    height: 100%;
     width: 300%;
     position: relative;
     left: -100%;
@@ -48,7 +48,7 @@
     left: 0;
 }
 .btn input[type="submit"]{
-    height: 50%;
+    height: 100%;
     width: 100%;
     z-index: 1;
     position: relative;
@@ -94,7 +94,6 @@
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     column-gap: 1em;
-    padding-bottom: 1.5em;
 }
 .times{
     display: grid;
@@ -104,10 +103,11 @@
     padding-top: 1.5em;
 }
 .get{
-    grid-column-start: 5;
-    grid-column-end: 7;
-    grid-row-start: 1;
-    grid-row-end: 3;
+    /*grid-column-start: 5;*/
+    /*grid-column-end: 7;*/
+    /*grid-row-start: 1;*/
+    /*grid-row-end: 3;*/
+    grid-column: span 2;
 }
 .location{
     grid-column: span 4;

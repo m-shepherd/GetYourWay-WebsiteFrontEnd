@@ -3,3 +3,30 @@
     background: -webkit-linear-gradient(right,#003366,#004080,#0059b3
     , #0073e6);
 }
+td {
+    height: 5em;
+    max-height:5em;
+}
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    width: 1em;
+    height: 1em;
+}
+.show{
+    background-color: #dddddd;
+}
+#destination {
+    width: 50%;
+}

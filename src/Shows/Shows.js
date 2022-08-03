@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { BACKEND_ADDRESS } from '../configuration';
 import axios from 'axios';
 
-const Shows = ({ setStartMarkerPos, setEndMarkerPos, setLatitude, setLongitude, showDirections, setShowDirections, startMarkerPos, endMarkerPos, setDirections, setDestinationName }) => {
+const Shows = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude, setStartMarkerPos, setEndMarkerPos, setLatitude, setLongitude, showDirections, setShowDirections, startMarkerPos, endMarkerPos, setDirections, setDestinationName }) => {
     const [showList, setShowList] = useState([]);
     const [mapInformation, setMapInformation] = useState({});
     const [loadingRoutes, setLoadingRoutes] = useState(false);
@@ -39,6 +39,8 @@ const Shows = ({ setStartMarkerPos, setEndMarkerPos, setLatitude, setLongitude, 
             const destLatitude = showList[mapInformation.selectedIndex].showLocationLatitude;
             const destLongitude = showList[mapInformation.selectedIndex].showLocationLongitude;
             setEndMarkerPos({lat: destLatitude, lng: destLongitude});
+            setArrivalLatitude(destLatitude);
+            setArrivalLongitude(destLongitude);
             setLatitude(destLatitude);
             setLongitude(destLongitude);
             setDestinationName(showList[mapInformation.selectedIndex].showLocationName);
@@ -64,6 +66,8 @@ const Shows = ({ setStartMarkerPos, setEndMarkerPos, setLatitude, setLongitude, 
     useEffect(() => {
         if (Object.keys(mapInformation).length !== 0) {
             setStartMarkerPos({lat: mapInformation.lat, lng: mapInformation.lng});
+            setDepartureLatitude(mapInformation.lat);
+            setDepartureLongitude(mapInformation.lng);
         }
     }, [mapInformation]);
 
@@ -90,6 +94,12 @@ const Shows = ({ setStartMarkerPos, setEndMarkerPos, setLatitude, setLongitude, 
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
                 setMapInformation({lat: latitude, lng: longitude, selectedIndex: selectedIndex});
+            }, function (error) {
+                if (error.code === error.PERMISSION_DENIED) {
+                    const latitude = 53.789402;
+                    const longitude = -1.533356;
+                    setMapInformation({lat: latitude, lng: longitude, selectedIndex: selectedIndex});
+                }
             });
         } else {
             console.log('Geolocation not enabled, cannot provide accurate starting position');
