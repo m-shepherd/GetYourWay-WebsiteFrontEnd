@@ -37,7 +37,7 @@ const App = () => {
                 <Route path="/ResetPassword" element={<ResetPassword/>}/>
                 <Route path="/MainPage" element={<MainPage setSubmittedJourney={setSubmittedJourney} legId={legId} setLegId={setLegId}/>}/>
                 <Route path="/ViewJourney" element={<ViewJourney 
-                allJourneyLegs={allJourneyLegs} setAllJourneyLegs={setAllJourneyLegs}/>}/>
+                allJourneyLegs={allJourneyLegs} setAllJourneyLegs={setAllJourneyLegs} setLegId={setLegId}/>}/>
             </Routes>
           </>
         </Router>

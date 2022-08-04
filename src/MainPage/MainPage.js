@@ -86,6 +86,7 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
                   startMarkerPos={startMarkerPos} setStartMarkerPos={setStartMarkerPos} endMarkerPos={endMarkerPos} setEndMarkerPos={setEndMarkerPos} 
                   showDirections={showDirections} setShowDirections={setShowDirections} setDirections={setDirections} directions={directions} />
 
+
                 <NearestAirport latitude={departureLatitude} longitude={departureLongitude} setNearestAirports={setNearestDepartureAirports}/>
                 <NearestAirport latitude={arrivalLatitude} longitude={arrivalLongitude} setNearestAirports={setNearestArrivalAirports}/>
 
