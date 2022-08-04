@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Leg from './Leg'
+import styles from './ViewJourney.module.css'
 import './ViewJourney.css'
 
 class AllLegs extends Component {
@@ -13,30 +14,36 @@ class AllLegs extends Component {
     render() {
         return (
             <div>
-                <h3 className="jheading">Your Journey</h3>
-                <table className="journey-table">
-                    <thead>
-                        <tr>
-                            <th>Leg</th>
-                            <th>Transport</th>
-                            <th>Start</th>
-                            <th>StartTime</th>
-                            <th>End</th>
-                            <th>EndTime</th>
-                            <th>duration</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            this.state.data.map(currentLeg => {
-                                return (<Leg id={currentLeg.id} transport={currentLeg.transport} startLocation={currentLeg.startLocation}
-                                    startTime={currentLeg.startTime} endLocation={currentLeg.endLocation} endTime={currentLeg.endTime}
-                                    duration={currentLeg.duration} key={currentLeg.id}
-                                    isFadingOut={this.props.isFadingOut} fadeOut={this.state.fadeOut}/>)
-                            })}
-                    </tbody>
-                </table>
+                <div className="padding">
+                    <div className={styles.title_text}>
+                        <div className={styles.title}>Your Journey</div>
+                    </div>
+                </div>
+                <div className={styles.tableFixHead}>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Leg Number</th>
+                                <th>Transport</th>
+                                <th>Start</th>
+                                <th>Start Time</th>
+                                <th>End</th>
+                                <th>End Time</th>
+                                <th>Duration</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.data.map(currentLeg => {
+                                    return (<Leg id={currentLeg.id} transport={currentLeg.transport} startLocation={currentLeg.startLocation}
+                                        startTime={currentLeg.startTime} endLocation={currentLeg.endLocation} endTime={currentLeg.endTime}
+                                        duration={currentLeg.duration} key={currentLeg.id}
+                                        isFadingOut={this.props.isFadingOut} fadeOut={this.state.fadeOut}/>)
+                                })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         )
     }
