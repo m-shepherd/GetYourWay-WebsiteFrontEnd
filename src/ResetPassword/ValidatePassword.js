@@ -3,6 +3,7 @@ import styles from './ResetPassword.module.css';
 import { useNavigate } from "react-router-dom";
 import {createJSONWebToken, passwordChange} from "../LoginAndSignUp/LoginAndSignUpUtils";
 import './ResetPassword.css';
+import {BACKEND_ADDRESS} from "../configuration";
 
 const ValidatePassword = ({ code, emailAddress }) => {
 
@@ -35,7 +36,7 @@ const ValidatePassword = ({ code, emailAddress }) => {
 
         if((recoveryCode === code) && (password === confirmPassword)){
             const xhr = new XMLHttpRequest();
-            xhr.open("PUT", "http://localhost:8080/reset", true)
+            xhr.open("PUT", BACKEND_ADDRESS + "/reset", true)
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = async function() {
                 if (xhr.readyState === 4)  {
