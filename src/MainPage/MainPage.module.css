@@ -48,6 +48,7 @@ html,body{
 }
 
 .pass_link{
+    flex-grow: 1;
     text-align: center;
     margin-top: 0.5em;
 }
@@ -62,6 +63,13 @@ html,body{
     padding-top: 1.5em;
     padding-bottom: 1.5em;
 }
+
+.headerBar {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
 .error_wrapper{
     overflow: hidden;
     max-width: 100%;
