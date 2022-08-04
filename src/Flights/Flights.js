@@ -230,14 +230,12 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
     }, [endLocation])
 
     useEffect(() => {
-        console.log(legs);
         if (legs.length > 0) {
             if (legs[0].hasOwnProperty('arrival')) {
                 setEndLocation(legs[0]['arrival']['arrival_airport'])
                 setEndTime(legs[0]['arrival']['arrival_time'])
                 setStartLocation(legs[0]['departure']['departure_airport'])
                 setStartTime(legs[0]['departure']['departure_time'])
-                console.log(legs[0]['duration'])
                 setDuration(getDuration())
             } else {
                 setEndLocation(legs[0]['arrival_airport'])
@@ -262,14 +260,11 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                 dataTitle.style.display = "block";
                 title.innerHTML = "Searching For Flights...";
 
-                console.log(date);
-
                 axios.get(BACKEND_ADDRESS + "/flights?date=" + date + "&dep=" + nearestDepartureAirports + "&arr=" + nearestArrivalAirports + "&direct=true", {
                     headers: {
                         'Authorization': `Basic ${localStorage.getItem('auth')}`
                     }
                 }).then(response => {
-                    console.log(response)
                     if (response['data'] !== '') {
                         setFlights(response['data']);
                     } else {
@@ -324,13 +319,15 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                         <div id="flightData" className={flightStyles.tableFixHead} style={{display: "none"}}>
                             <table id="table">
                                 <thead>
-                                <th></th>
-                                <th>Departure Airport</th>
-                                <th>Departure Time</th>
-                                <th>Arrival Airport</th>
-                                <th>Arrival Time</th>
-                                <th>Duration</th>
-                                <th>Price</th>
+                                <tr>
+                                    <th></th>
+                                    <th>Departure Airport</th>
+                                    <th>Departure Time</th>
+                                    <th>Arrival Airport</th>
+                                    <th>Arrival Time</th>
+                                    <th>Duration</th>
+                                    <th>Price</th>
+                                </tr>
                                 </thead>
                                 <tbody id="flightTable"></tbody>
                             </table>

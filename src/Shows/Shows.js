@@ -35,7 +35,6 @@ const Shows = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude,
     }, []);
 
     useEffect(() => {
-        console.log(directions === null)
         if(directions === null && selectedIndex !== -1) {
             setCentre({ lat: showList[selectedIndex].showLocationLatitude, lng: showList[selectedIndex].showLocationLongitude });
         } 
