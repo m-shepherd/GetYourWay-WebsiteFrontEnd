@@ -12,6 +12,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
     const [flights, setFlights] = useState();
     const [date, setDate] = useState("2022-08-05");
     const [legs, setLegs] = useState([]);
+    const [btnValue, setBtnValue] = useState("Confirm Flights");
 
     function updateDate(event) {
         setDate(event.target.value);
@@ -248,8 +249,10 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                 setStartTime(legs[0]['departure_time'])
                 setDuration(getDuration())
             }
-
+            setBtnValue("Adding Flights...");
+            setTimeout(() => {setBtnValue("Confirm Flights")}, 2000)
         }
+        // document.getElementById("confirmFlights").value = "Confirm Flights";
     }, [legs])
 
     useEffect(() => {
@@ -334,8 +337,8 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                         </div>
                     </div>
                     <div id="destination" className={`${flightStyles.field} ${flightStyles.btn}`} style={{display: "none"}}>
-                        <div className={flightStyles.btn_layer}></div>
-                        <input id="confirm" type="submit" onClick={confirmFlights} value="Confirm Flights"/>
+                        <div className={btnValue === "Adding Flights..." ? flightStyles.disabled : flightStyles.btn_layer}></div>
+                        <input id="confirmFlights" type="submit" onClick={confirmFlights} value={btnValue} className={btnValue === "Adding Flights..." ? flightStyles.btn_disabled : ''}/>
                     </div>
                     <input id="FLYING" type="submit" onClick={handleSubmitJourney} style={{display: "none"}}/>
                 </div>
