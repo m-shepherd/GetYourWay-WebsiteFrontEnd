@@ -12,6 +12,7 @@ import {
     createJSONWebToken
 } from './LoginAndSignUpUtils';
 import {BACKEND_ADDRESS} from "../configuration";
+import SkyLogo from '../resources/sky_logo.jpeg';
 
 const LoginAndSignUp = () => {
 
@@ -84,8 +85,8 @@ const LoginAndSignUp = () => {
         <>
             <div className={styles.wrapper}>
                 <div className={styles.title_text}>
-                    <div id="loginText" className={styles.title}>Login Form</div>
-                    <div className={`${styles.title} ${styles.signup}`}>Sign Up Form</div>
+                    <div id="loginText" className={styles.title}><img src={SkyLogo} className={styles.logoImage} alt="Sky" /></div>
+                    <div className={`${styles.title} ${styles.signup}`}><img src={SkyLogo} className={styles.logoImage} alt="Sky" /></div>
                 </div>
                 <div className={styles.form_container}>
                     <div className={styles.slide_controls}>

@@ -130,6 +130,10 @@ html,body{
     width: 200%;
 }
 
+.logoImage {
+    width: 40%;
+}
+
 .wrapper .slide_controls{
     position: relative;
     display: flex;
