@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { BACKEND_ADDRESS } from '../configuration';
 import axios from 'axios';
 
-const Shows = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude, setStartMarkerPos, setEndMarkerPos, setLatitude, setLongitude, showDirections, setShowDirections, startMarkerPos, endMarkerPos, setDirections, setDestinationName }) => {
+const Shows = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude, setStartMarkerPos, setEndMarkerPos, setLatitude, setLongitude, showDirections, setShowDirections, startMarkerPos, endMarkerPos, setDirections, setDestinationName, setCentre, directions }) => {
     const [showList, setShowList] = useState([]);
     const [mapInformation, setMapInformation] = useState({});
     const [loadingRoutes, setLoadingRoutes] = useState(false);
@@ -35,6 +35,13 @@ const Shows = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude,
     }, []);
 
     useEffect(() => {
+        console.log(directions === null)
+        if(directions === null && selectedIndex !== -1) {
+            setCentre({ lat: showList[selectedIndex].showLocationLatitude, lng: showList[selectedIndex].showLocationLongitude });
+        } 
+    }, [directions, loadingRoutes])
+
+    useEffect(() => {
         if (Object.keys(mapInformation).length !== 0) {
             const destLatitude = showList[mapInformation.selectedIndex].showLocationLatitude;
             const destLongitude = showList[mapInformation.selectedIndex].showLocationLongitude;
@@ -57,6 +64,7 @@ const Shows = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude,
     useEffect(() => {
         if(loadingRoutes && showDirections) {
             setLoadingRoutes(false);
+            setSelectedIndex(-1);
         }
         else if (!showDirections && loadingRoutes) {
             getGeolocation();

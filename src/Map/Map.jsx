@@ -5,7 +5,6 @@ import Geocode from 'react-geocode';
 import mapStyles from './Map.module.css';
 import './Map.css';
 import {setStart, setDestination} from "./MapUtils";
-import {LATITUDE, LONGITUDE} from "../configuration";
 
 const MAPS_API_KEY = 'AIzaSyCodtVa1E5fxA5mM3Pd-wiZoPH3uwyreMI';
 
@@ -17,7 +16,7 @@ const containerStyle = {
 };
 
 
-const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude, setLatitude, setLongitude, setStartTime, setEndTime, setDuration, handleSubmitJourney, setStartName, startName, setDestinationName, destinationName, startMarkerPos, setStartMarkerPos, endMarkerPos, setEndMarkerPos, showDirections, setShowDirections, directions, setDirections}) => {
+const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude, setLatitude, setLongitude, setStartTime, setEndTime, setDuration, handleSubmitJourney, setStartName, startName, setDestinationName, destinationName, startMarkerPos, setStartMarkerPos, endMarkerPos, setEndMarkerPos, showDirections, setShowDirections, directions, setDirections, centre, setCentre}) => {
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
@@ -31,8 +30,6 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
     const [timeTaken,setTimeTaken] = useState('')
     const [departTime,setDepartTime] = useState('00:00');
     const [arrivalTime,setArrivalTime] = useState('00:00');
-
-    const [centre, setCentre] = useState({lat: LATITUDE, lng: LONGITUDE});
 
     const [startAutocomplete,setStartAutocomplete] = useState(null);
     const [endAutocomplete,setEndAutocomplete] = useState(null);

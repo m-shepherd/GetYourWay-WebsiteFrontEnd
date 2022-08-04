@@ -7,8 +7,6 @@ import Flights from '../Flights/Flights'
 import Map from "../Map/Map";
 import NearestAirport from "../NearestAirport/NearestAirport";
 import Shows from '../Shows/Shows';
-
-
 import {LATITUDE, LONGITUDE} from "../configuration";
 
 const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
@@ -29,6 +27,8 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
     const [endMarkerPos,setEndMarkerPos] = useState(null);
     const [showDirections,setShowDirections] = useState(false);
     const [directions,setDirections] = useState(null);
+    const [centre, setCentre] = useState({lat: LATITUDE, lng: LONGITUDE});
+
     let navigate = useNavigate();
 
     const handleSubmitJourney = (e) => {
@@ -81,12 +81,12 @@ const MainPage = ({setSubmittedJourney, legId, setLegId}) => {
                 </div>
 
                 <Shows setDepartureLatitude={setDepartureLatitude} setDepartureLongitude={setDepartureLongitude} setArrivalLatitude={setArrivalLatitude} setArrivalLongitude={setArrivalLongitude} setStartMarkerPos={setStartMarkerPos} setEndMarkerPos={setEndMarkerPos} setLatitude={setLatitude} setLongitude={setLongitude} setShowDirections={setShowDirections}
-                        startMarkerPos={startMarkerPos} showDirections={showDirections} endMarkerPos={endMarkerPos} setDirections={setDirections} setDestinationName={setDestinationName} />
+                        startMarkerPos={startMarkerPos} showDirections={showDirections} endMarkerPos={endMarkerPos} setDirections={setDirections} setDestinationName={setDestinationName} setCentre={setCentre} directions={directions} />
 
                 <Map setDepartureLatitude={setDepartureLatitude} setDepartureLongitude={setDepartureLongitude} setArrivalLatitude={setArrivalLatitude} setArrivalLongitude={setArrivalLongitude} setLatitude={setLatitude} setLongitude={setLongitude}
                   setStartTime={setStartTime} setEndTime={setEndTime} setDuration={setDuration} handleSubmitJourney={handleSubmitJourney} setStartName={setStartName} startName={startName} setDestinationName={setDestinationName} destinationName={destinationName}
                   startMarkerPos={startMarkerPos} setStartMarkerPos={setStartMarkerPos} endMarkerPos={endMarkerPos} setEndMarkerPos={setEndMarkerPos} 
-                  showDirections={showDirections} setShowDirections={setShowDirections} setDirections={setDirections} directions={directions} />
+                  showDirections={showDirections} setShowDirections={setShowDirections} setDirections={setDirections} directions={directions} centre={centre} setCentre={setCentre} />
 
 
                 <NearestAirport latitude={departureLatitude} longitude={departureLongitude} setNearestAirports={setNearestDepartureAirports}/>
