@@ -72,19 +72,21 @@ const ViewJourney = ({ allJourneyLegs, setAllJourneyLegs ,setLegId }) => {
                 </div>
             </div>
         </div>
-        <div className={styles.wrapper}>
-            <div id="allJourneyLegs">
-                <AllLegs data={allJourneyLegs} isFadingOut={isFadingOut} fadeOut={fadeOut} deleteLeg={deleteLeg} ref={printRef}/>
-            </div>
-            <div className={styles.center}>
-                <div className={`${styles.field} ${styles.btn}`}>
-                    <div className={styles.btn_layer}></div>
-                    <input type="submit" href="#" onClick={() => { navigate("/MainPage") }} value="Back To Main Page"/>
+        <div className={styles.padding}>
+            <div className={styles.wrapper}>
+                <div id="allJourneyLegs">
+                    <AllLegs data={allJourneyLegs} isFadingOut={isFadingOut} fadeOut={fadeOut} deleteLeg={deleteLeg} ref={printRef}/>
                 </div>
+                <div className={styles.center}>
+                    <div className={`${styles.field} ${styles.btn}`}>
+                        <div className={styles.btn_layer}></div>
+                        <input type="submit" href="#" onClick={() => { navigate("/MainPage") }} value="Back To Main Page"/>
+                    </div>
 
-                <div id="jpeg" className={`${styles.field} ${styles.btn}`}>
-                    <div className={styles.btn_layer}></div>
-                    <input type="submit" href="#" onClick={handleJPEGExport} value="Download as JPEG"/>
+                    <div id="jpeg" className={`${styles.field} ${styles.btn}`}>
+                        <div className={styles.btn_layer}></div>
+                        <input type="submit" href="#" onClick={handleJPEGExport} value="Download as JPEG"/>
+                    </div>
                 </div>
             </div>
         </div>

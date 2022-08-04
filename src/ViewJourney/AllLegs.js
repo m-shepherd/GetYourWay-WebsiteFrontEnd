@@ -14,7 +14,7 @@ class AllLegs extends Component {
     render() {
         return (
             <div>
-                <div className="padding">
+                <div className={styles.padding}>
                     <div className={styles.title_text}>
                         <div className={styles.title}>Your Journey</div>
                     </div>
