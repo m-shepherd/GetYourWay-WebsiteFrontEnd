@@ -5,6 +5,7 @@ import Geocode from 'react-geocode';
 import mapStyles from './Map.module.css';
 import './Map.css';
 import {setStart, setDestination} from "./MapUtils";
+import flightStyles from "../Flights/Flights.module.css";
 
 const MAPS_API_KEY = 'AIzaSyCodtVa1E5fxA5mM3Pd-wiZoPH3uwyreMI';
 
@@ -33,6 +34,8 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
 
     const [startAutocomplete,setStartAutocomplete] = useState(null);
     const [endAutocomplete,setEndAutocomplete] = useState(null);
+
+    const [btnValue, setBtnValue] = useState("Add Leg To Journey");
 
     useEffect(() => {
         const time = new Date().toLocaleString('en-GB', {
@@ -358,7 +361,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                         </div>
                         <div id="find" className={`${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={{display: 'none'}}>
                             <div className={mapStyles.btn_layer}>
-                                <input type="submit" onClick={getDirections} value="Get Directions"/>
+                                <input type="submit" onClick={getDirections} value="Get Directions" className={mapStyles.btn_working}/>
                             </div>
                         </div>
                         <div className={`${mapStyles.field} ${mapStyles.location}`} id="finish" style={{display: 'none'}}>
@@ -366,15 +369,20 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                                 {destinationName == null ? '' : "Destination: " + destinationName}
                             </div>
                         </div>
-                        <div id="add" className={`${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={{display: 'none'}}>
-                            <div className={mapStyles.btn_layer}>
-                                <input type="submit" onClick={handleSubmitJourney} id="DRIVING" value="Add Leg To Journey"/>
+                        <div id="add" className={btnValue === "Adding Drive..." ? `${mapStyles.field_disabled} ${mapStyles.btn} ${mapStyles.get}`: `${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={{display: 'none'}}>
+                            <div className={btnValue === "Adding Drive..." ? mapStyles.btn_layer_disabled : mapStyles.btn_layer}>
+                                <input type="submit" onClick={(e) => {
+                                    setBtnValue("Adding Drive...");
+                                    // setTimeout(() => {setBtnValue("Added Drive")}, 1000)
+                                    setTimeout(() => {setBtnValue("Add Leg To Journey")}, 2000)
+                                    handleSubmitJourney(e)
+                                }} id="DRIVING" value={btnValue} className={btnValue === "Adding Drive..." ? mapStyles.btn_disabled : mapStyles.btn_working}/>
                             </div>
                         </div>
                     </div>
                     
                     <div id="times" className={mapStyles.times} style={{display: 'none'}}>
-                        <div className={`${mapStyles.field} ${mapStyles.timediv}`}id="departTime" >
+                        <div className={`${mapStyles.field} ${mapStyles.timediv}`} id="departTime" >
                             <div className={mapStyles.input}>
                                 <input type='time' className={mapStyles.time} onChange={departChanged} value={departTime}/>
                             </div>

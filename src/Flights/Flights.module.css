@@ -155,7 +155,6 @@ html,body{
     font-size: 17px;
     transition: all 0.3s ease;
 }
-
 .tableFixHead {
     overflow-y: auto;
     height: 25em;
