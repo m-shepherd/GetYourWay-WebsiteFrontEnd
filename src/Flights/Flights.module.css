@@ -88,7 +88,7 @@ html,body{
     border-radius: 15px;
     transition: all 0.4s ease;
 }
-.btn .disabled{
+.btn .btn_layer_disabled{
     height: 100%;
     width: 300%;
     position: absolute;
@@ -96,6 +96,12 @@ html,body{
     background: #dddddd;
     border-radius: 15px;
     transition: all 0.4s ease;
+}
+.btn_disabled{
+    color: black;
+}
+.btn_working{
+    color: #fff;
 }
 .btn:hover .btn-layer{
     left: 0;
@@ -107,7 +113,6 @@ html,body{
     position: relative;
     background: none;
     border: none;
-    color: #fff;
     padding-left: 0;
     border-radius: 15px;
     font-size: 20px;
@@ -122,6 +127,24 @@ html,body{
 
 }
 .field input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    padding-left: 15px;
+    border-radius: 15px;
+    border: 1px solid lightgrey;
+    border-bottom-width: 2px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+.field_disabled{
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+    border: 5px solid black;
+    background-color: #ffffff;
+}
+.field_disabled input{
     height: 100%;
     width: 100%;
     outline: none;

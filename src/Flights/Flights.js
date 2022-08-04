@@ -336,9 +336,9 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                             </table>
                         </div>
                     </div>
-                    <div id="destination" className={`${flightStyles.field} ${flightStyles.btn}`} style={{display: "none"}}>
-                        <div className={btnValue === "Adding Flights..." ? flightStyles.disabled : flightStyles.btn_layer}></div>
-                        <input id="confirmFlights" type="submit" onClick={confirmFlights} value={btnValue} className={btnValue === "Adding Flights..." ? flightStyles.btn_disabled : ''}/>
+                    <div id="destination" className={btnValue === "Adding Flights..." ? `${flightStyles.field_disabled} ${flightStyles.btn}`: `${flightStyles.field} ${flightStyles.btn}`} style={{display: "none"}}>
+                        <div className={btnValue === "Adding Flights..." ? flightStyles.btn_layer_disabled : flightStyles.btn_layer}></div>
+                        <input id="confirmFlights" type="submit" onClick={confirmFlights} value={btnValue} className={btnValue === "Adding Flights..." ? flightStyles.btn_disabled : flightStyles.btn_working}/>
                     </div>
                     <input id="FLYING" type="submit" onClick={handleSubmitJourney} style={{display: "none"}}/>
                 </div>
