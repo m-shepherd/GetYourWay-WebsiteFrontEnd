@@ -8,13 +8,11 @@ background: white
 }
 
 
-.journey-table
-tbody tr {
+.journey-table tbody tr {
   box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
 } 
 
-.journey-table
-td {
+.journey-table td {
   width: 150px;
   background: #ffff;
   text-align: center;

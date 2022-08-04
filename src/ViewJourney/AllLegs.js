@@ -14,7 +14,7 @@ class AllLegs extends Component {
         return (
             <div>
                 <h3 className="jheading">Your Journey</h3>
-                <table class="journey-table">
+                <table className="journey-table">
                     <thead>
                         <tr>
                             <th>Leg</th>
