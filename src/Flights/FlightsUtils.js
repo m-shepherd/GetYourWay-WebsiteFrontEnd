@@ -19,21 +19,22 @@ export function makeRowsClickable() {
                             clickedItems[i].classList.remove('clicked');
                         }
 
-                        const expandedItems = document.getElementsByClassName('expanded');
-                        for (let i = 0; i < expandedItems.length; i++) {
-                            expandedItems[i].classList.add('standard');
-                            expandedItems[i].classList.remove('expanded');
-                        }
                         const downItems = document.getElementsByClassName('down');
                         for (let i = 0; i < downItems.length; i++) {
                             downItems[i].classList.remove('down');
+                        }
+
+                        const children = document.getElementsByClassName('child')
+                        console.log(children)
+                        for (let i = 0; i < children.length; i++) {
+                            children[i].style.display = 'none';
                         }
 
                         if (isClicked) {
                             if (event.target.tagName === "I") {
                                 event.target.classList.remove('down');
                                 event.target.parentElement.parentElement.classList.remove('clicked');
-                                const name = event.target.parentElement.parentElement.rowIndex + 'child';
+                                const name = (event.target.parentElement.parentElement.rowIndex - 1) + 'child';
                                 const children = document.getElementsByName(name);
                                 for (let child in children) {
                                     if (children[child].tagName !== undefined) {
@@ -46,7 +47,7 @@ export function makeRowsClickable() {
                                     event.target.parentElement.children[0].children[0].classList.remove('down');
                                 }
                                 event.target.parentElement.classList.remove('clicked');
-                                const name = event.target.parentElement.rowIndex + 'child';
+                                const name = (event.target.parentElement.rowIndex - 1) + 'child';
                                 const children = document.getElementsByName(name);
                                 for (let child in children) {
                                     if (children[child].tagName !== undefined) {
@@ -59,7 +60,8 @@ export function makeRowsClickable() {
                             if (event.target.tagName === "I") {
                                 event.target.classList.add('down');
                                 event.target.parentElement.parentElement.classList.add('clicked');
-                                const name = event.target.parentElement.parentElement.rowIndex + 'child';
+                                event.target.parentElement.parentElement.classList.add('expanded');
+                                const name = (event.target.parentElement.parentElement.rowIndex - 1) + 'child';
                                 const children = document.getElementsByName(name);
                                 for (let child in children) {
                                     if (children[child].tagName !== undefined) {
@@ -72,7 +74,9 @@ export function makeRowsClickable() {
                                     event.target.parentElement.children[0].children[0].classList.add('down');
                                 }
                                 event.target.parentElement.classList.add('clicked');
-                                const name = event.target.parentElement.rowIndex + 'child';
+                                event.target.parentElement.classList.add('expanded');
+                                const name = (event.target.parentElement.rowIndex - 1) + 'child';
+                                console.log(name);
                                 const children = document.getElementsByName(name);
                                 for (let child in children) {
                                     if (children[child].tagName !== undefined) {

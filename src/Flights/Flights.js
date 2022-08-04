@@ -164,6 +164,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                                 numberOfChildRows ++;
                                 childRow.setAttribute('data-href', '#');
                                 childRow.setAttribute('name', numberOfRows + 'child')
+                                childRow.setAttribute('class', 'child')
                                 childRow.setAttribute("style", "display:none")
 
                                 childRow.insertCell(0)
@@ -305,10 +306,6 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                                 <div className={`${flightStyles.field} ${flightStyles.col}`}>
                                     <input type="date" id="date" min={new Date().toISOString().split('T')[0]} value={date} onInput={updateDate}/>
                                 </div>
-                                {/*<div className={`${flightStyles.field} ${flightStyles.btn} ${flightStyles.col}`}>*/}
-                                {/*    <div className={flightStyles.btn_layer}></div>*/}
-                                {/*    <input id="formSubmit" type="submit" value="Find Flights"/>*/}
-                                {/*</div>*/}
                             </form>
                         </div>
                     </div>
