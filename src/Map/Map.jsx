@@ -16,7 +16,8 @@ const containerStyle = {
     height: '450px'
 };
 
-const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude, setLatitude, setLongitude, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney, setStartName, setDestinationName, startMarkerPos, setStartMarkerPos, endMarkerPos, setEndMarkerPos, showDirections, setShowDirections, directions, setDirections}) => {
+
+const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, setArrivalLongitude, setLatitude, setLongitude, setStartTime, setEndTime, setDuration, handleSubmitJourney, setStartName, startName, setDestinationName, destinationName, startMarkerPos, setStartMarkerPos, endMarkerPos, setEndMarkerPos, showDirections, setShowDirections, directions, setDirections}) => {
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: MAPS_API_KEY,
@@ -27,8 +28,6 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
 
     const [startMarkerVis,setStartMarkerVis] = useState(false);
     const [endMarkerVis,setEndMarkerVis] = useState(false);
-    const [startMarkerAddress,setStartMarkerAddress] = useState('');
-    const [endMarkerAddress,setEndMarkerAddress] = useState('');
     const [timeTaken,setTimeTaken] = useState('')
     const [departTime,setDepartTime] = useState('00:00');
     const [arrivalTime,setArrivalTime] = useState('00:00');
@@ -44,17 +43,17 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
             setDepartureLatitude(e.latLng.lat());
             setDepartureLongitude(e.latLng.lng());
             setStartMarkerVis(true);
-            getGeocode(e.latLng, setStartMarkerAddress, setStartName);
+            getGeocode(e.latLng, setStartName);
             setStart(endMarkerVis);
         } else if (endMarkerVis === false){
             setEndMarkerPos(e.latLng);
             setArrivalLatitude(e.latLng.lat());
             setArrivalLongitude(e.latLng.lng());
             setEndMarkerVis(true);
-            setLatitude(e.latLng.lat());
-            setLongitude(e.latLng.lng());
-            getGeocode(e.latLng,setEndMarkerAddress, setDestinationName);
+            getGeocode(e.latLng, setDestinationName);
             setDestination(startMarkerVis);
+            setLatitude(e.latLng.lat())
+            setLongitude(e.latLng.lng())
         }
     }
 
@@ -62,7 +61,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         setDirections(null);
         setShowDirections(null);
         setStartMarkerPos(null);
-        setStartMarkerAddress('');
+        setStartName('');
         const start = document.querySelector('#start');
         start.style.display = 'none';
         const destination = document.querySelector('#finish');
@@ -81,7 +80,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         setDirections(null);
         setShowDirections(null);
         setEndMarkerPos(null);
-        setEndMarkerAddress('')
+        setDestinationName('')
         const destination = document.querySelector('#finish');
         destination.style.display = 'none';
         const start = document.querySelector('#start');
@@ -115,19 +114,22 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         if (response !== null){
             if (response.status === 'OK') {
                 if (startMarkerPos != null && endMarkerPos != null && directions == null)
+                    setStart(endMarkerVis);
+                    setDestination(startMarkerVis);
                     setDirections(response)
-                    setStartLocation(startMarkerAddress)
-                    setEndLocation(endMarkerAddress)
                     setDuration(response.routes[0].legs[0].duration.text)
                     setTimeTaken(response.routes[0].legs[0].duration.text)
-
+                    if (startName === ''){
+                        getGeocode(startMarkerPos,setStartName)
+                    }
                     const startmins = getMinsFromInput(departTime)
-                    const durationmins = getMinsFromDuration(timeTaken)
+                    const durationmins = getMinsFromDuration(response.routes[0].legs[0].duration.text)
                     const totalmins = startmins + durationmins
                     const time = getTimeFromMins(totalmins)
-                    setArrivalTime(time)
+
                     setStartTime(departTime)
-                    setEndTime(arrivalTime)
+                    setArrivalTime(time)
+                    setEndTime(time)
             }
         }
     }
@@ -149,7 +151,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         setStartMarkerPos(loc)
         setStartMarkerVis(true)
         setCentre(loc)
-        getGeocode(loc,setStartMarkerAddress, setStartName)
+        getGeocode(loc, setStartName)
 
         setStart(endMarkerVis);
         setDirections(null);
@@ -168,7 +170,9 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         setEndMarkerPos(loc)
         setEndMarkerVis(true)
         setCentre(loc)
-        getGeocode(loc,setEndMarkerAddress, setDestinationName)
+        getGeocode(loc, setDestinationName)
+        setLatitude(loc.lat())
+        setLongitude(loc.lng())
 
         setDestination(startMarkerVis);
         setDirections(null);
@@ -178,13 +182,22 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
 
     }
 
-    const getGeocode = (latLng, setFunc, setNameFunc) => {
-        Geocode.fromLatLng(latLng.lat(),latLng.lng()).then(
+    const getGeocode = (latLng, setNameFunc) => {
+        var latitude;
+        var longitude;
+        if (typeof latLng.lat != 'number'){
+             latitude = latLng.lat()
+             longitude = latLng.lng()
+        } else {
+             latitude = latLng.lat
+             longitude = latLng.lng
+        }
+        Geocode.fromLatLng(latitude,longitude).then(
             (response) => {
-                setFunc(response.results[0].formatted_address);
-                if (response.results[0].address_components != null) {
-                    setNameFunc(getLocationNameFromGeocode(response.results[0]));
-                }
+                setNameFunc(response.results[0].formatted_address);
+                // if (response.results[0].address_components != null) {
+                //     setNameFunc(getLocationNameFromGeocode(response.results[0]));
+                // }
             }, (error) => {
                 console.error(error)
             }
@@ -317,7 +330,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                             <Marker key='start' visible={startMarkerVis} onClick={onStartMarkerClick} position={startMarkerPos}/>
                             <Marker key='end' visible={endMarkerVis} onClick={onEndMarkerClick} position={endMarkerPos}/>
 
-                            {showDirections === true &&
+                            {showDirections === true && directions === null &&
                                 <DirectionsService
                                     options={{
                                         origin : startMarkerPos,
@@ -333,7 +346,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                     <div className={mapStyles.directions}>
                         <div className={`${mapStyles.field} ${mapStyles.location}`} id="start" style={{display: 'none'}}>
                             <div className={mapStyles.input}>
-                                {startMarkerAddress == null ? '' : "Start: " + startMarkerAddress}
+                                {startName == null ? '' : "Start: " + startName}
                             </div>
                         </div>
                         <div id="find" className={`${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={{display: 'none'}}>
@@ -343,7 +356,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                         </div>
                         <div className={`${mapStyles.field} ${mapStyles.location}`} id="finish" style={{display: 'none'}}>
                             <div className={mapStyles.input}>
-                                {endMarkerAddress == null ? '' : "Destination: " + endMarkerAddress}
+                                {destinationName == null ? '' : "Destination: " + destinationName}
                             </div>
                         </div>
                         <div id="add" className={`${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={{display: 'none'}}>
