@@ -28,11 +28,19 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
     const [startMarkerVis,setStartMarkerVis] = useState(false);
     const [endMarkerVis,setEndMarkerVis] = useState(false);
     const [timeTaken,setTimeTaken] = useState('')
-    const [departTime,setDepartTime] = useState('00:00');
-    const [arrivalTime,setArrivalTime] = useState('00:00');
+    const [departTime,setDepartTime] = useState('');
+    const [arrivalTime,setArrivalTime] = useState('');
 
     const [startAutocomplete,setStartAutocomplete] = useState(null);
     const [endAutocomplete,setEndAutocomplete] = useState(null);
+
+    useEffect(() => {
+        const time = new Date().toLocaleString('en-GB', {
+            timeZone: 'Europe/London',
+        }).split(',')[1].substring(1, 6)
+        setDepartTime(time)
+    })
+
 
     const onMapClick = (e) => {
         if (startMarkerVis === false){
@@ -134,7 +142,9 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
     const getDirections = () => {
         if (startMarkerPos != null && endMarkerPos != null){
             setShowDirections(true)
+            const add = document.getElementById('add')
             const times = document.querySelector('#times');
+            add.style.display = 'block';
             times.style.display = 'grid';
         }
     }

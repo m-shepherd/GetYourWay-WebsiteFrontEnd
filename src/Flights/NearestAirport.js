@@ -15,17 +15,18 @@ function NearestAirport({latitude, longitude, setNearestAirports}) {
         }
 
         const findNearestAirports = () => {
-            console.log(latitude, longitude)
-            axios.get(BACKEND_ADDRESS + '/flights/nearest?latitude=' + latitude + '&longitude=' + longitude, {
-                headers: {
-                    'Authorization': `Basic ${localStorage.getItem('auth')}`
-                }
-            }).then(response => {
-                setNearestAirports(parseResponseData(response));
-            }).catch(error => {
-                console.log('Could not fetch nearest airport data');
-                console.error(error);
-            });
+            if (latitude !== undefined && longitude !== undefined && latitude !== longitude) {
+                axios.get(BACKEND_ADDRESS + '/flights/nearest?latitude=' + latitude + '&longitude=' + longitude, {
+                    headers: {
+                        'Authorization': `Basic ${localStorage.getItem('auth')}`
+                    }
+                }).then(response => {
+                    setNearestAirports(parseResponseData(response));
+                }).catch(error => {
+                    console.log('Could not fetch nearest airport data');
+                    console.error(error);
+                });
+            }
         }
 
         findNearestAirports();

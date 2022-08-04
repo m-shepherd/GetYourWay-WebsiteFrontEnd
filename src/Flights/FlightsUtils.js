@@ -25,7 +25,6 @@ export function makeRowsClickable() {
                         }
 
                         const children = document.getElementsByClassName('child')
-                        console.log(children)
                         for (let i = 0; i < children.length; i++) {
                             children[i].style.display = 'none';
                         }
@@ -76,7 +75,6 @@ export function makeRowsClickable() {
                                 event.target.parentElement.classList.add('clicked');
                                 event.target.parentElement.classList.add('expanded');
                                 const name = (event.target.parentElement.rowIndex - 1) + 'child';
-                                console.log(name);
                                 const children = document.getElementsByName(name);
                                 for (let child in children) {
                                     if (children[child].tagName !== undefined) {

@@ -41,7 +41,6 @@ const ValidatePassword = ({ code, emailAddress }) => {
             xhr.onreadystatechange = async function() {
                 if (xhr.readyState === 4)  {
                     const serverResponse = xhr.responseText;
-                    console.log(serverResponse)
                     if (serverResponse === '"CREATED"') {
                         const success = document.querySelector("#resetError");
                         success.style.display = "block";

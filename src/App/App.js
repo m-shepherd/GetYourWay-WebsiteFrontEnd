@@ -24,8 +24,6 @@ const App = () => {
         if (firstRender){
             setFirstRender(false)
         } else {
-        console.log(submittedJourney)
-        console.log(allJourneyLegs)
         setAllJourneyLegs([...allJourneyLegs, submittedJourney])}
     }, [submittedJourney])
 

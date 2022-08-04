@@ -8,7 +8,7 @@ import {useState} from "react";
 import moment from "moment";
 
 
-const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney, endLocation, legId}) => {
+const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney, endLocation}) => {
     const [flights, setFlights] = useState();
     const [date, setDate] = useState("2022-08-05");
     const [legs, setLegs] = useState([]);
@@ -24,7 +24,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
             const childFlightData = [];
             const selectedFlights = clickedItems[0];
 
-            const childRowsName = selectedFlights.rowIndex+ 'child';
+            const childRowsName = (selectedFlights.rowIndex - 1) + 'child';
             const childRows = document.getElementsByName(childRowsName);
 
             selectedFlights.childNodes.forEach(
@@ -51,6 +51,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                     jsonData += '"' + jsonFields[i] + '": "' + flightData[i + 1] + '",';
                 }
             }
+
             let legInfo = '['
             for (let i = 0; i < childFlightData.length - 1; i+= 5) {
                 let leg = ''
@@ -84,7 +85,6 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
             jsonData += ',"legs":' + legInfo + ']';
 
             jsonData += '}';
-
             const legData = JSON.parse(jsonData);
 
             if (legData['legs'].length > 0) {
@@ -210,7 +210,10 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
     function getDuration() {
         const duration = legs[0]['duration']
         const hours = duration.substring(0, duration.indexOf('H'));
-        let output = hours + ' hours'
+        let output = ''
+        if (parseInt(hours) > 0) {
+            output = hours + ' hours'
+        }
         if (duration.indexOf('H') !== duration.length - 1) {
             const minutes = duration.substring(duration.indexOf('M') - 2, duration.length -1)
             output += ' ' + minutes + ' minutes'
@@ -252,8 +255,8 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
     useEffect(() => {
 
         const getNearestAirports = () => {
-            console.log(nearestDepartureAirports, nearestArrivalAirports)
             if (nearestDepartureAirports !== nearestArrivalAirports && nearestArrivalAirports && nearestDepartureAirports) {
+                console.log(nearestDepartureAirports, nearestArrivalAirports)
                 const flightData = document.querySelector("#flightData");
                 const dataTitle = document.querySelector("#dataTitle");
                 const title = document.querySelector("#title");

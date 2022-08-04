@@ -1,13 +1,13 @@
 export function setStart(endMarkerVis) {
     const start = document.querySelector('#start');
     const find = document.querySelector('#find');
-    const add = document.querySelector('#add');
+    // const add = document.querySelector('#add');
     const destination = document.querySelector('#finish');
 
     start.style.display = 'block';
     if (endMarkerVis) {
         find.style.display = 'block';
-        add.style.display = 'block';
+        // add.style.display = 'block';
         start.classList.remove('single');
         start.classList.add('both');
         destination.classList.remove('single');
@@ -23,13 +23,13 @@ export function setStart(endMarkerVis) {
 export function setDestination(startMarkerVis) {
     const start = document.querySelector('#start');
     const find = document.querySelector('#find');
-    const add = document.querySelector('#add');
+    // const add = document.querySelector('#add');
     const destination = document.querySelector('#finish');
 
     destination.style.display = 'block';
     if (startMarkerVis) {
         find.style.display = 'block';
-        add.style.display = 'block';
+        // add.style.display = 'block';
         destination.classList.remove('single');
         destination.classList.add('both');
         start.classList.remove('single');
