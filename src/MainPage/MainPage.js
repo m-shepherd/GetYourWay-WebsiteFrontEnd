@@ -5,7 +5,7 @@ import './MainPage.css';
 import Weather from '../Weather/Weather'
 import Flights from '../Flights/Flights'
 import Map from "../Map/Map";
-import NearestAirport from "../NearestAirport/NearestAirport";
+import NearestAirport from "../Flights/NearestAirport";
 import Shows from '../Shows/Shows';
 
 

@@ -2,6 +2,8 @@ import car from "./Icons/DRIVING.png"
 import plane from "./Icons/FLYING.png"
 import './ViewJourney.css'
 import { useState } from "react"
+import styles from "./ViewJourney.module.css";
+import React from "react";
 
 const Leg = ({id,transport,startLocation,startTime,endLocation,
               endTime, duration, isFadingOut, fadeOut}) => {
@@ -16,7 +18,7 @@ const Leg = ({id,transport,startLocation,startTime,endLocation,
 
 
   return (
-    <tr className={isFadingOut ? 'itemfadeout' : 'item'}>
+    <tr className='item' id={id}>
         <td legid={id}>{id}</td>
         <td><img src={transportIcon} alt={transport} height="70" width="70"/></td>
         <td>{startLocation}</td>
@@ -25,8 +27,13 @@ const Leg = ({id,transport,startLocation,startTime,endLocation,
         <td>{endTime}</td>
         <td>{duration}</td>
         <td>
-        <div className='btnlayer'></div>
-        <input id={id} type="submit" value="Delete" onClick={(e) => fadeOut(e, 300)}/>
+            <div className={`${styles.field_row} ${styles.btn}`}>
+                <div className={styles.btn_layer}></div>
+                <input type="submit" href="#" onClick={(e) => {
+                    e.target.parentElement.parentElement.parentElement.className = "itemfadeout";
+                    fadeOut(e, 300)
+                }} value="Delete"/>
+            </div>
         </td>
     </tr>
   )
