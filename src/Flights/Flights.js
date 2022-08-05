@@ -154,7 +154,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                                     break;
                                 case 6:
                                     const price = row.insertCell(j);
-                                    price.innerHTML = "£" + flights[i]['price'] + "0";
+                                    price.innerHTML = "£" + flights[i]['price'].toFixed(2);
                                     break;
                             }
                         }
