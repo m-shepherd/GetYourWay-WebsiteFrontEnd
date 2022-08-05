@@ -6,7 +6,6 @@ import axios from "axios";
 import {BACKEND_ADDRESS} from "../configuration";
 import {useState} from "react";
 import moment from "moment";
-import mapStyles from "../Map/Map.module.css";
 
 
 const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney, endLocation}) => {

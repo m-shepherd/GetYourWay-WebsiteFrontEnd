@@ -5,7 +5,6 @@ import Geocode from 'react-geocode';
 import mapStyles from './Map.module.css';
 import './Map.css';
 import {setStart, setDestination} from "./MapUtils";
-import flightStyles from "../Flights/Flights.module.css";
 
 const MAPS_API_KEY = 'AIzaSyCodtVa1E5fxA5mM3Pd-wiZoPH3uwyreMI';
 
