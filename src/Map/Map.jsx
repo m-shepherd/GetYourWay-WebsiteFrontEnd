@@ -299,7 +299,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         if (btnValue === 'Adding Drive...') {
             setTimeout(() => {setBtnValue("Added Drive")}, 2000)
         } else if (btnValue === 'Added Drive') {
-            setTimeout(() => {setBtnValue("Add Leg To Journey")}, 1000)
+            setTimeout(() => {setBtnValue("Add Drive To Journey")}, 1000)
         }
     }, [btnValue])
 
