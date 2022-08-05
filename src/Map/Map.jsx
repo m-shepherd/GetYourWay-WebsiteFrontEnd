@@ -28,7 +28,8 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
     const [startMarkerVis,setStartMarkerVis] = useState(false);
     const [endMarkerVis,setEndMarkerVis] = useState(false);
     const [timeTaken,setTimeTaken] = useState('')
-    const [departTime,setDepartTime] = useState('');
+    const [departTime,setDepartTime] = useState();
+    const [userSetDepart, setUserSetDepart] = useState(false);
     const [arrivalTime,setArrivalTime] = useState('');
 
     const [startAutocomplete,setStartAutocomplete] = useState(null);
@@ -37,11 +38,13 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
     const [btnValue, setBtnValue] = useState("Add Drive To Journey");
 
     useEffect(() => {
-        const time = new Date().toLocaleString('en-GB', {
-            timeZone: 'Europe/London',
-        }).split(',')[1].substring(1, 6)
-        setDepartTime(time)
-    })
+        if (!userSetDepart || !showDirections) {
+            const time = new Date().toLocaleString('en-GB', {
+                timeZone: 'Europe/London',
+            }).split(',')[1].substring(1, 6)
+            setDepartTime(time)
+        }
+    }, [userSetDepart, showDirections])
 
 
     const onMapClick = (e) => {
@@ -223,6 +226,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
         setArrivalTime(time)
         setStartTime(departTime)
         setEndTime(arrivalTime)
+        setUserSetDepart(true);
     }
 
     const arrivalChanged = (e) => {
@@ -376,7 +380,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                                 {destinationName == null ? '' : "Destination: " + destinationName}
                             </div>
                         </div>
-                        <div id="add" className={btnValue === "Adding Drive..." ? `${mapStyles.field_disabled} ${mapStyles.btn} ${mapStyles.get}`: btnValue === "Added Drive" ? `${mapStyles.field_added} ${mapStyles.btn} ${mapStyles.get}` :`${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={{display: 'none'}}>
+                        <div id="add" className={btnValue === "Adding Drive..." ? `${mapStyles.field_disabled} ${mapStyles.btn} ${mapStyles.get}`: btnValue === "Added Drive" ? `${mapStyles.field_added} ${mapStyles.btn} ${mapStyles.get}` :`${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={showDirections ? {display: 'block'} : {display: 'none'}}>
                             <div className={btnValue === "Adding Drive..." ? mapStyles.btn_layer_disabled : btnValue === "Added Drive" ? mapStyles.btn_layer_added : mapStyles.btn_layer}>
                                 <input type="submit" onClick={(e) => {
                                     setBtnValue("Adding Drive...");
@@ -387,7 +391,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                         </div>
                     </div>
                     
-                    <div id="times" className={mapStyles.times} style={{display: 'none'}}>
+                    <div id="times" className={mapStyles.times} style={showDirections ? {display: 'grid'} : {display: 'none'}}>
                         <div className={`${mapStyles.field} ${mapStyles.timediv}`} id="departTime" >
                             <div className={mapStyles.input}>
                                 <input type='time' className={mapStyles.time} onChange={departChanged} value={departTime}/>

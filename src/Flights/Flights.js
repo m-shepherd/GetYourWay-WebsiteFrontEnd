@@ -250,9 +250,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                 setDuration(getDuration())
             }
             setBtnValue("Adding Flights...");
-            // setTimeout(() => {setBtnValue("Confirm Flights")}, 2000)
         }
-        // document.getElementById("confirmFlights").value = "Confirm Flights";
     }, [legs])
 
     useEffect(() => {
