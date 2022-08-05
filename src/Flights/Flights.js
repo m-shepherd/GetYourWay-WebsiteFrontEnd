@@ -12,7 +12,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
     const [flights, setFlights] = useState();
     const [date, setDate] = useState("2022-08-05");
     const [legs, setLegs] = useState([]);
-    const [btnValue, setBtnValue] = useState("Confirm Flights");
+    const [btnValue, setBtnValue] = useState("Add Flight To Journey");
 
     function updateDate(event) {
         setDate(event.target.value);
