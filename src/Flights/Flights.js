@@ -6,6 +6,7 @@ import axios from "axios";
 import {BACKEND_ADDRESS} from "../configuration";
 import {useState} from "react";
 import moment from "moment";
+import mapStyles from "../Map/Map.module.css";
 
 
 const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLocation, setEndLocation, setStartTime, setEndTime, setDuration, handleSubmitJourney, endLocation}) => {
@@ -250,7 +251,7 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                 setDuration(getDuration())
             }
             setBtnValue("Adding Flights...");
-            setTimeout(() => {setBtnValue("Confirm Flights")}, 2000)
+            // setTimeout(() => {setBtnValue("Confirm Flights")}, 2000)
         }
         // document.getElementById("confirmFlights").value = "Confirm Flights";
     }, [legs])
@@ -302,6 +303,14 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
 
     }, [nearestArrivalAirports, nearestDepartureAirports, date]);
 
+    useEffect(() => {
+        if (btnValue === 'Adding Flights...') {
+            setTimeout(() => {setBtnValue("Added Flight")}, 2000)
+        } else if (btnValue === 'Added Flight') {
+            setTimeout(() => {setBtnValue("Add Flight To Journey")}, 1000)
+        }
+    }, [btnValue])
+
     return (
         <>
             <div className={flightStyles.padding}>
@@ -336,9 +345,11 @@ const Flights = ({nearestDepartureAirports, nearestArrivalAirports, setStartLoca
                             </table>
                         </div>
                     </div>
-                    <div id="destination" className={btnValue === "Adding Flights..." ? `${flightStyles.field_disabled} ${flightStyles.btn}`: `${flightStyles.field} ${flightStyles.btn}`} style={{display: "none"}}>
-                        <div className={btnValue === "Adding Flights..." ? flightStyles.btn_layer_disabled : flightStyles.btn_layer}></div>
-                        <input id="confirmFlights" type="submit" onClick={confirmFlights} value={btnValue} className={btnValue === "Adding Flights..." ? flightStyles.btn_disabled : flightStyles.btn_working}/>
+                    <div id="destination" className={btnValue === "Adding Flights..." ? `${flightStyles.field_disabled} ${flightStyles.btn}`: btnValue === "Added Flight" ? `${flightStyles.field_added} ${flightStyles.btn}` :`${flightStyles.field} ${flightStyles.btn}`} style={{display: "none"}}>
+                        <div className={btnValue === "Adding Flights..." ? flightStyles.btn_layer_disabled : btnValue === "Added Flight" ? flightStyles.btn_layer_added : flightStyles.btn_layer}></div>
+                        <input id="confirmFlights" type="submit" onClick={confirmFlights} value={btnValue}
+                               disabled={btnValue !== "Add Flight To Journey"}
+                               className={btnValue === "Adding Flights..." ? flightStyles.btn_disabled : btnValue === "Added Flight" ? flightStyles.btn_added: flightStyles.btn_working}/>
                     </div>
                     <input id="FLYING" type="submit" onClick={handleSubmitJourney} style={{display: "none"}}/>
                 </div>

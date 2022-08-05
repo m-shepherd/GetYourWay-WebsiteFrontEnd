@@ -35,7 +35,7 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
     const [startAutocomplete,setStartAutocomplete] = useState(null);
     const [endAutocomplete,setEndAutocomplete] = useState(null);
 
-    const [btnValue, setBtnValue] = useState("Add Leg To Journey");
+    const [btnValue, setBtnValue] = useState("Add Drive To Journey");
 
     useEffect(() => {
         const time = new Date().toLocaleString('en-GB', {
@@ -292,6 +292,14 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
 
     }
 
+    useEffect(() => {
+        if (btnValue === 'Adding Drive...') {
+            setTimeout(() => {setBtnValue("Added Drive")}, 2000)
+        } else if (btnValue === 'Added Drive') {
+            setTimeout(() => {setBtnValue("Add Leg To Journey")}, 1000)
+        }
+    }, [btnValue])
+
     if (!isLoaded) return <div className={mapStyles.wrapper}>Loading...</div>
 
     return (
@@ -369,14 +377,13 @@ const Map = ({setDepartureLatitude, setDepartureLongitude, setArrivalLatitude, s
                                 {destinationName == null ? '' : "Destination: " + destinationName}
                             </div>
                         </div>
-                        <div id="add" className={btnValue === "Adding Drive..." ? `${mapStyles.field_disabled} ${mapStyles.btn} ${mapStyles.get}`: `${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={{display: 'none'}}>
-                            <div className={btnValue === "Adding Drive..." ? mapStyles.btn_layer_disabled : mapStyles.btn_layer}>
+                        <div id="add" className={btnValue === "Adding Drive..." ? `${mapStyles.field_disabled} ${mapStyles.btn} ${mapStyles.get}`: btnValue === "Added Drive" ? `${mapStyles.field_added} ${mapStyles.btn} ${mapStyles.get}` :`${mapStyles.field} ${mapStyles.btn} ${mapStyles.get}`} style={{display: 'none'}}>
+                            <div className={btnValue === "Adding Drive..." ? mapStyles.btn_layer_disabled : btnValue === "Added Drive" ? mapStyles.btn_layer_added : mapStyles.btn_layer}>
                                 <input type="submit" onClick={(e) => {
                                     setBtnValue("Adding Drive...");
-                                    // setTimeout(() => {setBtnValue("Added Drive")}, 1000)
-                                    setTimeout(() => {setBtnValue("Add Leg To Journey")}, 2000)
                                     handleSubmitJourney(e)
-                                }} id="DRIVING" value={btnValue} className={btnValue === "Adding Drive..." ? mapStyles.btn_disabled : mapStyles.btn_working}/>
+                                }} id="DRIVING" value={btnValue} disabled={btnValue !== "Add Drive To Journey"}
+                                       className={btnValue === "Adding Drive..." ? mapStyles.btn_disabled : btnValue === "Added Drive" ? mapStyles.btn_added: mapStyles.btn_working}/>
                             </div>
                         </div>
                     </div>
